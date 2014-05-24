@@ -11,7 +11,10 @@ var url = require('url')
  */
 var compress = require('compression')
 
-var PORT = process.argv[2] || 3000
+/**
+ * Local Dependencies
+ */
+var config = require('./config')
 
 var app = express()
 var server = http.createServer(app)
@@ -57,9 +60,9 @@ app.get('*', function (req, res) {
   })
 })
 
-server.listen(PORT, function (err) {
+server.listen(config.port, function (err) {
   if (err) {
     throw err
   }
-  console.log('listening on port ' + PORT)
+  console.log('listening on port ' + config.port)
 })
