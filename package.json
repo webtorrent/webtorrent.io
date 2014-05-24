@@ -1,0 +1,51 @@
+{
+  "name": "webtorrent.io",
+  "version": "0.0.1",
+  "author": {
+    "name": "Feross Aboukhadijeh",
+    "email": "feross@feross.org",
+    "url": "http://feross.org/"
+  },
+  "bugs": {
+    "url": "https://github.com/feross/webtorrent.io/issues"
+  },
+  "dependencies": {
+    "compression": "^1.0.2",
+    "domready": "^1.0.5",
+    "express": "^4.2.0",
+    "jade": "^1.3.1"
+  },
+  "devDependencies": {
+    "browserify": "^4.1.3",
+    "nib": "^1.0.2",
+    "stylus": "^0.45.0",
+    "watchify": "^0.10.0"
+  },
+  "homepage": "http://webtorrent.io",
+  "keywords": [
+    "torrent",
+    "bittorrent",
+    "bittorrent client",
+    "streaming",
+    "download",
+    "webtorrent",
+    "mad science",
+    "webrtc"
+  ],
+  "license": "MIT",
+  "main": "index.js",
+  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/feross/webtorrent.io.git"
+  },
+  "scripts": {
+    "start": "node index.js",
+    "build": "npm run build-css && npm run build-js",
+    "build-css": "stylus -u nib css/main.styl -o static/ -c",
+    "build-js": "browserify js/main.js --debug > static/bundle.js",
+    "watch": "npm run watch-css & npm run watch-js & nodemon index.js -e js,jade -i node_modules/ -q",
+    "watch-css": "stylus -u nib css/main.styl -o static/ -w",
+    "watch-js": "watchify js/main.js -o static/bundle.js -dv"
+  }
+}
