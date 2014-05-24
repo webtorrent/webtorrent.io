@@ -1,3 +1,4 @@
+#!/bin/sh
 # Update code and restart server (run from app server)
 
 APP_DIR = /home/feross/www/webtorrent.io
