@@ -18,6 +18,7 @@
   "devDependencies": {
     "browserify": "^4.1.3",
     "nib": "^1.0.2",
+    "nodemon": "^1.2.1",
     "stylus": "^0.45.0",
     "watchify": "^0.10.0"
   },
