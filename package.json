@@ -1,5 +1,5 @@
 {
-  "name": "webtorrent.io",
+  "name": "webtorrent-website",
   "version": "0.0.1",
   "author": {
     "name": "Feross Aboukhadijeh",
@@ -7,7 +7,7 @@
     "url": "http://feross.org/"
   },
   "bugs": {
-    "url": "https://github.com/feross/webtorrent.io/issues"
+    "url": "https://github.com/feross/webtorrent-website/issues"
   },
   "dependencies": {
     "compression": "^1.0.2",
@@ -37,7 +37,7 @@
   "private": true,
   "repository": {
     "type": "git",
-    "url": "git://github.com/feross/webtorrent.io.git"
+    "url": "git://github.com/feross/webtorrent-website.git"
   },
   "scripts": {
     "start": "node index.js",
