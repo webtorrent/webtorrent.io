@@ -1,4 +1,4 @@
-var PORT_80 = process.env === 'production' ? 80 : 9000
+var PORT_80 = process.env.NODE_ENV === 'production' ? 80 : 9000
 
 exports.ports = {
   router: PORT_80,
