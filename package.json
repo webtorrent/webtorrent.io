@@ -18,7 +18,7 @@
     "http-proxy": "^1.1.4",
     "jade": "^1.3.1",
     "posix": "^1.0.3",
-    "run-parallel": "^1.0.0"
+    "run-auto": "^1.0.0"
   },
   "devDependencies": {
     "browserify": "^4.1.3",
