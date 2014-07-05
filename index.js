@@ -1,69 +1,51 @@
 /**
- * Dependencies
+ * HTTP reverse proxy server. Yo dawg, I heard you like HTTP servers, so here
+ * is an HTTP server for your HTTP servers.
  */
-var express = require('express')
-var http = require('http')
-var path = require('path')
-var url = require('url')
 
-/**
- * Express middleware dependencies
- */
-var compress = require('compression')
-
-/**
- * Local Dependencies
- */
+var auto = require('run-auto')
 var config = require('./config')
+var cp = require('child_process')
+var debug = require('debug')('webtorrent:router')
+var http = require('http')
+var httpProxy = require('http-proxy')
+var util = require('./util')
 
-var app = express()
-var server = http.createServer(app)
+util.upgradeLimits()
 
-// Templating
-app.set('views', __dirname + '/views')
-app.set('view engine', 'jade')
-
-app.use(compress())
-
-// Add headers
-app.use(function (req, res, next) {
-  var extname = path.extname(url.parse(req.url).pathname)
-
-  // Add cross-domain header for fonts, required by spec, Firefox, and IE.
-  if (['.eot', '.ttf', '.otf', '.woff'].indexOf(extname) >= 0) {
-    res.header('Access-Control-Allow-Origin', '*')
+var proxy = httpProxy.createServer({})
+var server = http.createServer(function (req, res) {
+  console.log(req)
+  if (req.headers.host === 'tracker.webtorrent.io') {
+    proxy.web(req, res, { target: 'http://127.0.0.1:' + config.ports.tracker.http })
+  } else {
+    proxy.web(req, res, { target: 'http://127.0.0.1:' + config.ports.web })
   }
-
-  // Prevents IE and Chrome from MIME-sniffing a response. Reduces exposure to
-  // drive-by download attacks on sites serving user uploaded content.
-  res.header('X-Content-Type-Options', 'nosniff')
-
-  // Prevent rendering of site within a frame.
-  res.header('X-Frame-Options', 'DENY')
-
-  // Enable the XSS filter built into most recent web browsers. It's usually
-  // enabled by default anyway, so role of this headers is to re-enable for this
-  // particular website if it was disabled by the user.
-  res.header('X-XSS-Protection', '1; mode=block')
-
-  // Force IE to use latest rendering engine or Chrome Frame
-  res.header('X-UA-Compatible', 'IE=Edge,chrome=1')
-
-  next()
 })
 
-app.use(express.static(__dirname + '/static'))
-
-app.get('*', function (req, res) {
-  res.redirect('https://github.com/feross/webtorrent')
-  // res.render('index', {
-  //   title: 'WebTorrent'
-  // })
+auto({
+  proxy: function (cb) {
+    server.listen(config.ports.router, cb)
+  },
+  tracker: function (cb) {
+    var tracker = cp.fork('./tracker')
+    tracker.on('error', onError)
+    tracker.on('message', cb.bind(null, null))
+  },
+  downgradeUid: ['proxy', 'tracker', function (cb) {
+    util.downgradeUid()
+    cb(null)
+  }],
+  web: ['downgradeUid', function (cb) {
+    var web = cp.fork('./web')
+    web.on('error', onError)
+    web.on('message', cb.bind(null, null))
+  }]
+}, function (err) {
+  debug('listening on ' + config.ports.router)
+  if (err) throw err
 })
 
-server.listen(config.port, function (err) {
-  if (err) {
-    throw err
-  }
-  console.log('listening on port ' + config.port)
-})
+function onError (err) {
+  console.error(err.stack || err.message || err)
+}

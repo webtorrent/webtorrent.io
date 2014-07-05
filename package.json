@@ -10,10 +10,15 @@
     "url": "https://github.com/feross/webtorrent-website/issues"
   },
   "dependencies": {
+    "bittorrent-tracker": "^1.5.0",
     "compression": "^1.0.2",
+    "debug": "^1.0.2",
     "domready": "^1.0.5",
     "express": "^4.2.0",
-    "jade": "^1.3.1"
+    "http-proxy": "^1.1.4",
+    "jade": "^1.3.1",
+    "posix": "^1.0.3",
+    "run-parallel": "^1.0.0"
   },
   "devDependencies": {
     "browserify": "^4.1.3",
@@ -44,8 +49,8 @@
     "start": "node index.js",
     "build": "npm run build-css && npm run build-js",
     "build-css": "stylus -u nib css/main.styl -o static/ -c",
-    "build-js": "browserify js/main.js --debug > static/bundle.js",
-    "watch": "npm run watch-css & npm run watch-js & nodemon index.js -e js,jade -i node_modules/ -q",
+    "build-js": "browserify js/main.js > static/bundle.js",
+    "watch": "npm run watch-css & npm run watch-js & DEBUG=webtorrent:* nodemon index.js -e js,jade -i node_modules/ -q",
     "watch-css": "stylus -u nib css/main.styl -o static/ -w",
     "watch-js": "watchify js/main.js -o static/bundle.js -dv"
   }
