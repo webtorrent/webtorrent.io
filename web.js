@@ -56,11 +56,13 @@ app.use(function (req, res, next) {
 
 app.use(express.static(__dirname + '/static'))
 
-app.get('*', function (req, res) {
+app.get('/', function (req, res) {
   res.redirect('https://github.com/feross/webtorrent')
   // res.render('index', {
   //   title: 'WebTorrent'
   // })
+app.get('*', function (req, res) {
+  res.render('error')
 })
 
 server.listen(config.ports.web, function (err) {
