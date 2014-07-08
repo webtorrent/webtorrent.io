@@ -12,7 +12,7 @@
   "dependencies": {
     "bittorrent-tracker": "^1.5.0",
     "compression": "^1.0.2",
-    "create-torrent": "^1.2.0",
+    "create-torrent": "^2.0.0",
     "debug": "^1.0.2",
     "domready": "^1.0.5",
     "drag-drop": "^1.0.2",
