@@ -52,7 +52,7 @@
     "build": "npm run build-css && npm run build-js",
     "build-css": "stylus -u nib css/main.styl -o static/ -c",
     "build-js": "browserify js/main.js > static/bundle.js",
-    "watch": "npm run watch-css & npm run watch-js & DEBUG=webtorrent:* nodemon index.js -e js,jade -i node_modules/ -q",
+    "watch": "npm run watch-css & npm run watch-js & DEBUG=webtorrent:* nodemon index.js -e js,jade -i node_modules/ -i static/ -i js/ -q -d 1",
     "watch-css": "stylus -u nib css/main.styl -o static/ -w",
     "watch-js": "watchify js/main.js -o static/bundle.js -dv"
   }
