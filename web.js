@@ -2,6 +2,7 @@
  * Dependencies
  */
 var debug = require('debug')('webtorrent:web')
+var jade = require('jade')
 var express = require('express')
 var http = require('http')
 var path = require('path')
@@ -24,6 +25,7 @@ var server = http.createServer(app)
 // Templating
 app.set('views', __dirname + '/views')
 app.set('view engine', 'jade')
+app.engine('jade', jade.renderFile)
 
 app.use(compress())
 
@@ -58,9 +60,12 @@ app.use(express.static(__dirname + '/static'))
 
 app.get('/', function (req, res) {
   res.redirect('https://github.com/feross/webtorrent')
-  // res.render('index', {
-  //   title: 'WebTorrent'
-  // })
+  // res.render('index')
+})
+app.get('/create', function (req, res) {
+  res.render('create')
+})
+
 app.get('*', function (req, res) {
   res.render('error')
 })
