@@ -59,8 +59,8 @@ app.use(function (req, res, next) {
 app.use(express.static(__dirname + '/static'))
 
 app.get('/', function (req, res) {
-  res.redirect('https://github.com/feross/webtorrent')
-  // res.render('index')
+  // res.redirect('https://github.com/feross/webtorrent')
+  res.render('index')
 })
 app.get('/create', function (req, res) {
   res.render('create')
