@@ -28,9 +28,9 @@ ellipsis () {
   }
 }
 
-// * {
-//   box-sizing: border-box
-// }
+*, *:after, *:before {
+  box-sizing: border-box
+}
 
 @font-face {
   font-family:'Adelle';
@@ -40,11 +40,6 @@ ellipsis () {
     url('fonts/adelle.svg') format('svg')
 }
 
-*, *:after, *:before {
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  box-sizing: border-box;
-}
 
 html, body {
   margin: 0px;
