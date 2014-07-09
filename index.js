@@ -15,7 +15,6 @@ util.upgradeLimits()
 
 var proxy = httpProxy.createServer({})
 var server = http.createServer(function (req, res) {
-  console.log(req)
   if (req.headers.host === 'tracker.webtorrent.io') {
     proxy.web(req, res, { target: 'http://127.0.0.1:' + config.ports.tracker.http })
   } else {
