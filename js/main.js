@@ -11,8 +11,9 @@ function newTorrent (files) {
 
     var url = URL.createObjectURL(new Blob([ torrent ]))
     var a = document.createElement('a')
-    a.download = true
+    a.download = 'file'
     a.href = url
-    a.click()
+    a.textContent = 'download .torrent'
+    document.body.appendChild(a)
   })
 }
