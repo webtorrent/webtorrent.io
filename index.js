@@ -17,6 +17,8 @@ var proxy = httpProxy.createServer({})
 var server = http.createServer(function (req, res) {
   if (req.headers.host === 'tracker.webtorrent.io') {
     proxy.web(req, res, { target: 'http://127.0.0.1:' + config.ports.tracker.http })
+  } else if (req.headers.host === 'instant.io') {
+    proxy.web(req, res, { target: 'http://127.0.0.1:' + config.ports.instantio })
   } else {
     proxy.web(req, res, { target: 'http://127.0.0.1:' + config.ports.web })
   }
