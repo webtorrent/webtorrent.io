@@ -7,5 +7,5 @@ exports.ports = {
     http: 9002,
     udp: PORT_80
   },
-  instantio: 9100 // instant.io
+  instant: 9100 // instant.io
 }
