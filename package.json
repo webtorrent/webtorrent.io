@@ -48,12 +48,12 @@
     "url": "git://github.com/feross/webtorrent-website.git"
   },
   "scripts": {
-    "start": "node index.js",
+    "start": "node server",
     "build": "npm run build-css && npm run build-js",
     "build-css": "stylus -u nib css/main.styl -o static/ -c",
-    "build-js": "browserify js/main.js > static/bundle.js",
-    "watch": "npm run watch-css & npm run watch-js & DEBUG=webtorrent:* nodemon index.js -e js,jade -i node_modules/ -i static/ -i js/ -q -d 1",
+    "build-js": "browserify client > static/bundle.js",
+    "watch": "npm run watch-css & npm run watch-js & DEBUG=webtorrent:* nodemon server -e js,jade -i node_modules/ -q -d 1",
     "watch-css": "stylus -u nib css/main.styl -o static/ -w",
-    "watch-js": "watchify js/main.js -o static/bundle.js -dv"
+    "watch-js": "watchify client -o static/bundle.js -dv"
   }
 }

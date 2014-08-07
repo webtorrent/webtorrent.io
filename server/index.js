@@ -4,12 +4,12 @@
  */
 
 var auto = require('run-auto')
-var config = require('./config')
+var config = require('../config')
 var cp = require('child_process')
 var debug = require('debug')('webtorrent:router')
 var http = require('http')
 var httpProxy = require('http-proxy')
-var util = require('./util')
+var util = require('../util')
 
 util.upgradeLimits()
 
@@ -29,7 +29,7 @@ auto({
     server.listen(config.ports.router, cb)
   },
   tracker: function (cb) {
-    var tracker = cp.fork('./tracker')
+    var tracker = cp.fork(__dirname + '/tracker')
     tracker.on('error', onError)
     tracker.on('message', cb.bind(null, null))
   },
@@ -38,7 +38,7 @@ auto({
     cb(null)
   }],
   web: ['downgradeUid', function (cb) {
-    var web = cp.fork('./web')
+    var web = cp.fork(__dirname + '/web')
     web.on('error', onError)
     web.on('message', cb.bind(null, null))
   }]

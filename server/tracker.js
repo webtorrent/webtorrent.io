@@ -1,7 +1,7 @@
-var config = require('./config')
+var config = require('../config')
 var debug = require('debug')('webtorrent:tracker')
 var TrackerServer = require('bittorrent-tracker').Server
-var util = require('./util')
+var util = require('../util')
 
 util.upgradeLimits()
 

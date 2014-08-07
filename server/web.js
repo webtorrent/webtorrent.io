@@ -16,8 +16,8 @@ var compress = require('compression')
 /**
  * Local Dependencies
  */
-var config = require('./config')
-var util = require('./util')
+var config = require('../config')
+var util = require('../util')
 
 var app = express()
 var server = http.createServer(app)
