@@ -23,11 +23,11 @@
     "run-auto": "^1.0.0"
   },
   "devDependencies": {
-    "browserify": "^4.1.3",
+    "browserify": "^5.9.1",
     "nib": "^1.0.2",
     "nodemon": "^1.2.1",
     "stylus": "^0.47.1",
-    "watchify": "^0.10.0"
+    "watchify": "^1.0.1"
   },
   "homepage": "http://webtorrent.io",
   "keywords": [
