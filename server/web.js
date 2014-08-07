@@ -1,7 +1,7 @@
 /**
  * Dependencies
  */
-var debug = require('debug')('webtorrent:web')
+var debug = require('debug')('webtorrent-website:web')
 var jade = require('jade')
 var express = require('express')
 var http = require('http')

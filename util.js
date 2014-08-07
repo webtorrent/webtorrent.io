@@ -1,4 +1,4 @@
-var debug = require('debug')('util')
+var debug = require('debug')('webtorrent-website:util')
 var posix = require('posix')
 
 var MAX_SOCKETS = 10000
