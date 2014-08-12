@@ -56,7 +56,7 @@ app.use(function (req, res, next) {
   next()
 })
 
-app.use(express.static(__dirname + '/static'))
+app.use(express.static(__dirname + '/../static'))
 
 app.get('/', function (req, res) {
   res.redirect('https://github.com/feross/webtorrent')
