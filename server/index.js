@@ -17,19 +17,29 @@ util.upgradeLimits()
 
 var proxy = httpProxy.createServer({})
 
+var httpServer = http.createServer()
+var httpsServer = https.createServer({
+  key: fs.readFileSync(__dirname + '/../secret/webtorrent.io.key'),
+  cert: fs.readFileSync(__dirname + '/../secret/webtorrent.io.chained.crt')
+})
+
 function onRequest (req, res) {
-  if (req.headers.host === 'tracker.webtorrent.io') {
+  if (req.headers.host === 'tracker.webtorrent.io' ||
+      req.headers.host === 'tracker.webtorrent.io:' + config.ports.router.https) {
     proxy.web(req, res, { target: 'http://127.0.0.1:' + config.ports.tracker.http })
   } else {
     proxy.web(req, res, { target: 'http://127.0.0.1:' + config.ports.web })
   }
 }
 
-var httpServer = http.createServer(onRequest)
-var httpsServer = https.createServer({
-  key: fs.readFileSync(__dirname + '/../secret/webtorrent.io.key'),
-  cert: fs.readFileSync(__dirname + '/../secret/webtorrent.io.chained.crt')
-}, onRequest)
+function onUpgrade (req, socket, head) {
+  proxy.ws(req, socket, head, { target: 'ws://127.0.0.1:' + config.ports.tracker.http })
+}
+
+;[ httpServer, httpsServer ].forEach(function (server) {
+  server.on('request', onRequest)
+  server.on('upgrade', onUpgrade)
+})
 
 auto({
   httpServer: function (cb) {
