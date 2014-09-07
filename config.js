@@ -1,7 +1,11 @@
-var PORT_80 = process.env.NODE_ENV === 'production' ? 80 : 9000
+var PORT_80 = process.env.NODE_ENV === 'production' ? 80 : 9080
+var PORT_443 = process.env.NODE_ENV === 'production' ? 80 : 9443
 
 exports.ports = {
-  router: PORT_80,
+  router: {
+    http: PORT_80,
+    https: PORT_443
+  },
   web: 9001,
   tracker: {
     http: 9002,
