@@ -1,6 +1,4 @@
-/**
- * Dependencies
- */
+var compress = require('compression')
 var debug = require('debug')('webtorrent-website:web')
 var jade = require('jade')
 var express = require('express')
@@ -8,14 +6,6 @@ var http = require('http')
 var path = require('path')
 var url = require('url')
 
-/**
- * Express middleware dependencies
- */
-var compress = require('compression')
-
-/**
- * Local Dependencies
- */
 var config = require('../config')
 var util = require('../util')
 
@@ -67,7 +57,12 @@ app.get('/create', function (req, res) {
 })
 
 app.get('*', function (req, res) {
-  res.render('error')
+  res.status(404).render('error', { message: '404 Not Found' })
+})
+
+app.use(function (req, res, next, err) {
+  console.error(err.stack)
+  res.status(500).render('error', { message: err.message || err })
 })
 
 server.listen(config.ports.web, function (err) {
