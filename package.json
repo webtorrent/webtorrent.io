@@ -17,6 +17,7 @@
     "domready": "^1.0.6",
     "drag-drop": "^1.0.2",
     "express": "^4.8.8",
+    "gitter-irc-bot": "^1.0.0",
     "http-proxy": "^1.3.0",
     "jade": "^1.6.0",
     "parse-torrent": "^1.7.0",
@@ -50,7 +51,6 @@
     "url": "git://github.com/feross/webtorrent-website.git"
   },
   "scripts": {
-    "start": "node server",
     "build": "npm run build-css && npm run build-js",
     "build-css": "stylus -u nib css/main.styl -o static/ -c",
     "build-js": "browserify client > static/bundle.js",
