@@ -1,3 +1,5 @@
+var secret = require('./secret')
+
 var PORT_80 = process.env.NODE_ENV === 'production' ? 80 : 9000
 var PORT_443 = process.env.NODE_ENV === 'production' ? 443 : 9001
 
@@ -13,4 +15,11 @@ exports.ports = {
     http: 9003,
     udp: PORT_80
   }
+}
+
+exports.gitterBot = {
+  ircChannel: '#webtorrent',
+  ircNick: 'irc-gitter-bot',
+  gitterRoom: 'feross/webtorrent',
+  gitterApiKey: secret.gitterApiKey
 }
