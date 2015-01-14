@@ -20,14 +20,15 @@ app.engine('jade', jade.renderFile)
 
 app.use(compress())
 
-// Add headers
 app.use(function (req, res, next) {
-  var extname = path.extname(url.parse(req.url).pathname)
+  // Force SSL
+  if (config.isProd && req.protocol !== 'https')
+    return res.redirect('https://' + (req.hostname || 'webtorrent.io') + req.url)
 
   // Add cross-domain header for fonts, required by spec, Firefox, and IE.
-  if (['.eot', '.ttf', '.otf', '.woff'].indexOf(extname) >= 0) {
+  var extname = path.extname(url.parse(req.url).pathname)
+  if (['.eot', '.ttf', '.otf', '.woff'].indexOf(extname) >= 0)
     res.header('Access-Control-Allow-Origin', '*')
-  }
 
   // Prevents IE and Chrome from MIME-sniffing a response. Reduces exposure to
   // drive-by download attacks on sites serving user uploaded content.
