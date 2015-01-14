@@ -25,6 +25,10 @@ app.use(function (req, res, next) {
   if (config.isProd && req.protocol !== 'https')
     return res.redirect('https://' + (req.hostname || 'webtorrent.io') + req.url)
 
+  // Redirect www to non-www
+  if (config.isProd && req.hostname === 'www.webtorrent.io')
+    return res.redirect('https://webtorrent.io' + req.url)
+
   // Add cross-domain header for fonts, required by spec, Firefox, and IE.
   var extname = path.extname(url.parse(req.url).pathname)
   if (['.eot', '.ttf', '.otf', '.woff'].indexOf(extname) >= 0)
