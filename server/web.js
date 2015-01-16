@@ -18,6 +18,9 @@ app.set('view engine', 'jade')
 app.set('x-powered-by', false)
 app.engine('jade', jade.renderFile)
 
+// Trust the X-Forwarded-* headers from nginx
+app.enable('trust proxy')
+
 app.use(compress())
 
 app.use(function (req, res, next) {

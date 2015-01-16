@@ -15,7 +15,9 @@ var util = require('../util')
 
 util.upgradeLimits()
 
-var proxy = httpProxy.createServer({})
+var proxy = httpProxy.createProxyServer({
+  xfwd: true
+})
 
 var httpServer = http.createServer()
 var httpsServer = https.createServer({
