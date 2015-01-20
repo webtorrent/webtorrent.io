@@ -1,5 +1,7 @@
-# webtorrent.io
+# [webtorrent](http://webtorrent.io)
 
-### The website for the WebTorrent project
+### The website for the [WebTorrent](http://webtorrent.io) project
 
-#### WORK IN PROGRESS!
+## license
+
+MIT. Copyright (c) [Feross Aboukhadijeh](http://feross.org).
