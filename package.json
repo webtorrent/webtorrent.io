@@ -21,7 +21,7 @@
     "http-proxy": "^1.3.0",
     "jade": "^1.6.0",
     "parse-torrent": "^1.7.0",
-    "posix": "^1.0.3",
+    "posix": "^2.0.0",
     "run-auto": "^1.0.0",
     "webtorrent-tracker": "0.x"
   },
