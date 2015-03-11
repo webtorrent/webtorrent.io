@@ -11,7 +11,6 @@ var fs = require('fs')
 var http = require('http')
 var httpProxy = require('http-proxy')
 var https = require('https')
-var parallel = require('run-parallel')
 var util = require('../util')
 
 util.upgradeLimits()
