@@ -77,19 +77,31 @@ function onError (err) {
 }
 
 process.on('SIGTERM', gracefulShutdown)
-process.on('uncaughtException', gracefulShutdown.bind(undefined, true))
+process.on('uncaughtException', gracefulShutdown)
 
-function gracefulShutdown (uncaughtException) {
+var shuttingDown = false
+function gracefulShutdown (err) {
+  if (err) console.error(err)
+  if (shuttingDown) process.exit(1)
+  shuttingDown = true
+
   parallel([
     function (cb) {
+      if (!web) return cb(null)
       web.kill()
-      web.on('exit', cb)
+      web.on('exit', function (code) {
+        cb(null)
+      })
     },
     function (cb) {
+      if (!tracker) return cb(null)
       tracker.kill()
-      tracker.on('exit', cb)
+      tracker.on('exit', function (code) {
+        cb(null)
+      })
     }
-  ], function (err) {
-    process.exit(err || uncaughtException ? 1 : 0)
+  ], function (err2) {
+    if (err2) console.error(err)
+    process.exit(err || err2 ? 1 : 0)
   })
 }
