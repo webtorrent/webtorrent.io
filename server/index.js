@@ -54,8 +54,7 @@ auto({
     httpsServer.listen(config.ports.router.https, config.host, cb)
   },
   tracker: function (cb) {
-    tracker = cp.fork(__dirname + '/tracker')
-    tracker.on('error', onError)
+    tracker = spawn(__dirname + '/tracker')
     tracker.on('message', cb.bind(null, null))
   },
   downgradeUid: ['httpServer', 'httpsServer', 'tracker', function (cb) {
@@ -63,8 +62,7 @@ auto({
     cb(null)
   }],
   web: ['downgradeUid', function (cb) {
-    web = cp.fork(__dirname + '/web')
-    web.on('error', onError)
+    web = spawn(__dirname + '/web')
     web.on('message', cb.bind(null, null))
   }]
 }, function (err) {
@@ -76,32 +74,10 @@ function onError (err) {
   console.error(err.stack || err.message || err)
 }
 
-process.on('SIGTERM', gracefulShutdown)
-process.on('uncaughtException', gracefulShutdown)
-
-var shuttingDown = false
-function gracefulShutdown (err) {
-  if (err) console.error(err)
-  if (shuttingDown) process.exit(1)
-  shuttingDown = true
-
-  parallel([
-    function (cb) {
-      if (!web) return cb(null)
-      web.kill()
-      web.on('exit', function (code) {
-        cb(null)
-      })
-    },
-    function (cb) {
-      if (!tracker) return cb(null)
-      tracker.kill()
-      tracker.on('exit', function (code) {
-        cb(null)
-      })
-    }
-  ], function (err2) {
-    if (err2) console.error(err)
-    process.exit(err || err2 ? 1 : 0)
+function spawn (program) {
+  var child = cp.spawn('node', [ program ], {
+    stdio: [ process.stdin, process.stdout, process.stderr, 'ipc' ]
   })
+  child.on('error', onError)
+  return child
 }
