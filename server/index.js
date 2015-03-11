@@ -81,3 +81,8 @@ function spawn (program) {
   child.on('error', onError)
   return child
 }
+
+process.on('uncaughtException', function () {
+  // kill all processes in the "process group", i.e. this process and the children
+  process.kill(-process.pid)
+})
