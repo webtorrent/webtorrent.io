@@ -21,6 +21,7 @@ exports.ports = {
 exports.gitterBot = {
   ircChannel: '#webtorrent',
   ircNick: 'irc-gitter-bot',
+  ircServer: 'irc.freenode.net',
   gitterRoom: 'feross/webtorrent',
   gitterApiKey: secret.gitterApiKey
 }
