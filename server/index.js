@@ -11,6 +11,7 @@ var fs = require('fs')
 var http = require('http')
 var httpProxy = require('http-proxy')
 var https = require('https')
+var parallel = require('run-parallel')
 var util = require('../util')
 
 util.upgradeLimits()
@@ -43,6 +44,8 @@ function onUpgrade (req, socket, head) {
   server.on('upgrade', onUpgrade)
 })
 
+var web, tracker
+
 auto({
   httpServer: function (cb) {
     httpServer.listen(config.ports.router.http, config.host, cb)
@@ -51,7 +54,7 @@ auto({
     httpsServer.listen(config.ports.router.https, config.host, cb)
   },
   tracker: function (cb) {
-    var tracker = cp.fork(__dirname + '/tracker')
+    tracker = cp.fork(__dirname + '/tracker')
     tracker.on('error', onError)
     tracker.on('message', cb.bind(null, null))
   },
@@ -60,7 +63,7 @@ auto({
     cb(null)
   }],
   web: ['downgradeUid', function (cb) {
-    var web = cp.fork(__dirname + '/web')
+    web = cp.fork(__dirname + '/web')
     web.on('error', onError)
     web.on('message', cb.bind(null, null))
   }]
@@ -71,4 +74,22 @@ auto({
 
 function onError (err) {
   console.error(err.stack || err.message || err)
+}
+
+process.on('SIGTERM', gracefulShutdown)
+process.on('uncaughtException', gracefulShutdown.bind(undefined, true))
+
+function gracefulShutdown (uncaughtException) {
+  parallel([
+    function (cb) {
+      web.kill()
+      web.on('exit', cb)
+    },
+    function (cb) {
+      tracker.kill()
+      tracker.on('exit', cb)
+    }
+  ], function (err) {
+    process.exit(err || uncaughtException ? 1 : 0)
+  })
 }
