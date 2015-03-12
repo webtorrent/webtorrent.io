@@ -10,7 +10,7 @@ util.upgradeLimits()
 var btTracker = new BitTorrentTracker()
 
 // Add a websocket server at the same URL
-var wtTracker = new WebTorrentTracker({ server: btTracker._httpServer })
+var wtTracker = new WebTorrentTracker({ server: btTracker.http })
 
 btTracker.on('listening', function () {
   var ports = {
