@@ -18,7 +18,7 @@
     "drag-drop": "^2.0.0",
     "express": "^4.8.8",
     "gitter-irc-bot": "^1.0.0",
-    "http-proxy": "git://github.com/feross/node-http-proxy.git",
+    "http-proxy": "^1.9.0",
     "jade": "^1.6.0",
     "parse-torrent": "^4.0.0",
     "posix": "^2.0.0",
