@@ -1,8 +1,11 @@
 #!/bin/sh
 # Update code and restart server (run from app server)
 set -e
+sudo supervisorctl reload
+sleep 3
+sudo supervisorctl stop webtorrent
 cd /home/feross/www/webtorrent.io && git pull
 cd /home/feross/www/webtorrent.io && rm -rf node_modules
 cd /home/feross/www/webtorrent.io && npm install --quiet
 cd /home/feross/www/webtorrent.io && npm run build
-sudo supervisorctl reload && sleep 3 && sudo supervisorctl restart webtorrent
+sudo supervisorctl start webtorrent
