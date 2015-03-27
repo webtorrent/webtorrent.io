@@ -20,4 +20,12 @@ tracker.on('listening', function () {
   process.send('ready')
 })
 
+tracker.on('warning', function (err) {
+  debug('warning: %s', err.message || err)
+})
+
+tracker.on('error', function (err) {
+  debug('error: %s', err.message || err)
+})
+
 tracker.listen(config.ports.tracker)
