@@ -57,7 +57,7 @@
     "secret-download": "rsync -a -O -v --delete -e \"ssh -p 44444\" feross@webtorrent.io:\"/home/feross/www/webtorrent.io/secret/\" secret/",
     "secret-upload": "rsync -a -O -v --delete -e \"ssh -p 44444\" secret/ feross@webtorrent.io:/home/feross/www/webtorrent.io/secret/",
     "start": "node server",
-    "watch": "npm run watch-css & npm run watch-js & DEBUG=webtorrent* nodemon server -e js,jade -d 1",
+    "watch": "npm run watch-css & npm run watch-js & DEBUG=webtorrent*,bittorrent* nodemon server -e js,jade -d 1",
     "watch-css": "stylus -u nib css/main.styl -o static/ -w",
     "watch-js": "watchify client -o static/bundle.js -dv"
   }
