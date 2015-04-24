@@ -28,7 +28,7 @@
     "browserify": "^9.0.3",
     "nib": "^1.0.2",
     "nodemon": "^1.2.1",
-    "stylus": "^0.50.0",
+    "stylus": "^0.51.0",
     "uglify-js": "^2.4.17",
     "watchify": "^2.4.0"
   },
