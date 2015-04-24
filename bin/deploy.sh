@@ -2,8 +2,6 @@
 # Update code and restart server (run from app server)
 trap 'exit' ERR
 
-sudo supervisorctl reload
-sleep 3
 sudo supervisorctl stop webtorrent
 cd /home/feross/www/webtorrent.io && git pull
 cd /home/feross/www/webtorrent.io && rm -rf node_modules
