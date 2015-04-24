@@ -30,7 +30,7 @@
     "nodemon": "^1.2.1",
     "stylus": "^0.51.0",
     "uglify-js": "^2.4.17",
-    "watchify": "^2.4.0"
+    "watchify": "^3.1.2"
   },
   "homepage": "http://webtorrent.io",
   "keywords": [
