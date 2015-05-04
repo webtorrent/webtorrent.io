@@ -28,4 +28,4 @@ tracker.on('error', function (err) {
   console.error(err.stack || err.message || err)
 })
 
-tracker.listen(config.ports.tracker)
+tracker.listen(config.ports.tracker, config.host)
