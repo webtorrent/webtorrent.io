@@ -85,5 +85,7 @@ process.on('uncaughtException', function (err) {
   onError(err)
 
   // kill all processes in the "process group", i.e. this process and the children
-  process.kill(-process.pid)
+  try {
+    process.kill(-process.pid)
+  } catch (err) {}
 })
