@@ -25,7 +25,7 @@ tracker.on('warning', function (err) {
 })
 
 tracker.on('error', function (err) {
-  debug('error: %s', err.message || err)
+  console.error(err.stack || err.message || err)
 })
 
 tracker.listen(config.ports.tracker)
