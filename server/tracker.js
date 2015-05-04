@@ -30,4 +30,4 @@ tracker.on('error', function (err) {
   console.error(err.stack || err.message || err)
 })
 
-tracker.listen(config.ports.tracker, config.host)
+tracker.listen(config.ports.tracker, { http: '127.0.0.1', udp: config.host })
