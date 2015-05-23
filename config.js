@@ -15,7 +15,8 @@ exports.ports = {
   tracker: {
     http: 9003,
     udp: PORT_80
-  }
+  },
+  whiteboard: 8080 // TEMP
 }
 
 exports.gitterBot = {

@@ -29,6 +29,9 @@ function onRequest (req, res) {
   if (req.headers.host === 'tracker.webtorrent.io' ||
       req.headers.host === 'tracker.webtorrent.io:' + config.ports.router.https) {
     proxy.web(req, res, { target: 'http://127.0.0.1:' + config.ports.tracker.http })
+  } else if (req.headers.host === 'whiteboard.webtorrent.io' ||
+      req.headers.host === 'whiteboard.webtorrent.io:' + config.ports.router.https) {
+    proxy.web(req, res, { target: 'http://127.0.0.1:' + config.ports.whiteboard })
   } else {
     proxy.web(req, res, { target: 'http://127.0.0.1:' + config.ports.web })
   }
