@@ -20,7 +20,7 @@
     "gitter-irc-bot": "^1.0.0",
     "http-proxy": "^1.9.0",
     "jade": "^1.6.0",
-    "parse-torrent": "^4.0.0",
+    "parse-torrent": "^5.0.1",
     "posix": "^2.0.0",
     "run-auto": "^1.0.0"
   },
