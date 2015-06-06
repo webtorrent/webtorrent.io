@@ -8,14 +8,13 @@ util.upgradeLimits()
 
 var tracker = new Tracker({
   ws: true, // enable websocket (webtorrent) tracker,
-  udp: false // TEMPORARILY DISABLE UDP - it's making server fail to start in production
-             // since udp6 support was added
+  udp: true
 })
 
 tracker.on('listening', function () {
   var ports = {
-    http: tracker.http.address().port
-    // udp: tracker.udp.address().port
+    http: tracker.http.address().port,
+    udp: tracker.udp.address().port
   }
   debug('listening on ' + JSON.stringify(ports))
   util.downgradeUid()
