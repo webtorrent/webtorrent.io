@@ -1,3 +1,5 @@
+/* global URL, Blob */
+
 var createTorrent = require('create-torrent')
 var dragDrop = require('drag-drop')
 var parseTorrent = require('parse-torrent')

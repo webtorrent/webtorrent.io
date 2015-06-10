@@ -28,6 +28,7 @@
     "browserify": "^10.0.0",
     "nib": "^1.0.2",
     "nodemon": "^1.2.1",
+    "standard": "^4.0.1",
     "stylus": "^0.51.0",
     "uglify-js": "^2.4.17",
     "watchify": "^3.1.2"
@@ -57,6 +58,7 @@
     "secret-download": "rsync -a -O -v --delete -e \"ssh -p 44444\" feross@webtorrent.io:\"/home/feross/www/webtorrent.io/secret/\" secret/",
     "secret-upload": "rsync -a -O -v --delete -e \"ssh -p 44444\" secret/ feross@webtorrent.io:/home/feross/www/webtorrent.io/secret/",
     "start": "node server",
+    "test": "standard",
     "watch": "npm run watch-css & npm run watch-js & DEBUG=webtorrent*,bittorrent* nodemon server -e js,jade -d 1",
     "watch-css": "stylus -u nib css/main.styl -o static/ -w",
     "watch-js": "watchify client -o static/bundle.js -dv"
