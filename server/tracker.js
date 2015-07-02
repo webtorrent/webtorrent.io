@@ -11,6 +11,18 @@ var tracker = new Tracker({
   udp: true
 })
 
+var onHttpRequest = tracker.onHttpRequest
+tracker.onHttpRequest = function (req, res, opts) {
+  if (req.url === '/') {
+    res.writeHead(301, {
+      'Location': 'https://webtorrent.io'
+    })
+    res.end()
+  } else {
+    onHttpRequest.call(tracker, req, res, opts)
+  }
+}
+
 tracker.on('listening', function () {
   var ports = {
     http: tracker.http.address().port,
