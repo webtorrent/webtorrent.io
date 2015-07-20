@@ -7,13 +7,14 @@ var auto = require('run-auto')
 var config = require('../config')
 var cp = require('child_process')
 var debug = require('debug')('webtorrent-website:router')
+var downgrade = require('downgrade')
 var fs = require('fs')
 var http = require('http')
 var httpProxy = require('http-proxy')
 var https = require('https')
-var util = require('../util')
+var unlimited = require('unlimited')
 
-util.upgradeLimits()
+unlimited()
 
 var proxy = httpProxy.createProxyServer({
   xfwd: true
@@ -59,11 +60,11 @@ auto({
     tracker = spawn(__dirname + '/tracker')
     tracker.on('message', cb.bind(null, null))
   },
-  downgradeUid: ['httpServer', 'httpsServer', 'tracker', function (cb) {
-    util.downgradeUid()
+  downgrade: ['httpServer', 'httpsServer', 'tracker', function (cb) {
+    downgrade()
     cb(null)
   }],
-  web: ['downgradeUid', function (cb) {
+  web: ['downgrade', function (cb) {
     web = spawn(__dirname + '/web')
     web.on('message', cb.bind(null, null))
   }]

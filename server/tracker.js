@@ -1,10 +1,11 @@
 var config = require('../config')
 var debug = require('debug')('webtorrent-website:tracker')
-var util = require('../util')
+var downgrade = require('downgrade')
+var unlimited = require('unlimited')
 
 var Tracker = require('bittorrent-tracker/server')
 
-util.upgradeLimits()
+unlimited()
 
 var tracker = new Tracker({
   ws: true, // enable websocket (webtorrent) tracker,
@@ -29,7 +30,7 @@ tracker.on('listening', function () {
     udp: tracker.udp.address().port
   }
   debug('listening on ' + JSON.stringify(ports))
-  util.downgradeUid()
+  downgrade()
   process.send('ready')
 })
 

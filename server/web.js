@@ -1,13 +1,16 @@
 var compress = require('compression')
 var debug = require('debug')('webtorrent-website:web')
-var jade = require('jade')
+var downgrade = require('downgrade')
 var express = require('express')
 var http = require('http')
+var jade = require('jade')
 var path = require('path')
+var unlimited = require('unlimited')
 var url = require('url')
 
 var config = require('../config')
-var util = require('../util')
+
+unlimited()
 
 var app = express()
 var server = http.createServer(app)
@@ -86,6 +89,6 @@ app.use(function (err, req, res, next) {
 server.listen(config.ports.web, function (err) {
   if (err) throw err
   debug('listening on port ' + config.ports.web)
-  util.downgradeUid()
+  downgrade()
   process.send('ready')
 })
