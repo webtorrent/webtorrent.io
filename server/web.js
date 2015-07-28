@@ -69,7 +69,7 @@ app.use(function (req, res, next) {
 app.use(express.static(__dirname + '/../static'))
 
 app.get('/', function (req, res) {
-  res.render('index', { rawTitle: 'WebTorrent - Streaming browser torrent client'})
+  res.render('home', { rawTitle: 'WebTorrent - Streaming browser torrent client' })
 })
 
 app.get('/create', function (req, res) {
@@ -77,13 +77,19 @@ app.get('/create', function (req, res) {
 })
 
 app.get('*', function (req, res) {
-  res.status(404).render('error', { message: '404 Not Found' })
+  res.status(404).render('error', {
+    title: '404 Not Found',
+    message: '404 Not Found'
+  })
 })
 
 // error handling middleware
 app.use(function (err, req, res, next) {
   console.error(err.stack)
-  res.status(500).render('error', { message: err.message || err })
+  res.status(500).render('error', {
+    title: '500 Server Error',
+    message: '500 Server Error'
+  })
 })
 
 server.listen(config.ports.web, function (err) {

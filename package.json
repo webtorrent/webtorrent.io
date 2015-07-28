@@ -1,5 +1,5 @@
 {
-  "name": "webtorrent-website",
+  "name": "webtorrent-www",
   "version": "0.0.1",
   "author": {
     "name": "Feross Aboukhadijeh",
@@ -7,7 +7,7 @@
     "url": "http://feross.org/"
   },
   "bugs": {
-    "url": "https://github.com/feross/webtorrent-website/issues"
+    "url": "https://github.com/feross/webtorrent-www/issues"
   },
   "dependencies": {
     "bittorrent-tracker": "^5.2.1",
@@ -29,7 +29,7 @@
     "browserify": "^11.0.0",
     "nib": "^1.0.2",
     "nodemon": "^1.2.1",
-    "standard": "^4.0.1",
+    "standard": "^5.0.0-8",
     "stylus": "^0.52.0",
     "uglify-js": "^2.4.17",
     "watchify": "^3.1.2"
@@ -50,7 +50,7 @@
   "private": true,
   "repository": {
     "type": "git",
-    "url": "git://github.com/feross/webtorrent-website.git"
+    "url": "git://github.com/feross/webtorrent-www.git"
   },
   "scripts": {
     "build": "npm run build-css && npm run build-js",
@@ -60,7 +60,7 @@
     "secret-upload": "rsync -a -O -v --delete -e \"ssh -p 44444\" secret/ feross@webtorrent.io:/home/feross/www/webtorrent.io/secret/",
     "start": "node server",
     "test": "standard",
-    "watch": "npm run watch-css & npm run watch-js & DEBUG=webtorrent*,bittorrent* nodemon server -e js,jade -d 1",
+    "watch": "npm run watch-css & npm run watch-js & DEBUG=webtorrent*,bittorrent* nodemon server",
     "watch-css": "stylus -u nib css/main.styl -o static/ -w",
     "watch-js": "watchify client -o static/bundle.js -dv"
   }

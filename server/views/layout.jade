@@ -4,7 +4,13 @@ html(lang='en')
     title= rawTitle || (title && (title + ' - WebTorrent')) || 'WebTorrent'
     meta(charset='utf-8')
     meta(name='viewport', content='width=device-width, initial-scale=1')
+
+    //- TODO
+    link(rel='stylesheet', href='//fonts.googleapis.com/css?family=Montserrat:400,700')
+    link(rel='stylesheet', href='/jquery.fullPage.css')
+
     link(rel='stylesheet', href='/main.css', charset='utf-8')
+
     script.
       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
       (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
@@ -15,4 +21,11 @@ html(lang='en')
 
   body(class=locals.cls || '')
     block body
+
+    //- TODO
+    script(src='/jquery-1.11.2.min.js')
+    script(src='/jquery.particleground.min.js')
+    script(src='/jquery.fullPage.min.js')
+    script(src='/psconfig.js')
+
     script(src='/bundle.js')
