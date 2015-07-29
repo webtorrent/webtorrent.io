@@ -63,5 +63,12 @@
     "watch": "npm run watch-css & npm run watch-js & DEBUG=webtorrent*,bittorrent* nodemon server",
     "watch-css": "stylus -u nib css/main.styl -o static/ -w",
     "watch-js": "watchify client -o static/bundle.js -dv"
+  },
+  "standard": {
+    "ignore": [
+      "static/jquery.fullPage.js",
+      "jquery.particleground.js",
+      "static/psconfig.js"
+    ]
   }
 }
