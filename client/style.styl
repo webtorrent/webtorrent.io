@@ -1,0 +1,235 @@
+@import '../node_modules/highlight.js/styles/zenburn.css'
+
+@import 'nib'
+
+WHITE = #E1FAFA
+
+DARK_GRAY = lighten(#252929, 5%)
+GRAY = #BFC3C8
+LIGHT_GRAY = rgba(0,0,0,0.06)
+
+GREEN = #35B44F
+LIGHT_GREEN = lighten(GREEN, 20%)
+
+BLUE = #2A3749
+
+PAGE_WIDTH = 1150px
+ARTICLE_WIDTH = 840px
+
+ellipsis()
+  overflow: hidden
+  text-overflow: ellipsis
+  white-space: nowrap
+
+vertical-align()
+  position: relative
+  top: 50%
+  transform: translateY(-50%)
+
+.clearfix:before, .clearfix:after
+  content: ''
+  display: table
+
+.clearfix:after
+  clear: both
+
+*, *:after, *:before
+  box-sizing: border-box
+
+html
+  margin: 0
+  padding: 0
+
+body
+  margin: 0
+  padding: 0
+
+  font-family: 'Source Sans Pro', sans-serif
+  color: DARK_GRAY
+  background-color: #f4f5f6
+  font-size: 16px
+
+a:link, a:visited
+  color: darken(GREEN, 10%)
+  text-decoration: none
+
+a:hover, a:active
+  text-decoration: underline
+
+h1, h2, h3, h4, h5
+  font-family: 'Asap', sans-serif
+  font-weight: 700
+  line-height: 1.5em
+h1
+  font-size: 3em
+h2
+  font-size: 2em
+h3
+  font-size: 1.7em
+h4
+  font-size: 1.4em
+h5
+  font-size: 1.2em
+
+p, ul, ol
+  font-size: 1.25em
+  line-height: 1.5em
+
+  code
+    background-color: LIGHT_GRAY
+    border-radius: 3px
+    padding: 0.05em 0.25em
+    margin: 0 0.05em
+    font-size: 90%
+
+code
+  font-family: 'Source Code Pro', monospace
+
+.hljs
+  font-size: 16px
+  padding: 1em
+  border-radius: 3px
+
+//
+// BUTTON
+//
+
+.btn, a.btn:link, a.btn:visited
+  background-color: GREEN
+  border-radius: 6px
+  display: inline-block
+  color: #FFF
+  padding: 0.6em 0.7em
+  font-weight: 700
+
+.btn:hover, a.btn:hover, a.btn:active
+  background-color: LIGHT_GREEN
+  text-decoration: none
+
+.btn.large
+  font-size: 180%
+
+.featuredButtons
+  text-align: center
+  margin: 1.5em 0
+  .btn
+    margin: 0 0.75em
+
+//
+// LAYOUT
+//
+
+.headerWrap
+  background-color: #FFF
+  border-bottom: 1px solid rgba(#000, 0.1)
+
+header
+  height: 70px
+  width: PAGE_WIDTH
+  margin: 0 auto
+
+  h1, a
+    font-family: 'Asap', sans-serif
+
+  h1
+    float: left
+    font-size: 2.1em
+    line-height: 2.1em
+    margin: 0
+    a:link, a:visited
+      text-decoration: none
+      color: DARK_GRAY
+
+nav
+  float: right
+  vertical-align()
+
+  a:link, a:visited
+    color: DARK_GRAY
+    font-size: 120%
+    font-weight: 700
+    text-decoration: none
+    display: inline-block
+    margin-left: 40px
+
+  a:hover, a:active
+    color: GREEN
+
+.footerWrap
+  background-color: BLUE
+
+footer
+  width: PAGE_WIDTH
+  margin: 4em auto 0 auto
+  clearfix()
+
+  section
+    width: 200px
+    float: left
+    color: #FFF
+
+  h3:after
+    content: ''
+    display: block
+    width: 100px
+    height: 5px
+    background: GRAY
+    margin: 5px auto
+
+article
+  width: ARTICLE_WIDTH
+  margin: 0 auto
+
+  h1
+    text-align: center
+
+  h1:after
+    content: ''
+    display: block
+    width: 100px
+    height: 5px
+    background: GRAY
+    margin: 5px auto
+
+//
+// HERO
+//
+
+#hero
+  background-color: BLUE
+  height: 400px
+  margin: auto
+
+#svgWrap
+  position: absolute
+  width: 100%
+
+  svg
+    display: block
+
+    .node
+      cursor: pointer
+
+      .text
+        fill: rgba(WHITE, 60%)
+        text-anchor: middle
+        pointer-events: none
+        font-family: 'Source Sans Pro', sans-serif
+
+#videoWrap
+  width: PAGE_WIDTH
+  height: 400px
+  margin: 0 auto
+
+  h3
+    float: left
+    top: 0
+    left: 0
+    color: #FFF
+
+  video
+    width: 60%
+    vertical-align()
+    float: right
+    border: rgba(#FFF, 0.4)
+    border-radius: 3px

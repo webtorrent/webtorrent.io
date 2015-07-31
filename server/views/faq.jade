@@ -1,0 +1,29 @@
+extends layout
+
+block body
+  article
+    :markdown
+      # Frequently Asked Questions
+
+      ## What is WebTorrent?
+
+      Imagine a peer-to-peer YouTube where viewers help to host the site's content. By
+      making BitTorrent easier to use, we can get more people to participate and take the
+      first steps to re-decentralizing the Internet.
+
+      ## How does WebTorrent work?
+      ## What is WebRTC?
+      ## What can I build on top of WebTorrent?
+      ## Who is using WebTorrent today?
+      ## Who built WebTorrent?
+
+      ## Why does browser downloading not work? I see no peers!
+
+      It does work! But you can't just use any random magnet uri or `.torrent` file.
+      The torrent must be seeded by a webrtc-capable client,
+      i.e. [webtorrent-hybrid](https://github.com/feross/webtorrent-hybrid) or
+      [instant.io](https://instant.io/).
+
+      In the browser, WebTorrent can only download torrents that are explicitly seeded to
+      web peers via a webrtc-capable client. Desktop torrent clients need to support
+      WebRTC to connect to web browsers.

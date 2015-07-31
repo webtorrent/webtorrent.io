@@ -3,5 +3,5 @@ node_modules
 secret/*
 !secret/index-sample.js
 
-static/main.css
+static/style.css
 static/bundle.js

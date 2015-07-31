@@ -1,34 +1,30 @@
-/* global $ */
+var fs = require('fs')
+var path = require('path')
+var TorrentGraph = require('../lib/torrent-graph')
+var WebTorrent = require('webtorrent')
+
+var WANDERERS_TORRENT = fs.readFileSync(path.join(__dirname, '../wanderers.torrent'))
+
 module.exports = function () {
-  $(document).ready(function () {
-    setTimeout(function () {
-      $('#pre').fadeOut(600)
-    }, 300)
+  var t = window.t = new TorrentGraph('#svgWrap')
+  t.add({ id: 'You', me: true })
 
-    setTimeout(function () {
-      $('#particles').fadeIn(400)
-    }, 1500)
+  var client = new WebTorrent()
+  client.add(WANDERERS_TORRENT, onTorrent)
 
-    setTimeout(function () {
-      $('#fp-nav').fadeIn(300)
-    }, 1500)
-
-    setTimeout(function () {
-      $('#s1').fadeIn(600)
-    }, 2000)
-
-    setTimeout(function () {
-      $('#s2').fadeIn(400)
-    }, 1500)
-
-    $('#content').fullpage({
-      // Navigation
-      menu: false,
-      navigation: true,
-      anchors: ['section1', 'section2'],
-      scrollingSpeed: 700,
-      animateAnchor: true,
-      recordHistory: false
+  function onTorrent (torrent) {
+    torrent.files[0].appendTo('#videoWrap', function (err, elem) {
+      if (err) return window.alert(err)
     })
-  })
+
+    torrent.on('wire', function (wire) {
+      var id = wire.peerId.toString()
+      t.add({ id: id, ip: wire.remoteAddress || 'Unknown' })
+      t.connect('You', id)
+      wire.on('close', function () {
+        t.disconnect('You', id)
+        t.remove(id)
+      })
+    })
+  }
 }

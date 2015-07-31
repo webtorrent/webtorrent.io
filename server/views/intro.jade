@@ -1,0 +1,35 @@
+extends layout
+
+block body
+  article
+    :markdown
+      # Get Started with WebTorrent
+
+      ## Install
+
+      ```bash
+      npm install webtorrent
+      ```
+
+      ## Quick Example
+
+      ```js
+      var client = new WebTorrent()
+
+      var torrentId = 'magnet:?xt=urn:btih:976674fc52bb8e61499e701033a5a4759b5f0d60'
+
+      client.add(torrentId, function (torrent) {
+        var file = torrent.files[0]
+
+        // Display the file by adding it to the DOM. Supports video, audio, images, etc.
+        file.appendTo('body')
+      })
+      ```
+
+      ## Full tutorial coming soon!
+
+      For now, check out the [API Documentation](/docs).
+
+    //- ## Instant.io
+
+    //- ## Command line

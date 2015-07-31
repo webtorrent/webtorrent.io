@@ -1,9 +1,11 @@
 var compress = require('compression')
-var debug = require('debug')('webtorrent-website:web')
+var debug = require('debug')('webtorrent-ww:web')
 var downgrade = require('downgrade')
 var express = require('express')
+var highlight = require('highlight.js')
 var http = require('http')
 var jade = require('jade')
+var marked = require('marked')
 var path = require('path')
 var unlimited = require('unlimited')
 var url = require('url')
@@ -14,6 +16,14 @@ unlimited()
 
 var app = express()
 var server = http.createServer(app)
+
+jade.filters.markdown = marked
+
+marked.setOptions({
+  highlight: function (code, lang) {
+    return '<div class="hljs">' + highlight.highlight(lang, code).value + '</div>'
+  }
+})
 
 // Templating
 app.set('views', __dirname + '/views')
@@ -70,6 +80,18 @@ app.use(express.static(__dirname + '/../static'))
 
 app.get('/', function (req, res) {
   res.render('home', { rawTitle: 'WebTorrent - Streaming browser torrent client' })
+})
+
+app.get('/intro', function (req, res) {
+  res.render('intro', { rawTitle: 'WebTorrent Tutorial - Get Started' })
+})
+
+app.get('/docs', function (req, res) {
+  res.render('docs', { rawTitle: 'WebTorrent API Documentation' })
+})
+
+app.get('/faq', function (req, res) {
+  res.render('faq', { rawTitle: 'WebTorrent FAQ' })
 })
 
 app.get('/create', function (req, res) {

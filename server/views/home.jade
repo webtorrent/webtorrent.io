@@ -1,19 +1,31 @@
 extends layout
 
 block body
-  div(id='pre', style='width:100%; background-color:#1F6C83; height:100%;').
-      <div class='fl spinner1'>
-          <div class='double-bounce1'></div>
-          <div class='double-bounce2'></div>
-      </div>
-  div#content.
-      <div id='particles' class='section active' data-anchor='section1'>
-          <div class='intro' id='s1'>
-              <h1 id='maintitle'>WebTorrent</h1>
-              <p>Torrent in your browser.</p>
-              <!--a href='#s2' class='btn' style='border-radius: 6px;'>About Webtorrent</a-->
-              <a href='https://github.com/feross/webtorrent' style='border-radius: 6px;' class='btn'>View on Github</a>
-          </div>
-      </div>
-      <!-- <div class='section' data-anchor='section2' id='s2'> -->
-      </div>
+  #hero
+    #svgWrap
+    #videoWrap
+  article
+    :markdown
+      # BitTorrent over WebRTC
+
+      **WebTorrent** is a streaming torrent client for the **browser**. YEP, THAT'S RIGHT. THE BROWSER.
+
+      It's written completely in JavaScript – the language of the web – and uses
+      **WebRTC** for true peer-to-peer transport. No browser plugins, extensions, or
+      installation is required.
+
+      ## Why?
+
+      Imagine a peer-to-peer YouTube where viewers help to host the site's content. By making BitTorrent easier to use, we can get more people to participate and take the first steps to re-decentralizing the Internet.
+
+      ## How do I try it out?
+
+      You can see WebTorrent in action at [Instant.io](https://instant.io).
+      Send a file to a friend using BitTorrent!
+
+      # Learn more about WebTorrent
+
+    div.featuredButtons
+      a.btn.large(href='/intro') Get Started
+      a.btn.large(href='/docs') Docs
+      a.btn.large(href='/faq') FAQ

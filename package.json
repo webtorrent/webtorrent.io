@@ -9,21 +9,32 @@
   "bugs": {
     "url": "https://github.com/feross/webtorrent-www/issues"
   },
+  "browserify": {
+    "transform": [
+      "brfs"
+    ]
+  },
   "dependencies": {
-    "bittorrent-tracker": "^5.2.1",
+    "bittorrent-tracker": "^6.0.2",
+    "brfs": "^1.4.0",
     "compression": "^1.0.11",
     "create-torrent": "^3.9.1",
+    "d3": "^3.5.6",
+    "debounce": "^1.0.0",
     "debug": "^2.1.2",
     "domready": "^1.0.6",
     "downgrade": "^1.0.0",
     "drag-drop": "^2.0.0",
     "express": "^4.8.8",
     "gitter-irc-bot": "^1.0.0",
+    "highlight.js": "^8.7.0",
     "http-proxy": "^1.9.0",
     "jade": "^1.6.0",
+    "marked": "^0.3.5",
     "parse-torrent": "^5.0.1",
     "run-auto": "^1.0.0",
-    "unlimited": "^1.1.0"
+    "unlimited": "^1.1.0",
+    "webtorrent": "^0.55.0"
   },
   "devDependencies": {
     "browserify": "^11.0.0",
@@ -37,14 +48,14 @@
   },
   "homepage": "http://webtorrent.io",
   "keywords": [
-    "torrent",
     "bittorrent",
     "bittorrent client",
-    "streaming",
     "download",
-    "webtorrent",
     "mad science",
-    "webrtc"
+    "streaming",
+    "torrent",
+    "webrtc",
+    "webtorrent"
   ],
   "license": "MIT",
   "main": "index.js",
@@ -55,21 +66,14 @@
   },
   "scripts": {
     "build": "npm run build-css && npm run build-js",
-    "build-css": "stylus -u nib css/main.styl -o static/ -c",
+    "build-css": "stylus -u nib --include-css client/style.styl -o static/ -c",
     "build-js": "browserify client | uglifyjs -m > static/bundle.js",
     "secret-download": "rsync -a -O -v --delete -e \"ssh -p 44444\" feross@webtorrent.io:\"/home/feross/www/webtorrent.io/secret/\" secret/",
     "secret-upload": "rsync -a -O -v --delete -e \"ssh -p 44444\" secret/ feross@webtorrent.io:/home/feross/www/webtorrent.io/secret/",
     "start": "node server",
     "test": "standard",
     "watch": "npm run watch-css & npm run watch-js & DEBUG=webtorrent*,bittorrent* nodemon server",
-    "watch-css": "stylus -u nib css/main.styl -o static/ -w",
+    "watch-css": "stylus -u nib --include-css client/style.styl -o static/ -w",
     "watch-js": "watchify client -o static/bundle.js -dv"
-  },
-  "standard": {
-    "ignore": [
-      "static/jquery.fullPage.js",
-      "jquery.particleground.js",
-      "static/psconfig.js"
-    ]
   }
 }
