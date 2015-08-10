@@ -9,12 +9,14 @@ GRAY = #BFC3C8
 LIGHT_GRAY = rgba(0,0,0,0.06)
 
 GREEN = #35B44F
+DARK_GREEN = darken(#35B44F, 60%)
 LIGHT_GREEN = lighten(GREEN, 20%)
 
 BLUE = #2A3749
 
 PAGE_WIDTH = 1150px
 ARTICLE_WIDTH = 840px
+HERO_HEIGHT = 420px
 
 ellipsis()
   overflow: hidden
@@ -201,8 +203,12 @@ article
 
 #hero
   background-color: BLUE
-  height: 400px
+  height: HERO_HEIGHT
   margin: auto
+
+  .is-seed &
+    background-color: DARK_GREEN
+    transition: 0.5s 0.5s background-color ease-in-out
 
 #svgWrap
   position: absolute
@@ -222,7 +228,7 @@ article
 
 #videoWrap
   width: PAGE_WIDTH
-  height: 400px
+  height: HERO_HEIGHT
   margin: 0 auto
 
   h3
@@ -237,3 +243,48 @@ article
     float: right
     border: rgba(#FFF, 0.4)
     border-radius: 3px
+
+#progressBar
+  height: 5px
+  width: 0%
+  background-color: GREEN
+  transition: width 0.4s ease-in-out
+  position: absolute
+
+#statusTop, #statusBottom
+  position: absolute
+  width: 100%
+  font-size: 17px
+  text-align: center
+  color: #FFF
+  z-index: 10
+
+  code
+    font-size: 90%
+    font-weight: 700
+    margin-left: 3px
+    margin-right: 3px
+    border-bottom: 1px dashed rgba(#FFF, 0.3)
+
+#statusTop
+  margin-top: 22px
+
+#statusBottom
+  margin-top: 376px
+
+a#torrentLink:link, a#torrentLink:visited
+  text-decoration: none
+  border-bottom: 1px solid GREEN
+
+a#torrentLink:hover, a#torrentLink:active
+  color: LIGHT_GREEN
+
+.show-seed
+  display: none
+
+body.is-seed .show-seed
+  display: inline
+
+body.is-seed .show-leech
+  display: none
+

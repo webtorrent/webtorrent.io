@@ -2,8 +2,24 @@ extends layout
 
 block body
   #hero
+    #progressBar
+    #statusTop
+      span.show-leech #{ 'Downloading ' }
+      span.show-seed #{ 'Seeding ' }
+      code: a#torrentLink(href='http://localhost:9000/torrents/wanderers.torrent') wanderers.torrent
+      span.show-leech #{ ' from ' }
+      span.show-seed #{ ' to ' }
+      code#numPeers 0 peers
+      | #{ '. ' }
+    #statusBottom
+      code#downloaded
+      | #{ ' of '}
+      code#total
+      | #{ ' — '}
+      span#remaining
     #svgWrap
     #videoWrap
+
   article
     :markdown
       # BitTorrent over WebRTC

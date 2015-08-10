@@ -1,30 +1,72 @@
+var debounce = require('debounce')
 var fs = require('fs')
+var moment = require('moment')
 var path = require('path')
+var prettyBytes = require('pretty-bytes')
 var TorrentGraph = require('../lib/torrent-graph')
 var WebTorrent = require('webtorrent')
 
-var WANDERERS_TORRENT = fs.readFileSync(path.join(__dirname, '../wanderers.torrent'))
+var WANDERERS_TORRENT = fs.readFileSync(
+  path.join(__dirname, '../../static/torrents/wanderers.torrent')
+)
 
 module.exports = function () {
-  var t = window.t = new TorrentGraph('#svgWrap')
-  t.add({ id: 'You', me: true })
-
   var client = window.client = new WebTorrent()
-  client.add(WANDERERS_TORRENT, onTorrent)
+  var graph = window.graph = new TorrentGraph('#svgWrap')
 
-  function onTorrent (torrent) {
-    torrent.files[0].appendTo('#videoWrap', function (err, elem) {
-      if (err) return window.alert(err)
-    })
+  var torrent = client.add(WANDERERS_TORRENT, onTorrent)
+  graph.add({ id: 'You', me: true })
 
-    torrent.on('wire', function (wire) {
-      var id = wire.peerId.toString()
-      t.add({ id: id, ip: wire.remoteAddress || 'Unknown' })
-      t.connect('You', id)
-      wire.on('close', function () {
-        t.disconnect('You', id)
-        t.remove(id)
-      })
+  var $body = document.body
+  var $progressBar = document.querySelector('#progressBar')
+  var $numPeers = document.querySelector('#numPeers')
+  var $downloaded = document.querySelector('#downloaded')
+  var $total = document.querySelector('#total')
+  var $remaining = document.querySelector('#remaining')
+
+  function onTorrent () {
+    torrent.files[0].appendTo('#videoWrap', onError)
+    torrent.on('wire', onWire)
+    torrent.on('download', debounce(onProgress, 500))
+    torrent.on('done', onDone)
+    onProgress()
+  }
+
+  function onWire (wire) {
+    var id = wire.peerId.toString()
+    console.log(id)
+    graph.add({ id: id, ip: wire.remoteAddress || 'Unknown' })
+    graph.connect('You', id)
+    wire.once('close', function () {
+      graph.disconnect('You', id)
+      graph.remove(id)
     })
+  }
+
+  function onProgress () {
+    var percent = Math.round(torrent.progress * 100 * 100) / 100
+    $progressBar.style.width = percent + '%'
+    $numPeers.innerHTML = torrent.numPeers + ' peers'
+
+    $downloaded.innerHTML = prettyBytes(torrent.downloaded)
+    $total.innerHTML = prettyBytes(torrent.length)
+
+    var remaining
+    if (torrent.storage.done) {
+      remaining = 'Done.'
+    } else {
+      remaining = moment.duration(torrent.timeRemaining / 1000, 'seconds').humanize()
+      remaining = remaining[0].toUpperCase() + remaining.substring(1) + ' remaining.'
+    }
+    $remaining.innerHTML = remaining
+  }
+
+  function onDone () {
+    $body.className += ' is-seed'
+    onProgress()
+  }
+
+  function onError (err) {
+    if (err) return window.alert(err)
   }
 }
