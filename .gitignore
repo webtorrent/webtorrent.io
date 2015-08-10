@@ -3,5 +3,6 @@ node_modules
 secret/*
 !secret/index-sample.js
 
-static/style.css
 static/bundle.js
+static/style.css
+static/torrents/*
