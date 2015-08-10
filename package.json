@@ -73,6 +73,8 @@
     "secret-download": "rsync -a -O -v --delete -e \"ssh -p 44444\" feross@webtorrent.io:\"/home/feross/www/webtorrent.io/secret/\" secret/",
     "secret-upload": "rsync -a -O -v --delete -e \"ssh -p 44444\" secret/ feross@webtorrent.io:/home/feross/www/webtorrent.io/secret/",
     "start": "node server",
+    "torrents-download": "rsync -a -O -v --delete -e \"ssh -p 44444\" feross@webtorrent.io:\"/home/feross/www/webtorrent.io/static/torrents/\" static/torrents/",
+    "torrents-upload": "rsync -a -O -v --delete -e \"ssh -p 44444\" static/torrents/ feross@webtorrent.io:/home/feross/www/webtorrent.io/static/torrents/",
     "test": "standard",
     "watch": "npm run watch-css & npm run watch-js & DEBUG=webtorrent*,bittorrent* nodemon server",
     "watch-css": "stylus -u nib --include-css client/style.styl -o static/ -w",

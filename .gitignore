@@ -5,4 +5,6 @@ secret/*
 
 static/bundle.js
 static/style.css
+
 static/torrents/*
+!static/torrents/README.md
