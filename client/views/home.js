@@ -9,7 +9,7 @@ module.exports = function () {
   var t = window.t = new TorrentGraph('#svgWrap')
   t.add({ id: 'You', me: true })
 
-  var client = new WebTorrent()
+  var client = window.client = new WebTorrent()
   client.add(WANDERERS_TORRENT, onTorrent)
 
   function onTorrent (torrent) {
