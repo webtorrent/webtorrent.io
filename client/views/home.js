@@ -1,7 +1,6 @@
 /* global $ */
 module.exports = function () {
   $(document).ready(function () {
-
     setTimeout(function () {
       $('#pre').fadeOut(600)
     }, 300)
