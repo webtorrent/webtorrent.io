@@ -21,7 +21,10 @@ jade.filters.markdown = marked
 
 marked.setOptions({
   highlight: function (code, lang) {
-    return '<div class="hljs">' + highlight.highlight(lang, code).value + '</div>'
+    var h = lang
+      ? highlight.highlight(lang, code)
+      : highlight.highlightAuto(code)
+    return '<div class="hljs">' + h.value + '</div>'
   }
 })
 

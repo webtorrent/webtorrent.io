@@ -284,7 +284,7 @@ block body
       })
       ```
 
-      ### `file.appendTo(rootElem, function callback (err, elem) {})`
+      ### `file.appendTo(rootElem, [function callback (err, elem) {}])`
 
       Show the file in a the browser by appending it to the DOM. This is a powerful function
       that handles many file types like video (.mp4, .webm, .m4v, etc.), audio (.m4a, .mp3,
@@ -300,9 +300,8 @@ block body
       will be shown in. A new DOM node will be created for the content and appended to
       `rootElem`.
 
-      `callback` will be called once the file is visible to the user. `callback` must be
-      specified, and will be called with a an `Error` (or `null`) and the new DOM node that is
-      displaying the content.
+      `callback` will be called once the file is visible to the user. `callback` is called
+      with an `Error` (or `null`) and the new DOM node that is displaying the content.
 
       ```js
       file.appendTo('#containerElement', function (err, elem) {

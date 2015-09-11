@@ -34,13 +34,14 @@ module.exports = function () {
 
   function onWire (wire) {
     var id = wire.peerId.toString()
-    console.log(id)
     graph.add({ id: id, ip: wire.remoteAddress || 'Unknown' })
     graph.connect('You', id)
     wire.once('close', function () {
       graph.disconnect('You', id)
       graph.remove(id)
+      onProgress()
     })
+    onProgress()
   }
 
   function onProgress () {

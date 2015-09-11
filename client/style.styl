@@ -6,7 +6,7 @@ WHITE = #E1FAFA
 
 DARK_GRAY = lighten(#252929, 10%)
 GRAY = #BFC3C8
-LIGHT_GRAY = rgba(0,0,0,0.06)
+LIGHT_GRAY = rgb(224, 225, 226)
 
 GREEN = #35B44F
 DARK_GREEN = darken(#35B44F, 60%)
@@ -49,7 +49,7 @@ body
   font-family: 'Source Sans Pro', sans-serif
   color: DARK_GRAY
   background-color: #f4f5f6
-  font-size: 16px
+  font-size: 15px
 
 a:link, a:visited
   color: darken(GREEN, 10%)
@@ -67,11 +67,11 @@ h1
 h2
   font-size: 2em
 h3
-  font-size: 1.7em
+  font-size: 1.6em
 h4
-  font-size: 1.4em
+  font-size: 1.3em
 h5
-  font-size: 1.2em
+  font-size: 1.1em
 
 p, ul, ol
   font-size: 1.25em
@@ -91,6 +91,39 @@ code
   font-size: 16px
   padding: 1em
   border-radius: 3px
+  margin-bottom: -15px
+
+iframe, img
+  max-width: 100%
+
+blockquote
+  border-left: 5px solid rgba(GREEN, 70%)
+  padding: 0.5em
+  padding-left: 3.25em
+  margin-left: 1.5em
+  font-style: italic
+
+  p:first-child
+    margin-top: 0.5em
+
+  p:last-child
+    margin-bottom: 0.5em
+
+  &:before
+    content: '\201C'
+    font-style: normal
+    font-size: 100px
+    position: absolute
+    color: rgba(GRAY, 50%)
+    z-index: -99
+    margin-left: -0.45em
+    margin-top: -0.3em
+
+  cite
+    display: block
+    text-align: right
+    margin-top: -10px
+    margin-bottom: -10px
 
 //
 // BUTTON
@@ -129,7 +162,7 @@ code
   border-bottom: 1px solid rgba(#000, 0.1)
 
 header
-  height: 70px
+  height: 65px
   width: PAGE_WIDTH
   margin: 0 auto
 
@@ -166,21 +199,20 @@ nav
 footer
   width: PAGE_WIDTH
   margin: 4em auto 0 auto
-  padding: 1em 0 4em 0
+  padding: 1em 4em 4em 4em
+  font-family: 'Asap', sans-serif
   clearfix()
 
   section
-    width: 200px
+    width: 25%
     float: left
     color: #FFF
 
-  h3:after
-    content: ''
+  a:link, a:visited, div
     display: block
-    width: 100px
-    height: 5px
-    background: GRAY
-    margin: 5px auto
+    color: white
+    font-size: 20px
+    margin: 5px 0
 
 article
   width: ARTICLE_WIDTH
@@ -243,6 +275,7 @@ article
     float: right
     border: rgba(#FFF, 0.4)
     border-radius: 3px
+    max-height: 294px
 
 #progressBar
   height: 5px
