@@ -1,4 +1,5 @@
 var compress = require('compression')
+var cors = require('cors')
 var debug = require('debug')('webtorrent-ww:web')
 var downgrade = require('downgrade')
 var express = require('express')
@@ -78,6 +79,14 @@ app.use(function (req, res, next) {
 
   next()
 })
+
+app.use(cors({
+  origin: function (origin, cb) {
+    var allowed = /https?:\/\/localhost(:|$)/.test(origin) ||
+      /https?:\/\/[^.\/]+\.localtunnel\.me$/.test(origin)
+    cb(null, allowed)
+  }
+}))
 
 app.use(express.static(__dirname + '/../static'))
 
