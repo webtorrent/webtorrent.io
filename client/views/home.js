@@ -53,7 +53,7 @@ module.exports = function () {
     $total.innerHTML = prettyBytes(torrent.length)
 
     var remaining
-    if (torrent.storage.done) {
+    if (torrent.done) {
       remaining = 'Done.'
     } else {
       remaining = moment.duration(torrent.timeRemaining / 1000, 'seconds').humanize()
