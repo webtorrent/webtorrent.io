@@ -47,7 +47,7 @@ module.exports = function () {
   function onProgress () {
     var percent = Math.round(torrent.progress * 100 * 100) / 100
     $progressBar.style.width = percent + '%'
-    $numPeers.innerHTML = torrent.numPeers + ' peers'
+    $numPeers.innerHTML = torrent.numPeers + (torrent.numPeers === 1 ? ' peer' : ' peers')
 
     $downloaded.innerHTML = prettyBytes(torrent.downloaded)
     $total.innerHTML = prettyBytes(torrent.length)
