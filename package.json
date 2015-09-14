@@ -46,7 +46,6 @@
     "pre-commit": "^1.0.10",
     "standard": "^5.0.0",
     "stylus": "^0.52.0",
-    "uglify-js": "^2.4.17",
     "watchify": "^3.1.2"
   },
   "homepage": "http://webtorrent.io",
@@ -70,7 +69,6 @@
   "scripts": {
     "build": "npm run build-css && npm run build-js",
     "build-css": "stylus -u nib --include-css client/style.styl -o static/ -c",
-    "build-js": "browserify client | uglifyjs -m > static/bundle.js",
     "secret-download": "rsync -a -O -v --delete -e \"ssh -p 44444\" feross@webtorrent.io:\"/home/feross/www/webtorrent.io/secret/\" secret/",
     "secret-upload": "rsync -a -O -v --delete -e \"ssh -p 44444\" secret/ feross@webtorrent.io:/home/feross/www/webtorrent.io/secret/",
     "start": "node server",
