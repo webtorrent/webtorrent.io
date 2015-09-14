@@ -12,6 +12,7 @@ var fs = require('fs')
 var http = require('http')
 var httpProxy = require('http-proxy')
 var https = require('https')
+var path = require('path')
 var unlimited = require('unlimited')
 
 unlimited()
@@ -20,11 +21,11 @@ var proxy = httpProxy.createProxyServer({
   xfwd: true
 })
 
-var httpServer = http.createServer()
-var httpsServer = https.createServer({
-  key: fs.readFileSync(__dirname + '/../secret/webtorrent.io.key'),
-  cert: fs.readFileSync(__dirname + '/../secret/webtorrent.io.chained.crt')
-})
+var secretKey, secretCert
+try {
+  secretKey = fs.readFileSync(path.join(__dirname, '../secret/webtorrent.io.key'))
+  secretCert = fs.readFileSync(path.join(__dirname, '../secret/webtorrent.io.chained.crt'))
+} catch (err) {}
 
 function onRequest (req, res) {
   if (req.headers.host === 'tracker.webtorrent.io' ||
@@ -42,10 +43,14 @@ function onUpgrade (req, socket, head) {
   proxy.ws(req, socket, head, { target: 'ws://127.0.0.1:' + config.ports.tracker.http })
 }
 
-;[ httpServer, httpsServer ].forEach(function (server) {
-  server.on('request', onRequest)
-  server.on('upgrade', onUpgrade)
-})
+var httpServer = http.createServer(onRequest)
+httpServer.on('upgrade', onUpgrade)
+
+var httpsServer
+if (secretKey && secretCert) {
+  httpsServer = https.createServer({ key: secretKey, cert: secretCert }, onRequest)
+  httpsServer.on('upgrade', onUpgrade)
+}
 
 var web, tracker
 

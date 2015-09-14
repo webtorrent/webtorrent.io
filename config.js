@@ -1,4 +1,5 @@
-var secret = require('./secret')
+var secret
+try { secret = require('./secret') } catch (err) {}
 
 exports.isProd = process.env.NODE_ENV === 'production'
 exports.host = process.env.NODE_ENV === 'production' && '23.92.26.245'
@@ -24,5 +25,5 @@ exports.gitterBot = {
   ircNick: 'irc-gitter-bot',
   ircServer: 'irc.freenode.net',
   gitterRoom: 'feross/webtorrent',
-  gitterApiKey: secret.gitterApiKey
+  gitterApiKey: secret && secret.gitterApiKey
 }
