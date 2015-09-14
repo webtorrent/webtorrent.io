@@ -69,12 +69,13 @@
   "scripts": {
     "build": "npm run build-css && npm run build-js",
     "build-css": "stylus -u nib --include-css client/style.styl -o static/ -c",
-    "secret-download": "rsync -a -O -v --delete -e \"ssh -p 44444\" feross@webtorrent.io:\"/home/feross/www/webtorrent.io/secret/\" secret/",
-    "secret-upload": "rsync -a -O -v --delete -e \"ssh -p 44444\" secret/ feross@webtorrent.io:/home/feross/www/webtorrent.io/secret/",
+    "build-js": "browserify client > static/bundle.js",
+    "download-secret": "rsync -a -O -v --delete -e \"ssh -p 44444\" feross@webtorrent.io:\"/home/feross/www/webtorrent.io/secret/\" secret/",
+    "download-static": "rsync -a -O -v --delete -e \"ssh -p 44444\" feross@webtorrent.io:\"/home/feross/www/webtorrent.io/static/torrents/\" static/torrents/",
     "start": "node server",
-    "torrents-download": "rsync -a -O -v --delete -e \"ssh -p 44444\" feross@webtorrent.io:\"/home/feross/www/webtorrent.io/static/torrents/\" static/torrents/",
-    "torrents-upload": "rsync -a -O -v --delete -e \"ssh -p 44444\" static/torrents/ feross@webtorrent.io:/home/feross/www/webtorrent.io/static/torrents/",
     "test": "standard",
+    "upload-secret": "rsync -a -O -v --delete -e \"ssh -p 44444\" secret/ feross@webtorrent.io:/home/feross/www/webtorrent.io/secret/",
+    "upload-static": "rsync -a -O -v --delete -e \"ssh -p 44444\" static/torrents/ feross@webtorrent.io:/home/feross/www/webtorrent.io/static/torrents/",
     "watch": "npm run watch-css & npm run watch-js & DEBUG=webtorrent*,bittorrent* nodemon server",
     "watch-css": "stylus -u nib --include-css client/style.styl -o static/ -w",
     "watch-js": "watchify client -o static/bundle.js -dv"
