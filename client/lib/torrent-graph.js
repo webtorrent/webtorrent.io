@@ -208,8 +208,8 @@ function TorrentGraph (root) {
       .map(function (child) {
         return node[0][child]
       }).filter(function (child) {
-      return child
-    })
+        return child
+      })
   }
 
   function parentNodes (d) {
@@ -219,8 +219,8 @@ function TorrentGraph (root) {
       .map(function (parent) {
         return node[0][parent]
       }).filter(function (parent) {
-      return parent
-    })
+        return parent
+      })
   }
 
   function connected (d, o) {
