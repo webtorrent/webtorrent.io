@@ -1,5 +1,5 @@
 var config = require('../config')
-var debug = require('debug')('webtorrent-ww:tracker')
+var debug = require('debug')('webtorrent-www:tracker')
 var downgrade = require('downgrade')
 var unlimited = require('unlimited')
 
