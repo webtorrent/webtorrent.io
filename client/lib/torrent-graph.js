@@ -327,4 +327,3 @@ function TorrentGraph (root) {
     choke: choke
   }
 }
-
