@@ -25,7 +25,7 @@ module.exports = function () {
   var $remaining = document.querySelector('#remaining')
 
   function onTorrent () {
-    torrent.files[0].appendTo('#videoWrap', onError)
+    torrent.files[0].appendTo('#videoWrap .video', onError)
     torrent.on('wire', onWire)
     torrent.on('download', debounce(onProgress, 500))
     torrent.on('done', onDone)
