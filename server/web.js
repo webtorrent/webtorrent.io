@@ -1,6 +1,6 @@
 var compress = require('compression')
 var cors = require('cors')
-var debug = require('debug')('webtorrent-ww:web')
+var debug = require('debug')('webtorrent-www:web')
 var downgrade = require('downgrade')
 var express = require('express')
 var highlight = require('highlight.js')
