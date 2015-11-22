@@ -21,6 +21,16 @@ var proxy = httpProxy.createProxyServer({
   xfwd: true
 })
 
+proxy.on('error', function (err, req, res) {
+  onError('[proxy error] ' + req.method + ' ' + req.url + ' ' + err.message)
+
+  if (!res.headersSent) {
+    res.writeHead(500, { 'content-type': 'application/json' })
+  }
+
+  res.end(JSON.stringify({ err: err.message }))
+})
+
 var secretKey, secretCert
 try {
   secretKey = fs.readFileSync(path.join(__dirname, '../secret/webtorrent.io.key'))
