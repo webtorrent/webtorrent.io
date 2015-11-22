@@ -6,15 +6,15 @@ var prettyBytes = require('pretty-bytes')
 var TorrentGraph = require('../lib/torrent-graph')
 var WebTorrent = require('webtorrent')
 
-var WANDERERS_TORRENT = fs.readFileSync(
-  path.join(__dirname, '../../static/torrents/wanderers.torrent')
+var TORRENT = fs.readFileSync(
+  path.join(__dirname, '../../static/torrents/sintel.torrent')
 )
 
 module.exports = function () {
   var client = window.client = new WebTorrent()
   var graph = window.graph = new TorrentGraph('#svgWrap')
 
-  var torrent = client.add(WANDERERS_TORRENT, onTorrent)
+  var torrent = client.add(TORRENT, onTorrent)
   graph.add({ id: 'You', me: true })
 
   var $body = document.body
