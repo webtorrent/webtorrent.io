@@ -22,7 +22,7 @@
     "create-torrent": "^3.9.1",
     "d3": "^3.5.6",
     "debounce": "^1.0.0",
-    "debug": "^2.1.2",
+    "debug": "^2.2.0",
     "domready": "^1.0.6",
     "downgrade": "^1.0.0",
     "drag-drop": "^2.0.0",
@@ -37,7 +37,8 @@
     "pretty-bytes": "^2.0.1",
     "run-auto": "^1.0.0",
     "unlimited": "^1.1.0",
-    "webtorrent": "0.x"
+    "webtorrent": "0.x",
+    "xhr": "^2.2.0"
   },
   "devDependencies": {
     "browserify": "^12.0.1",

@@ -1,21 +1,34 @@
 var debounce = require('debounce')
+var debug = require('debug')('webtorrent-www:home')
 var fs = require('fs')
 var moment = require('moment')
 var path = require('path')
 var prettyBytes = require('pretty-bytes')
 var TorrentGraph = require('../lib/torrent-graph')
 var WebTorrent = require('webtorrent')
+var xhr = require('xhr')
 
 var TORRENT = fs.readFileSync(
   path.join(__dirname, '../../static/torrents/sintel.torrent')
 )
 
 module.exports = function () {
-  var client = window.client = new WebTorrent()
   var graph = window.graph = new TorrentGraph('#svgWrap')
 
-  var torrent = client.add(TORRENT, onTorrent)
-  graph.add({ id: 'You', me: true })
+  getRtcConfig('https://instant.io/rtcConfig', function (err, rtcConfig) {
+    if (err) onError(err)
+    createClient(rtcConfig)
+  })
+
+  var torrent
+  function createClient (rtcConfig) {
+    var client = window.client = new WebTorrent({ rtcConfig: rtcConfig })
+    client.on('warning', onWarning)
+    client.on('error', onError)
+
+    torrent = client.add(TORRENT, onTorrent)
+    graph.add({ id: 'You', me: true })
+  }
 
   var $body = document.body
   var $progressBar = document.querySelector('#progressBar')
@@ -68,6 +81,32 @@ module.exports = function () {
   }
 
   function onError (err) {
-    if (err) return window.alert(err)
+    if (err) {
+      window.alert(err)
+      console.error(err)
+    }
+  }
+
+  function onWarning (err) {
+    if (err) {
+      console.error(err)
+    }
+  }
+
+  function getRtcConfig (url, cb) {
+    xhr(url, function (err, res) {
+      if (err || res.statusCode !== 200) {
+        cb(new Error('Could not get WebRTC config from server. Using default (without TURN).'))
+      } else {
+        var rtcConfig
+        try {
+          rtcConfig = JSON.parse(res.body)
+        } catch (err) {
+          return cb(new Error('Got invalid WebRTC config from server: ' + res.body))
+        }
+        debug('got rtc config: %o', rtcConfig)
+        cb(null, rtcConfig)
+      }
+    })
   }
 }
