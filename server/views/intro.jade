@@ -46,8 +46,11 @@ block body
       var torrentId = 'magnet:?xt=urn:btih:976674fc52bb8e61499e701033a5a4759b5f0d60'
 
       client.add(torrentId, function (torrent) {
+        // Torrents can contain many files. Let's use the first.
         var file = torrent.files[0]
-        file.appendTo('body') // append the file to the DOM
+
+        // Display the file by adding it to the DOM. Supports video, audio, image, etc. files
+        file.appendTo('body')
       })
       ```
 
@@ -88,6 +91,7 @@ block body
       For now, check out the [API Documentation](/docs) and [FAQ](/faq) which are very
       detailed.
 
+      [append-to]: https://github.com/feross/webtorrent/blob/master/lib/append-to.js#L6-L14
       [drag-drop]: https://npmjs.com/package/drag-drop
 
     //- ## Instant.io
