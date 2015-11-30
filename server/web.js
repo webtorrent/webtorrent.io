@@ -114,6 +114,10 @@ app.get('/create', function (req, res) {
   res.render('create', { title: 'Create a .torrent file' })
 })
 
+app.get('/logs', function (req, res) {
+  res.redirect(301, 'https://botbot.me/freenode/webtorrent/')
+})
+
 app.get('*', function (req, res) {
   res.status(404).render('error', {
     title: '404 Not Found',
