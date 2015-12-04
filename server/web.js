@@ -84,6 +84,7 @@ app.use(function (req, res, next) {
   next()
 })
 
+app.options('/torrents/*', cors()) // enable CORS preflight
 app.get('/torrents/*', cors(), express.static(__dirname + '/../static'))
 
 app.use(express.static(__dirname + '/../static'))
