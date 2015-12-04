@@ -84,7 +84,12 @@ app.use(function (req, res, next) {
   next()
 })
 
-app.options('/torrents/*', cors()) // enable CORS preflight
+/**
+ * Enable CORS preflight, and cache it for 1 hour. This is necessary to support
+ * requests from another domain with the "Range" HTTP header.
+ */
+app.options('/torrents/*', cors({ maxAge: 60 * 60 }))
+
 app.get('/torrents/*', cors(), express.static(__dirname + '/../static'))
 
 app.use(express.static(__dirname + '/../static'))
