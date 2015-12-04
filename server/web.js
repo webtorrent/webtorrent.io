@@ -84,13 +84,7 @@ app.use(function (req, res, next) {
   next()
 })
 
-app.use(cors({
-  origin: function (origin, cb) {
-    var allowed = /https?:\/\/localhost(:|$)/.test(origin) ||
-      /https?:\/\/[^.\/]+\.localtunnel\.me$/.test(origin)
-    cb(null, allowed)
-  }
-}))
+app.get('/torrents/*', cors(), express.static(__dirname + '/../static'))
 
 app.use(express.static(__dirname + '/../static'))
 
