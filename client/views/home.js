@@ -1,4 +1,3 @@
-var debounce = require('debounce')
 var debug = require('debug')('webtorrent-www:home')
 var fs = require('fs')
 var moment = require('moment')
@@ -40,7 +39,6 @@ module.exports = function () {
   function onTorrent () {
     torrent.files[0].appendTo('#videoWrap .video', onError)
     torrent.on('wire', onWire)
-    torrent.on('download', debounce(onProgress, 500))
     torrent.on('done', onDone)
     onProgress()
   }
@@ -74,10 +72,13 @@ module.exports = function () {
     }
     $remaining.innerHTML = remaining
   }
+  
+  var interval = setInterval(onProgress, 500)
 
   function onDone () {
     $body.className += ' is-seed'
     onProgress()
+    clearInterval(interval)
   }
 
   function onError (err) {
