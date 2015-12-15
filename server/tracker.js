@@ -1,9 +1,8 @@
 var config = require('../config')
 var debug = require('debug')('webtorrent-www:tracker')
 var downgrade = require('downgrade')
-var unlimited = require('unlimited')
-
 var Tracker = require('bittorrent-tracker/server')
+var unlimited = require('unlimited')
 
 unlimited()
 
@@ -12,12 +11,11 @@ var tracker = new Tracker({
   udp: true
 })
 
+// Redirect http://tracker.webtorrent.io to website homepage
 var onHttpRequest = tracker.onHttpRequest
 tracker.onHttpRequest = function (req, res, opts) {
   if (req.url === '/') {
-    res.writeHead(301, {
-      'Location': 'https://webtorrent.io'
-    })
+    res.writeHead(301, { 'Location': 'https://webtorrent.io' })
     res.end()
   } else {
     onHttpRequest.call(tracker, req, res, opts)
