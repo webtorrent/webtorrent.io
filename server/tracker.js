@@ -21,7 +21,7 @@ tracker.onHttpRequest = function (req, res, opts) {
 }
 
 tracker.on('listening', function () {
-  debug('listening on ' + tracker.ws.address().port)
+  debug('listening on %s', tracker.ws.address().port)
   downgrade()
   process.send('ready')
 })
