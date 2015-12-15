@@ -40,7 +40,7 @@ try {
 function onRequest (req, res) {
   if (req.headers.host === 'tracker.webtorrent.io' ||
       req.headers.host === 'tracker.webtorrent.io:' + config.ports.router.https) {
-    proxy.web(req, res, { target: 'http://127.0.0.1:' + config.ports.tracker.http })
+    proxy.web(req, res, { target: 'http://127.0.0.1:' + config.ports.tracker })
   } else if (req.headers.host === 'whiteboard.webtorrent.io' ||
       req.headers.host === 'whiteboard.webtorrent.io:' + config.ports.router.https) {
     proxy.web(req, res, { target: 'http://127.0.0.1:' + config.ports.whiteboard })
@@ -50,7 +50,7 @@ function onRequest (req, res) {
 }
 
 function onUpgrade (req, socket, head) {
-  proxy.ws(req, socket, head, { target: 'ws://127.0.0.1:' + config.ports.tracker.http })
+  proxy.ws(req, socket, head, { target: 'ws://127.0.0.1:' + config.ports.tracker })
 }
 
 var httpServer = http.createServer(onRequest)
