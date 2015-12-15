@@ -13,10 +13,7 @@ exports.ports = {
     https: PORT_443
   },
   web: 9002,
-  tracker: {
-    http: 9003,
-    udp: PORT_80
-  },
+  tracker: 9003,
   whiteboard: 8080 // TEMP
 }
 

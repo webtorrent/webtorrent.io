@@ -6,10 +6,8 @@ var unlimited = require('unlimited')
 
 unlimited()
 
-var tracker = new Tracker({
-  ws: true, // enable websocket (webtorrent) tracker,
-  udp: true
-})
+// Create WebTorrent-only tracker. Disable UDP and HTTP.
+var tracker = new Tracker({ ws: true, udp: false, http: false })
 
 // Redirect http://tracker.webtorrent.io to website homepage
 var onHttpRequest = tracker.onHttpRequest
@@ -23,11 +21,7 @@ tracker.onHttpRequest = function (req, res, opts) {
 }
 
 tracker.on('listening', function () {
-  var ports = {
-    http: tracker.http.address().port,
-    udp: tracker.udp.address().port
-  }
-  debug('listening on ' + JSON.stringify(ports))
+  debug('listening on ' + tracker.ws.address().port)
   downgrade()
   process.send('ready')
 })
@@ -40,4 +34,4 @@ tracker.on('error', function (err) {
   console.error(err.stack || err.message || err)
 })
 
-tracker.listen(config.ports.tracker, { http: '127.0.0.1', udp: config.host })
+tracker.listen(config.ports.tracker)
