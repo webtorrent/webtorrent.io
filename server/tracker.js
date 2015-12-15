@@ -11,7 +11,7 @@ var tracker = new Tracker({ ws: true, udp: false, http: false })
 
 // Redirect http://tracker.webtorrent.io to website homepage
 tracker.http.on('request', function (req, res, opts) {
-  if (req.url === '/') {
+  if (req.method === 'GET' && req.url === '/') {
     res.writeHead(301, { 'Location': 'https://webtorrent.io' })
     res.end()
   }
