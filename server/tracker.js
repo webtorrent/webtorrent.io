@@ -31,4 +31,4 @@ tracker.on('error', function (err) {
   console.error(err.stack || err.message || err)
 })
 
-tracker.listen(config.ports.tracker)
+tracker.listen(config.ports.tracker, '127.0.0.1')
