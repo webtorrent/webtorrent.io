@@ -134,9 +134,8 @@ app.use(function (err, req, res, next) {
   })
 })
 
-server.listen(config.ports.web, function (err) {
-  if (err) throw err
-  debug('listening on port ' + config.ports.web)
+server.listen(config.ports.web, function () {
+  debug('listening on port ' + server.address().port)
   downgrade()
   process.send('ready')
 })
