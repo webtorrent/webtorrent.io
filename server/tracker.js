@@ -14,6 +14,16 @@ tracker.http.on('request', function (req, res, opts) {
   if (req.method === 'GET' && req.url === '/') {
     res.writeHead(301, { 'Location': 'https://webtorrent.io' })
     res.end()
+  } else if (req.method === 'GET' && req.url === '/stats') {
+    var infoHashes = Object.keys(tracker.torrents)
+    var html = '<h1>' + infoHashes.length + ' torrents</h1>\n'
+
+    var list = infoHashes.map(function (infoHash) {
+      return '<a target="_blank" href="https://instant.io/#' + infoHash + '">' + infoHash + '</a>'
+    })
+    html += list.join('\n<br>')
+
+    res.end(html)
   }
 })
 
