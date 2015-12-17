@@ -72,7 +72,7 @@ module.exports = function () {
     }
     $remaining.innerHTML = remaining
   }
-  
+
   var interval = setInterval(onProgress, 500)
 
   function onDone () {
