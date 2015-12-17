@@ -45,9 +45,8 @@ block body
         nodeId: String|Buffer, // DHT protocol node ID (default=randomly generated)
         peerId: String|Buffer, // Wire protocol peer ID (default=randomly generated)
         rtcConfig: Object,     // RTCPeerConnection configuration object (default=STUN only)
-        storage: Function,     // custom storage engine, or `false` to use in-memory engine
         tracker: Boolean,      // Whether or not to enable trackers (default=true)
-        wrtc: {}               // custom webrtc implementation (in node, specify the [wrtc](https://www.npmjs.com/package/wrtc) package)
+        wrtc: Object           // Custom webrtc implementation (in node, specify the [wrtc](https://www.npmjs.com/package/wrtc) package)
       }
       ```
 
@@ -68,9 +67,9 @@ block body
 
       ```json
       {
-        announce: [],    // List of additional trackers to use (added to list in .torrent or magnet uri)
-        path: String,    // Folder where files will be downloaded (default=`/tmp/webtorrent/`)
-        verify: Boolean  // Verify previously stored data before starting (default=false)
+        announce: [],   // Torrent trackers to use (added to list in .torrent or magnet uri)
+        path: String,   // Folder to download files to (default=`/tmp/webtorrent/`)
+        store: Function // Custom chunk store (must follow [abstract-chunk-store](https://www.npmjs.com/package/abstract-chunk-store) API)
       }
       ```
 
