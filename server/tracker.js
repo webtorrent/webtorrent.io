@@ -16,11 +16,19 @@ tracker.http.on('request', function (req, res, opts) {
     res.end()
   } else if (req.method === 'GET' && req.url === '/stats') {
     var infoHashes = Object.keys(tracker.torrents)
-    var html = '<h1>' + infoHashes.length + ' torrents</h1>\n'
 
-    var list = infoHashes.map(function (infoHash) {
-      return '<a target="_blank" href="https://instant.io/#' + infoHash + '">' + infoHash + '</a>'
+    var list = []
+    infoHashes.forEach(function (infoHash) {
+      var peerIds = Object.keys(tracker.torrents[infoHash].peers)
+      var numPeers = 0
+      peerIds.forEach(function (peerId) {
+        if (tracker.torrents[infoHash].peers[peerId] !== null) numPeers += 1
+      })
+      if (numPeers === 0) return
+      list.push('<a target="_blank" href="https://instant.io/#' + infoHash + '">' + infoHash + '</a>')
     })
+
+    var html = '<h1>' + infoHashes.length + ' torrents (' + list.length + ' active)</h1>\n'
     html += list.join('\n<br>')
 
     res.end(html)
