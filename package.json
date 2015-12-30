@@ -34,7 +34,7 @@
     "marked": "^0.3.5",
     "moment": "^2.10.6",
     "parse-torrent": "^5.0.1",
-    "pretty-bytes": "^2.0.1",
+    "pretty-bytes": "^3.0.0",
     "run-auto": "^1.0.0",
     "unlimited": "^1.1.0",
     "webtorrent": "0.x",
