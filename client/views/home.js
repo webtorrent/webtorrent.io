@@ -40,6 +40,10 @@ module.exports = function () {
     torrent.files[0].appendTo('#videoWrap .video', onError)
     torrent.on('wire', onWire)
     torrent.on('done', onDone)
+
+    torrent.on('download', onProgress)
+    torrent.on('upload', onProgress)
+    setInterval(onProgress, 5000)
     onProgress()
   }
 
@@ -50,9 +54,7 @@ module.exports = function () {
     wire.once('close', function () {
       graph.disconnect('You', id)
       graph.remove(id)
-      onProgress()
     })
-    onProgress()
   }
 
   function onProgress () {
@@ -73,12 +75,9 @@ module.exports = function () {
     $remaining.innerHTML = remaining
   }
 
-  var interval = setInterval(onProgress, 500)
-
   function onDone () {
     $body.className += ' is-seed'
     onProgress()
-    clearInterval(interval)
   }
 
   function onError (err) {
