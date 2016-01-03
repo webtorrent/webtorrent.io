@@ -69,7 +69,8 @@ auto({
     httpServer.listen(config.ports.router.http, config.host, cb)
   },
   httpsServer: function (cb) {
-    httpsServer.listen(config.ports.router.https, config.host, cb)
+    if (httpsServer) httpsServer.listen(config.ports.router.https, config.host, cb)
+    else cb(null)
   },
   tracker: function (cb) {
     tracker = spawn(__dirname + '/tracker')
