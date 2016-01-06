@@ -42,8 +42,8 @@ module.exports = function () {
     torrent.on('wire', onWire)
     torrent.on('done', onDone)
 
-    torrent.on('download', throttle(onProgress, 500))
-    torrent.on('upload', throttle(onProgress, 500))
+    torrent.on('download', throttle(onProgress, 250))
+    torrent.on('upload', throttle(onProgress, 250))
     setInterval(onProgress, 5000)
     onProgress()
   }
