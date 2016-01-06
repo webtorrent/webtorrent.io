@@ -3,6 +3,7 @@ var fs = require('fs')
 var moment = require('moment')
 var path = require('path')
 var prettyBytes = require('pretty-bytes')
+var throttle = require('throttleit')
 var TorrentGraph = require('../lib/torrent-graph')
 var WebTorrent = require('webtorrent')
 var xhr = require('xhr')
@@ -41,8 +42,8 @@ module.exports = function () {
     torrent.on('wire', onWire)
     torrent.on('done', onDone)
 
-    torrent.on('download', onProgress)
-    torrent.on('upload', onProgress)
+    torrent.on('download', throttle(onProgress, 500))
+    torrent.on('upload', throttle(onProgress, 500))
     setInterval(onProgress, 5000)
     onProgress()
   }
