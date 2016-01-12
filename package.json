@@ -6,17 +6,18 @@
     "email": "feross@feross.org",
     "url": "http://feross.org/"
   },
-  "bugs": {
-    "url": "https://github.com/feross/webtorrent-www/issues"
-  },
   "browserify": {
     "transform": [
       "brfs"
     ]
   },
+  "bugs": {
+    "url": "https://github.com/feross/webtorrent-www/issues"
+  },
   "dependencies": {
     "bittorrent-tracker": "^7.0.0",
     "brfs": "^1.4.0",
+    "browserify": "^13.0.0",
     "compression": "^1.0.11",
     "cors": "^2.7.1",
     "create-torrent": "^3.9.1",
@@ -33,21 +34,20 @@
     "jade": "^1.6.0",
     "marked": "^0.3.5",
     "moment": "^2.10.6",
+    "nib": "^1.0.2",
     "parse-torrent": "^5.0.1",
     "pretty-bytes": "^3.0.0",
     "run-auto": "^1.0.0",
+    "stylus": "^0.53.0",
     "throttleit": "^1.0.0",
     "unlimited": "^1.1.0",
     "webtorrent": "0.x",
     "xhr": "^2.2.0"
   },
   "devDependencies": {
-    "browserify": "^13.0.0",
-    "nib": "^1.0.2",
     "nodemon": "^1.2.1",
     "pre-commit": "^1.0.10",
     "standard": "^5.0.0",
-    "stylus": "^0.53.0",
     "watchify": "^3.1.2"
   },
   "homepage": "http://webtorrent.io",
