@@ -220,9 +220,9 @@ block body
 
       ```js
       var client = new WebTorrent()
-      var magnetUri = 'magnet: ...'
+      var magnetURI = 'magnet: ...'
 
-      client.add(magnetUri, function (torrent) {
+      client.add(magnetURI, function (torrent) {
         // create HTTP server for this torrent
         var server = torrent.createServer()
         server.listen(port) // start the server listening to a port
