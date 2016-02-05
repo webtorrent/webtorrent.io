@@ -30,7 +30,7 @@ marked.setOptions({
 })
 
 // Templating
-app.set('views', __dirname + '/views')
+app.set('views', path.join(__dirname, 'views'))
 app.set('view engine', 'jade')
 app.set('x-powered-by', false)
 app.engine('jade', jade.renderFile)
@@ -90,9 +90,9 @@ app.use(function (req, res, next) {
  */
 app.options('/torrents/*', cors({ maxAge: 60 * 60 }))
 
-app.get('/torrents/*', cors(), express.static(__dirname + '/../static'))
+app.get('/torrents/*', cors(), express.static(path.join(__dirname, '../static')))
 
-app.use(express.static(__dirname + '/../static'))
+app.use(express.static(path.join(__dirname, '../static')))
 
 app.get('/', function (req, res) {
   res.render('home', { rawTitle: 'WebTorrent - Streaming browser torrent client' })
