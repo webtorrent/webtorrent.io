@@ -1,5 +1,3 @@
-@import '../node_modules/highlight.js/styles/zenburn.css'
-
 @import 'nib'
 
 WHITE = #E1FAFA
@@ -89,7 +87,7 @@ code
 
 .hljs
   font-size: 16px
-  padding: 1em
+  padding: 1em !important // overrides default style
   border-radius: 3px
   margin-bottom: -15px
 
@@ -319,3 +317,4 @@ body.is-seed .show-seed
 body.is-seed .show-leech
   display: none
 
+@import '../node_modules/highlight.js/styles/zenburn.css'
