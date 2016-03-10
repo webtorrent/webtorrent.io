@@ -15,6 +15,7 @@
     "url": "https://github.com/feross/webtorrent-www/issues"
   },
   "dependencies": {
+    "basic-auth": "^1.0.3",
     "bittorrent-tracker": "^7.0.0",
     "brfs": "^1.4.0",
     "browserify": "^13.0.0",

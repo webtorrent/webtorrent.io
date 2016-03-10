@@ -1,6 +1,8 @@
+var auth = require('basic-auth')
 var config = require('../config')
 var debug = require('debug')('webtorrent-www:tracker')
 var downgrade = require('downgrade')
+var secret = require('../secret')
 var Tracker = require('bittorrent-tracker/server')
 var unlimited = require('unlimited')
 
@@ -9,12 +11,21 @@ unlimited()
 // Create WebTorrent-only tracker. Disable UDP and HTTP.
 var tracker = new Tracker({ ws: true, udp: false, http: false })
 
-// Redirect http://tracker.webtorrent.io to website homepage
+// Redirect https://tracker.webtorrent.io to website homepage
 tracker.http.on('request', function (req, res, opts) {
   if (req.method === 'GET' && req.url === '/') {
     res.writeHead(301, { 'Location': 'https://webtorrent.io' })
     res.end()
-  } else if (req.method === 'GET' && req.url === '/stats') {
+  } else if (req.method === 'GET' && req.url === '/debug') {
+    var credentials = auth(req)
+    if (!credentials ||
+      credentials.user !== secret.debugCredentials.user ||
+      credentials.pass !== secret.debugCredentials.pass) {
+      res.statusCode = 401
+      res.setHeader('WWW-Authenticate', 'Basic realm="debug"')
+      res.end('404 Not Found')
+    }
+
     var infoHashes = Object.keys(tracker.torrents)
 
     var list = []
