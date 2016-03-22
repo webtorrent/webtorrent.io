@@ -43,6 +43,7 @@
     "throttleit": "^1.0.0",
     "unlimited": "^1.1.0",
     "webtorrent": "0.x",
+    "webtorrent-app": "feross/webtorrent-app",
     "xhr": "^2.2.0"
   },
   "devDependencies": {
@@ -50,7 +51,7 @@
     "standard": "^6.0.4",
     "watchify": "^3.1.2"
   },
-  "homepage": "http://webtorrent.io",
+  "homepage": "https://webtorrent.io",
   "keywords": [
     "bittorrent",
     "bittorrent client",
