@@ -130,7 +130,7 @@ app.get('/app/update', function (req, res) {
     // Response format docs: https://github.com/Squirrel/Squirrel.Mac#update-json-format
     res.status(200).send({
       name: 'WebTorrent v' + APP_VERSION,
-      url: 'http://localhost:9000/releases/WebTorrent-v' + APP_VERSION + '.zip'
+      url: `https://github.com/feross/webtorrent-app/releases/download/v${APP_VERSION}/WebTorrent-v${APP_VERSION}.zip`
     })
   }
 })
