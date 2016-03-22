@@ -13,7 +13,7 @@ var url = require('url')
 
 var config = require('../config')
 
-var APP_VERSION = require('webtorrent-app/package.json')
+var APP_VERSION = require('webtorrent-app/package.json').version
 
 unlimited()
 
