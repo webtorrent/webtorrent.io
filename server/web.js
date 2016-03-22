@@ -13,6 +13,8 @@ var url = require('url')
 
 var config = require('../config')
 
+var APP_VERSION = require('webtorrent-app/package.json')
+
 unlimited()
 
 var app = express()
@@ -116,6 +118,21 @@ app.get('/create', function (req, res) {
 
 app.get('/logs', function (req, res) {
   res.redirect(301, 'https://botbot.me/freenode/webtorrent/')
+})
+
+app.get('/app/update', function (req, res) {
+  var version = req.query.version
+  if (version === APP_VERSION) {
+    // No update required. User is on latest app version.
+    res.status(204).end()
+  } else {
+    // Update is required. Send update JSON.
+    // Response format docs: https://github.com/Squirrel/Squirrel.Mac#update-json-format
+    res.status(200).send({
+      name: 'WebTorrent v' + APP_VERSION,
+      url: 'http://localhost:9000/releases/WebTorrent-v' + APP_VERSION + '.zip'
+    })
+  }
 })
 
 app.get('*', function (req, res) {
