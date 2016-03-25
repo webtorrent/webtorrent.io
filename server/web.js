@@ -14,7 +14,7 @@ var url = require('url')
 var config = require('../config')
 
 var APP_VERSION = require('webtorrent-app/package.json').version
-var RELEASE_PATH = `https://github.com/feross/webtorrent-app/releases/download/v${APP_VERSION}`
+var RELEASE_PATH = 'https://github.com/feross/webtorrent-app/releases/download'
 
 unlimited()
 
@@ -132,7 +132,7 @@ app.get('/app/update', function (req, res) {
     // Response format docs: https://github.com/Squirrel/Squirrel.Mac#update-json-format
     res.status(200).send({
       name: 'WebTorrent v' + APP_VERSION,
-      url: `${RELEASE_PATH}/WebTorrent-v${APP_VERSION}.zip`
+      url: `${RELEASE_PATH}/v${APP_VERSION}/WebTorrent-v${APP_VERSION}.zip`
     })
   }
 })
@@ -141,10 +141,18 @@ app.get('/app/update', function (req, res) {
 app.get('/app/update/*', function (req, res) {
   var pathname = url.parse(req.url).pathname
   var file = pathname.replace(/^\/app\/update\//i, '')
-  if (!file) {
+  var fileVersion
+  if (file === 'RELEASES') {
+    fileVersion = APP_VERSION
+  } else {
+    var match = /-(\d+\.\d+\.\d+)-/.exec(file)
+    fileVersion = match && match[1]
+  }
+  if (!fileVersion) {
     return res.status(404).end()
   }
-  res.redirect(302, RELEASE_PATH + '/' + file)
+  var redirectURL = `${RELEASE_PATH}/v${fileVersion}/${file}`
+  res.redirect(302, redirectURL)
 })
 
 app.get('*', function (req, res) {
