@@ -38,7 +38,7 @@ app.set('view engine', 'jade')
 app.set('x-powered-by', false)
 app.engine('jade', jade.renderFile)
 
-// Trust the X-Forwarded-* headers from nginx
+// Trust the X-Forwarded-* headers from http-proxy
 app.enable('trust proxy')
 
 app.use(compress())
@@ -124,6 +124,11 @@ app.get('/logs', function (req, res) {
 // WebTorrent.app OS X auto-update endpoint
 app.get('/app/update', function (req, res) {
   var version = req.query.version
+  logUpdateCheck({
+    platform: 'darwin',
+    version: version,
+    ip: req.ip
+  })
   if (version === APP_VERSION) {
     // No update required. User is on latest app version.
     res.status(204).end()
@@ -139,6 +144,11 @@ app.get('/app/update', function (req, res) {
 
 // WebTorrent.app Windows auto-update endpoint
 app.get('/app/update/*', function (req, res) {
+  logUpdateCheck({
+    platform: 'darwin',
+    version: req.query.version,
+    ip: req.ip
+  })
   var pathname = url.parse(req.url).pathname
   var file = pathname.replace(/^\/app\/update\//i, '')
   var fileVersion
@@ -154,6 +164,10 @@ app.get('/app/update/*', function (req, res) {
   var redirectURL = `${RELEASE_PATH}/v${fileVersion}/${file}`
   res.redirect(302, redirectURL)
 })
+
+function logUpdateCheck (log) {
+  console.log('UPDATE CHECK: ' + JSON.stringify(log))
+}
 
 app.get('*', function (req, res) {
   res.status(404).render('error', {
