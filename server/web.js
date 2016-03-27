@@ -101,6 +101,10 @@ app.get('/', function (req, res) {
   res.render('home', { rawTitle: 'WebTorrent - Streaming browser torrent client' })
 })
 
+app.get('/app', function (req, res) {
+  res.render('app', { rawTitle: 'WebTorrent App' })
+})
+
 app.get('/intro', function (req, res) {
   res.render('intro', { rawTitle: 'WebTorrent Tutorial - Get Started' })
 })
