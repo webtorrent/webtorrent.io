@@ -102,7 +102,7 @@ app.get('/', function (req, res) {
 })
 
 app.get('/app', function (req, res) {
-  res.render('app', { rawTitle: 'WebTorrent App' })
+  res.render('app', { rawTitle: 'WebTorrent App', version: APP_VERSION })
 })
 
 app.get('/intro', function (req, res) {
