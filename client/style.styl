@@ -72,7 +72,7 @@ h5
   font-size: 1.1em
 
 p, ul, ol
-  font-size: 1.25em
+  font-size: 18px
   line-height: 1.5em
 
   code
@@ -316,5 +316,44 @@ body.is-seed .show-seed
 
 body.is-seed .show-leech
   display: none
+
+//
+// WEBTORRENT APP
+//
+
+.downloads
+  text-align: center
+
+  .download
+    display: inline-block
+    text-align: center
+    background-color: GREEN
+    width: 160px
+    height: 130px
+    margin: 15px
+    padding: 20px 30px
+    border: none
+    border-radius: 5px
+    cursor: pointer
+    color: white
+
+  .download:hover
+    text-decoration: none
+    background-color: LIGHT_GREEN
+
+.image-right
+  float: right
+  margin-left: 15px
+  margin-bottom: 20px
+
+.image-left
+  float: left
+  margin-right: 15px
+  margin-bottom: 20px
+
+section
+  font-size: 18px
+  line-height: 1.8
+  clear: both
 
 @import '../node_modules/highlight.js/styles/zenburn.css'
