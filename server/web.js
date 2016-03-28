@@ -13,8 +13,8 @@ var url = require('url')
 
 var config = require('../config')
 
-var APP_VERSION = require('webtorrent-app/package.json').version
-var RELEASE_PATH = 'https://github.com/feross/webtorrent-app/releases/download'
+var APP_VERSION = require('webtorrent-desktop/package.json').version
+var RELEASE_PATH = 'https://github.com/feross/webtorrent-desktop/releases/download'
 
 unlimited()
 
@@ -101,8 +101,8 @@ app.get('/', function (req, res) {
   res.render('home', { rawTitle: 'WebTorrent - Streaming browser torrent client' })
 })
 
-app.get('/app', function (req, res) {
-  res.render('app', { rawTitle: 'WebTorrent App', version: APP_VERSION })
+app.get('/desktop', function (req, res) {
+  res.render('desktop', { rawTitle: 'WebTorrent Desktop', version: APP_VERSION })
 })
 
 app.get('/intro', function (req, res) {
