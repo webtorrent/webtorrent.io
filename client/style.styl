@@ -318,15 +318,22 @@ body.is-seed .show-leech
   display: none
 
 //
-// WEBTORRENT APP
+// WEBTORRENT DESKTOP
 //
 
-article.webtorrent-app
-  width: 1000px
+.webtorrent-desktop-hero
+  background-color: #2a3749
+  margin: 0
+  padding: 3em 0 2em
+  color: #fff
+  h1
+    margin: 0
+  h2
+    margin: 0
 
 .downloads
   text-align: center
-  margin-bottom: 80px
+  margin-bottom: 0
 
   .download
     display: inline-block
@@ -345,25 +352,64 @@ article.webtorrent-app
     text-decoration: none
     background-color: LIGHT_GREEN
 
-section
-  font-size: 24px
-  margin-bottom: 80px
-  line-height: 40px
-  overflow: auto
+.feature-block
+  &:nth-child(even)
+    background: LIGHT_GRAY
+  &:last-child
+    padding-bottom: 3em
+  &.center
+    text-align: center
+    p
+      margin-top: 0
 
-section ul, section p
-  font-size: 24px
-  line-height: 40px
+  article
+    clear: both
+    width: 1000px
+    margin: 0 auto
+    font-size: 24px
+    padding: 3em 0
+    line-height: 40px
+    overflow: auto
+
+    :first-child
+      margin-top: 0
+
+  ul, p
+    font-size: 24px
+    line-height: 40px
+
+.feature-item
+  font-size: 15px
+  float: left
+  display: inline-block
+  width: 300px
+  margin: 0 25px
+  &:first-of-type
+    margin-left: 0
+  &:last-of-type
+    margin-right: 0
+  img
+    max-width: 100%
+    height: auto
+    padding: 4px
+    background-color: #fff
+    border: 1px solid #ddd
+    border-radius: 4px
+  h3
+    font-size: 1.5em
+    margin: 0
+  p
+    font-size: 1em
+    line-height: 1.5em
 
 .image-right
   float: right
-  margin-left: 30px
+  margin-left: 42px
+  max-width: 50%
 
 .image-left
   float: left
-  margin-right: 30px
-
-.clear-float
-  clear: both
+  margin-right: 42px
+  max-width: 50%
 
 @import '../node_modules/highlight.js/styles/zenburn.css'
