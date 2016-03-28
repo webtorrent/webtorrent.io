@@ -321,8 +321,12 @@ body.is-seed .show-leech
 // WEBTORRENT APP
 //
 
+article.webtorrent-app
+  width: 1000px
+
 .downloads
   text-align: center
+  margin-bottom: 80px
 
   .download
     display: inline-block
@@ -341,19 +345,25 @@ body.is-seed .show-leech
     text-decoration: none
     background-color: LIGHT_GREEN
 
+section
+  font-size: 24px
+  margin-bottom: 80px
+  line-height: 40px
+  overflow: auto
+
+section ul, section p
+  font-size: 24px
+  line-height: 40px
+
 .image-right
   float: right
-  margin-left: 15px
-  margin-bottom: 20px
+  margin-left: 30px
 
 .image-left
   float: left
-  margin-right: 15px
-  margin-bottom: 20px
+  margin-right: 30px
 
-section
-  font-size: 18px
-  line-height: 1.8
+.clear-float
   clear: both
 
 @import '../node_modules/highlight.js/styles/zenburn.css'

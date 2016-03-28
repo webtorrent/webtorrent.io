@@ -29,52 +29,84 @@
   </a>
 </p>
 
-<section>
-  <img src="http://i.imgur.com/isUvMgF.png"
-       class="image-right" style="width:450px;" />
-  <strong>WebTorrent App lets you stream torrents.</strong>
-  Whether it's video from the Internet Archive, music from Creative Commons, or audiobooks from Librivox, you don't have to wait for it to finish downloading.
+<section class="clear-float">
+  <img src="http://i.imgur.com/8k1XLTT.png" class="image-right" />
+  <p><strong>WebTorrent App lets you stream torrents.</strong></p>
+  Whether it's video from the Internet Archive, music from Creative Commons, or audiobooks from Librivox, you can play it right away, you don't have to wait for it to finish downloading.
 </section>
 
-<section>
-  <img src="https://camo.githubusercontent.com/3f57ad9ba26fad961f316c2eb20d5b9f12341b6e/68747470733a2f2f776562746f7272656e742e696f2f696d672f6e6574776f726b2e706e67"
-       class="image-left" style="width:450px;" />
-  <strong>WebTorrent App connects to both BitTorrent and WebTorrent peers.</strong>
+<section class="clear-float">
+  <img src="http://i.imgur.com/669Hknm.png" class="image-left" />
+  <p><strong>WebTorrent App connects to both BitTorrent and WebTorrent peers.</strong></p>
   It can talk to peers running Transmission or uTorrent, and it can also talk to web pages like instant.io.
 </section>
 
-<section>
-  <img src="https://raw.githubusercontent.com/feross/webtorrent-app/master/static/screenshot.png"
-       class="image-right" style="width:450px;" />
-  <strong>WebTorrent is in beta.</strong>
-  We think it's pretty sweet, but we're still working on it. Try it out and let us know what you think!
+<section class="clear-float">
+  <img src="http://i.imgur.com/gQaio80.png" class="image-right" />
+  <p><strong>WebTorrent is in beta.</strong></p>
+  <p>We think it's pretty sweet, but we're still working on it. Try it out and let us know what you think!</p>
+  <p>If you run into a bug, please tell us about it by creating a <a href="https://github.com/feross/webtorrent-app/issues">Github issue</a>.</p>
 </section>
 
+<h2 class="clear-float">Features</h2>
+
 <section>
-  <h2>Features</h2>
   <ul>
     <li><strong>Lightweight, fast torrent client</strong></li>
     <li><strong>Beautiful user experience</strong></li>
-    <li>
-      <strong>Instantly stream video and audio</strong> from torrents!
+    <li><strong>Noncommercial. No ads, ever</strong></li>
+    <li><strong>Free and open source</strong></li>
+    <li><strong>Instantly stream video and audio</strong>
       <ul>
-        <li>WebTorrent fetches file pieces from the network <strong>on-demand</strong>, for instant playback.</li>
-        <li>Even when the file is&nbsp;not fully downloaded, <strong>seeking still works!</strong> (Seeking just reprioritizes what pieces are fetched from the network.)</li>
+        <li>WebTorrent fetches file pieces from the network on demand for instant playback.</li>
+        <li>Even when the file isn't fully downloaded, seeking still works.<br/>
+            (Seeking just reprioritizes which pieces are fetched from the network.)</li>
       </ul>
     </li>
-    <li>Stream videos to <strong>AirPlay</strong> and <strong>Chromecast</strong></li>
-    <li><strong>Pure Javascript</strong>, so it's very easy to contribute code!</li>
-    <li>Based on the most popular and comprehensive torrent package in Node.js, <a href="https://www.npmjs.com/package/webtorrent"><code>webtorrent</code></a>.</li>
-    <li>
-      Lots of <strong>features</strong>, without the bloat:
+    <li><strong>Stream videos to AirPlay and Chromecast</strong></li>
+    <li><strong>Pure Javascript implementation. Built with Electron</strong></li>
+    <li><strong>Based on the most popular and comprehensive torrent package in Node.js, <a href="https://www.npmjs.com/package/webtorrent"><code>webtorrent</code></a></strong></li>
+    <li><strong>Full-featured but bloat free</strong>
       <ul>
         <li>Opens magnet links and .torrent files</li>
-        <li>Drag-and-drop makes adding torrents easy!</li>
-        <li>Seed files/folders by dragging them onto the app</li>
+        <li>Drag-and-drop makes adding torrents easy</li>
+        <li>Seed files or folders by dragging them onto the app</li>
         <li>Discovers peers via tracker servers, DHT (Distributed Hash Table), and peer exchange</li>
-        <li>Make the video window "float on top" for watching video while you work!</li>
         <li>Supports WebTorrent protocol for connecting to WebRTC peers (i.e. web browsers)</li>
       </ul>
     </li>
   </ul>
 </section>
+
+<h2 class="clear-float">Featured Torrents</h2>
+
+<section class="clear-float">
+  <img src="http://i.imgur.com/TvfAsnh.png"
+       class="image-right" style="width:400px" />
+  <strong>The Grateful Dead at Winterland Arena</strong>
+  <p>Complete audio recordings of this iconic 1975 concert.</p>
+  <p><strong><a href="https://archive.org/download/gd1975-06-17.aud.unknown.87560.flac16/gd1975-06-17.aud.unknown.87560.flac16_archive.torrent" download="GratefulDeadWinterland.torrent">Download</a></strong></p>
+  <p><a href="https://archive.org/details/etree">See the whole concert collection</a> at the Internet Archive.</p>
+</section>
+
+<section class="clear-float">
+  <img src="http://i.imgur.com/af4bhwX.png"
+       class="image-left" style="width:280px" />
+  <strong>MIT 6.00: Introduction to Computer Science</strong>
+  <p>This is the first course in MIT's Course 6, Electrical Engineering and Computer Science.</p>
+  <p>Recorded in Spring 2011. Taught by Prof. John Guttag.</p>
+  <p><strong><a href="https://archive.org/download/MIT6.00SCS11/MIT6.00SCS11_archive.torrent" download="MIT-6.00-IntroToComputerScience.torrent">Download</a></strong></p>
+  <p><a href="http://ocw.mit.edu/index.htm">See all classes at MIT OpenCourseWare.</a></p>
+</section>
+
+<section class="clear-float">
+  <img src="http://i.imgur.com/0hDZ7jr.png"
+       class="image-right" style="width:400px" />
+  <strong>Sun Tzu &mdash; The Art of War</strong>
+  <p>The original book of strategy, conflict, and guile.</p>
+  <p>Translated by Lionel Giles. Read by Moira Fogarty.</p>
+  <p><strong><a href="https://archive.org/download/art_of_war_librivox/art_of_war_librivox_archive.torrent" download="ArtOfWar.torrent">Download</a></strong></p>
+  <p><a href="https://archive.org/details/librivoxaudio">See all free and open source audiobooks</a> from Librivox, available at the Internet Archive.</p>
+</section>
+
+<section class="clear-float">&nbsp;</section>
