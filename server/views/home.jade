@@ -21,28 +21,41 @@ block body
     #videoWrap
       .video
 
-  article
-    :markdown
-      # BitTorrent over WebRTC
+  .feature-block
+    article
+      h1.beta-release Introducing WebTorrent Desktop
+      img(src='/img/cosmos-laundromat-1000px.jpg')
+      p
+       strong The streaming torrent client.
+      p WebTorrent Desktop can talk to both BitTorrent and WebTorrent peers.
+      p It's fast, free, totally noncommercial and open source.
+      div.featuredCenter
+        a.btn.large(href='/desktop') Check It Out
 
-      **WebTorrent** is a streaming torrent client for the **browser**. YEP, THAT'S RIGHT. THE BROWSER.
+  .feature-block
+    article
+      :markdown
+        # BitTorrent over WebRTC
 
-      It's written completely in JavaScript – the language of the web – and uses
-      **WebRTC** for true peer-to-peer transport. No browser plugins, extensions, or
-      installation is required.
+        **WebTorrent** is a streaming torrent client for the **browser**. YEP, THAT'S RIGHT. THE BROWSER.
 
-      ## Why?
+        It's written completely in JavaScript – the language of the web – and uses
+        **WebRTC** for true peer-to-peer transport. No browser plugins, extensions, or
+        installation is required.
 
-      Imagine a peer-to-peer YouTube where viewers help to host the site's content. By making BitTorrent easier to use, we can get more people to participate and take the first steps to re-decentralizing the Internet.
+        ## Why?
 
-      ## How do I try it out?
+        Imagine a peer-to-peer YouTube where viewers help to host the site's content. By making BitTorrent easier to use, we can get more people to participate and take the first steps to re-decentralizing the Internet.
 
-      You can see WebTorrent in action at [Instant.io](https://instant.io).
-      Send a file to a friend using BitTorrent!
+        ## How do I try it out?
 
-      # Learn more about WebTorrent
+        You can see WebTorrent in action at [Instant.io](https://instant.io).
+        Send a file to a friend using BitTorrent!
 
-    div.featuredCenter
-      a.btn.large(href='/intro') Get Started
-      a.btn.large(href='/docs') Docs
-      a.btn.large(href='/faq') FAQ
+  .feature-block
+    article
+      h1 Learn more about WebTorrent
+      div.featuredCenter
+        a.btn.large(href='/intro') Get Started
+        a.btn.large(href='/docs') Docs
+        a.btn.large(href='/faq') FAQ
