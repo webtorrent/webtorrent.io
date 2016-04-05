@@ -125,8 +125,13 @@ app.get('/logs', function (req, res) {
   res.redirect(301, 'https://botbot.me/freenode/webtorrent/')
 })
 
+// Deprecated: WebTorrent Desktop v0.0.0 - 0.2.0 use this update URL
+app.get('/app/update/?*', function (req, res) {
+  res.redirect(301, req.url.replace('/app/', '/desktop/'))
+})
+
 // WebTorrent.app OS X auto-update endpoint
-app.get('/app/update', function (req, res) {
+app.get('/desktop/update', function (req, res) {
   var version = req.query.version
   logUpdateCheck({
     platform: 'darwin',
@@ -148,14 +153,14 @@ app.get('/app/update', function (req, res) {
 })
 
 // WebTorrent.app Windows auto-update endpoint
-app.get('/app/update/*', function (req, res) {
+app.get('/desktop/update/*', function (req, res) {
   logUpdateCheck({
     platform: 'darwin',
     version: req.query.version,
     ip: req.ip
   })
   var pathname = url.parse(req.url).pathname
-  var file = pathname.replace(/^\/app\/update\//i, '')
+  var file = pathname.replace(/^\/desktop\/update\//i, '')
   var fileVersion
   if (file === 'RELEASES') {
     fileVersion = APP_VERSION
