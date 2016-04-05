@@ -1,5 +1,7 @@
 node_modules
 
+crash-reports
+
 secret/*
 !secret/index-sample.js
 

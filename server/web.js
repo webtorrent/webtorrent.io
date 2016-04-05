@@ -3,10 +3,12 @@ var cors = require('cors')
 var debug = require('debug')('webtorrent-www:web')
 var downgrade = require('downgrade')
 var express = require('express')
+var fs = require('fs')
 var highlight = require('highlight.js')
 var http = require('http')
 var jade = require('jade')
 var marked = require('marked')
+var multer = require('multer')
 var path = require('path')
 var unlimited = require('unlimited')
 var url = require('url')
@@ -123,6 +125,21 @@ app.get('/create', function (req, res) {
 
 app.get('/logs', function (req, res) {
   res.redirect(301, 'https://botbot.me/freenode/webtorrent/')
+})
+
+var crashReportsPath = path.join(__dirname, '..', 'crash-reports')
+var upload = multer({ dest: crashReportsPath }).single('upload_file_minidump')
+
+app.post('/desktop/crash-report', upload, function (req, res) {
+  req.body.filename = req.file.filename
+  var crashLog = JSON.stringify(req.body, undefined, 2)
+
+  fs.writeFile(req.file.path + '.json', crashLog, function (err) {
+    if (err) return console.error('Error saving crash report: ' + err.message)
+    console.log('Saved crash report:\n\t' + crashLog)
+  })
+
+  res.end()
 })
 
 // Deprecated: WebTorrent Desktop v0.0.0 - 0.2.0 use this update URL
