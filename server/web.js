@@ -172,7 +172,7 @@ app.get('/desktop/update', function (req, res) {
 // WebTorrent.app Windows auto-update endpoint
 app.get('/desktop/update/*', function (req, res) {
   logUpdateCheck({
-    platform: 'darwin',
+    platform: 'win32',
     version: req.query.version,
     ip: req.ip
   })
