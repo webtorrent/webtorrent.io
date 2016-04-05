@@ -146,7 +146,7 @@ app.get('/desktop/update', function (req, res) {
     // Response format docs: https://github.com/Squirrel/Squirrel.Mac#update-json-format
     res.status(200).send({
       name: 'WebTorrent v' + APP_VERSION,
-      url: `${RELEASE_PATH}/v${APP_VERSION}/WebTorrent-v${APP_VERSION}.zip`,
+      url: `${RELEASE_PATH}/v${APP_VERSION}/WebTorrent-v${APP_VERSION}-darwin.zip`,
       version: APP_VERSION
     })
   }
