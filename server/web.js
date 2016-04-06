@@ -151,6 +151,7 @@ app.get('/app/update/?*', function (req, res) {
 app.get('/desktop/update', function (req, res) {
   var version = req.query.version
   logUpdateCheck({
+    date: (new Date()).toString(),
     platform: 'darwin',
     version: version,
     ip: req.ip
@@ -172,6 +173,7 @@ app.get('/desktop/update', function (req, res) {
 // WebTorrent.app Windows auto-update endpoint
 app.get('/desktop/update/*', function (req, res) {
   logUpdateCheck({
+    date: (new Date()).toString(),
     platform: 'win32',
     version: req.query.version,
     ip: req.ip
