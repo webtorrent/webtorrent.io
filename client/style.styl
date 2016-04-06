@@ -16,8 +16,8 @@ PAGE_WIDTH = 1150px
 ARTICLE_WIDTH = 840px
 HERO_HEIGHT = 420px
 
-PHONE = 'only screen and (max-width: 699px)'
-DESKTOP = 'only screen and (min-width: 700px)'
+PHONE = 'only screen and (max-width: 899px)'
+DESKTOP = 'only screen and (min-width: 900px)'
 
 PHONE_PADDING = 10px
 
@@ -169,6 +169,8 @@ blockquote
   width: 100%
   max-width: PAGE_WIDTH
   margin: 0 auto
+  padding-left: PHONE_PADDING
+  padding-right: PHONE_PADDING
 
   @media PHONE
     height: 270px
@@ -198,7 +200,7 @@ nav
     font-weight: 700
     text-decoration: none
     display: inline-block
-    margin-left: 40px
+    margin-left: 35px
 
     @media PHONE
       display: block
@@ -448,13 +450,14 @@ body.is-seed .show-leech
   float: left
   display: inline-block
   width: 300px
+  max-width: calc(30% - 34px)
   margin: 0 25px
   &:first-of-type
     margin-left: 0
   &:last-of-type
     margin-right: 0
   img
-    max-width: 100%
+    max-width: 300px
     height: auto
     padding: 4px
     background-color: #fff
@@ -473,6 +476,7 @@ body.is-seed .show-leech
     margin-left: 0
     margin-right: 0
     width: 100%
+    max-width: 100%
     margin-bottom: 2em
 
 .image-right
