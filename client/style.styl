@@ -16,6 +16,11 @@ PAGE_WIDTH = 1150px
 ARTICLE_WIDTH = 840px
 HERO_HEIGHT = 420px
 
+PHONE = 'only screen and (max-width: 699px)'
+DESKTOP = 'only screen and (min-width: 700px)'
+
+PHONE_PADDING = 10px
+
 ellipsis()
   overflow: hidden
   text-overflow: ellipsis
@@ -159,10 +164,15 @@ blockquote
   background-color: #FFF
   border-bottom: 1px solid rgba(#000, 0.1)
 
-header
+.header
   height: 65px
-  width: PAGE_WIDTH
+  width: 100%
+  max-width: PAGE_WIDTH
   margin: 0 auto
+
+  @media PHONE
+    height: 270px
+    text-align: center
 
   h1, a
     font-family: 'Asap', sans-serif
@@ -176,9 +186,11 @@ header
       text-decoration: none
       color: DARK_GRAY
 
+    @media PHONE
+      float: none
+
 nav
   float: right
-  vertical-align()
 
   a:link, a:visited
     color: DARK_GRAY
@@ -188,14 +200,25 @@ nav
     display: inline-block
     margin-left: 40px
 
+    @media PHONE
+      display: block
+      margin-left: 0
+      margin: 5px
+
   a:hover, a:active
     color: GREEN
+
+  @media PHONE
+    float: none
+  @media DESKTOP
+    vertical-align()
 
 .footerWrap
   background-color: BLUE
 
 footer
-  width: PAGE_WIDTH
+  width: 100%
+  max-width: PAGE_WIDTH
   margin: 4em auto 0 auto
   padding: 1em 4em 4em 4em
   font-family: 'Asap', sans-serif
@@ -206,6 +229,10 @@ footer
     float: left
     color: #FFF
 
+    @media PHONE
+      float: none
+      width: 100%
+
   a:link, a:visited, div
     display: block
     color: white
@@ -215,6 +242,9 @@ footer
 article
   width: ARTICLE_WIDTH
   margin: 0 auto
+
+  @media PHONE
+    padding: 0 PHONE_PADDING
 
   h1
     text-align: center
@@ -257,7 +287,8 @@ article
         font-family: 'Source Sans Pro', sans-serif
 
 #videoWrap
-  width: PAGE_WIDTH
+  width: 100%
+  max-width: PAGE_WIDTH
   height: HERO_HEIGHT
   margin: 0 auto
 
@@ -325,19 +356,20 @@ body.is-seed .show-leech
   display: inline-block
   position: relative
 
-.new-release::after
-  content: 'NEW'
-  font-size: 10px
-  position: absolute
-  top: -10px
-  right: -20px
-  padding: 2px 4px
-  background-color: GREEN
-  color: #fff
-  border-radius: 5px
+@media DESKTOP
+  .new-release::after
+    content: 'NEW'
+    font-size: 10px
+    position: absolute
+    top: -10px
+    right: -20px
+    padding: 2px 4px
+    background-color: GREEN
+    color: #fff
+    border-radius: 5px
 
-.new-release:hover::after
-  background-color: LIGHT_GREEN
+  .new-release:hover::after
+    background-color: LIGHT_GREEN
 
 
 //
@@ -353,6 +385,9 @@ body.is-seed .show-leech
     margin: 0
   h2
     margin: 0
+  @media PHONE
+    padding-left: PHONE_PADDING
+    padding-right: PHONE_PADDING
 
 .downloads
   text-align: center
@@ -383,21 +418,30 @@ body.is-seed .show-leech
     p
       margin-top: 0
 
+  h1, h2, h3, h4, h5
+    margin-top: 0.4em
+
   article
     clear: both
-    width: 1000px
+    width: 100%
+    max-width: 1000px
     margin: 0 auto
-    font-size: 24px
-    padding: 3em 0
-    line-height: 40px
+    font-size: 22px
+    padding-top: 3em
+    padding-bottom: 3em
+    line-height: 33px
     overflow: auto
 
-    :first-child
-      margin-top: 0
+    &:first-child
+      padding-top: 2em
+
+    ul > li
+      margin: 11px 0
 
   ul, p
-    font-size: 24px
-    line-height: 40px
+    font-size: 22px
+    line-height: 33px
+
 
 .feature-item
   font-size: 15px
@@ -422,6 +466,14 @@ body.is-seed .show-leech
   p
     font-size: 1em
     line-height: 1.5em
+
+  @media PHONE
+    float: none
+    text-align: center
+    margin-left: 0
+    margin-right: 0
+    width: 100%
+    margin-bottom: 2em
 
 .image-right
   float: right

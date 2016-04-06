@@ -3,8 +3,7 @@ extends layout
 block body
   .webtorrent-desktop-hero
     h1(align='center')
-      a(href='https://webtorrent.io')
-        img(src='https://webtorrent.io/img/WebTorrent.png', alt='WebTorrent', width='200')
+      img(src='https://webtorrent.io/img/WebTorrent.png', alt='WebTorrent', width='200')
       br
       | WebTorrent Desktop
     h2(align='center') The streaming torrent client
@@ -28,7 +27,7 @@ block body
   .webtorrent-desktop
     .feature-block.center
       article
-        strong WebTorrent Desktop lets you stream torrents.
+        h2 WebTorrent Desktop lets you stream torrents.
         img(src='/img/desktop-player.png')
         p
           | Whether it's video from the
@@ -44,7 +43,7 @@ block body
     .feature-block
       article
         img.image-left(src='https://i.imgur.com/669Hknm.png')
-        strong WebTorrent Desktop connects to both BitTorrent and WebTorrent peers.
+        h3 WebTorrent Desktop connects to both BitTorrent and WebTorrent peers.
         p
           | It can talk to peers running
           = ' '
@@ -59,10 +58,10 @@ block body
     .feature-block
       article
         img.image-right(src='/img/desktop-list.png')
-        strong WebTorrent Desktop is in beta.
+        h3 WebTorrent Desktop is in beta.
         p
           | We think it's pretty sweet, but we're still working on it. Try it out and let us know what you think!
-        strong It's also 100% open source.
+        h3 It's also 100% open source.
         p
           | All the source code is on
           = ' '
@@ -80,9 +79,7 @@ block body
           li
             strong Beautiful user experience
           li
-            strong Non-commercial and ad-free
-          li
-            strong Free and open source
+            strong Free, non-commercial, ad-free, and <a href="https://github.com/feross/webtorrent-desktop">open source</a>
           li
             strong Instantly stream video and audio
             ul
@@ -92,7 +89,7 @@ block body
                 br
                 | (Seeking just reprioritizes which pieces are fetched from the network.)
           li
-            strong Stream videos to AirPlay and Chromecast
+            strong Stream videos to AirPlay, Chromecast, and DLNA
           li
             strong
               | Based on the most popular and comprehensive torrent package in Node.js,
@@ -100,13 +97,11 @@ block body
               a(href='https://www.npmjs.com/package/webtorrent')
                 code webtorrent
           li
-            strong Full-featured but bloat free
+            strong Full-featured, but bloat free
             ul
               li Opens magnet links and .torrent files
-              li Drag-and-drop makes adding torrents easy
-              li Seed files or folders by dragging them onto the app
-              li
-                | Discovers peers via tracker servers, DHT (Distributed Hash Table), and peer exchange
+              li Drag-and-drop makes adding or creating torrents easy
+              li Discovers peers via tracker servers, DHT (Distributed Hash Table), and peer exchange
               li Supports the WebTorrent protocol for connecting to WebRTC peers (i.e. web browsers)
     .feature-block
       article
