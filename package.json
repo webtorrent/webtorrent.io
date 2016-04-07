@@ -76,6 +76,7 @@
     "build-js": "browserify client > static/bundle.js",
     "download-secret": "rsync -a -O -v --delete -e \"ssh -p 44444\" feross@webtorrent.io:\"/home/feross/www/webtorrent.io/secret/\" secret/",
     "download-static": "rsync -a -O -v --delete -e \"ssh -p 44444\" feross@webtorrent.io:\"/home/feross/www/webtorrent.io/static/torrents/\" static/torrents/",
+    "install": "node ./bin/install.sh",
     "start": "node server",
     "test": "standard",
     "upload-secret": "rsync -a -O -v --delete -e \"ssh -p 44444\" secret/ feross@webtorrent.io:/home/feross/www/webtorrent.io/secret/",
