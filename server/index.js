@@ -24,6 +24,8 @@ var proxy = httpProxy.createProxyServer({
 proxy.on('error', function (err, req, res) {
   debug('[proxy error] %s %s %s', req.method, req.url, err.message)
 
+  if (!res) return
+
   if (!res.headersSent) {
     res.writeHead(500, { 'content-type': 'application/json' })
   }
