@@ -152,7 +152,7 @@ app.get('/desktop/update', function (req, res) {
   var version = req.query.version
   logUpdateCheck({
     date: (new Date()).toString(),
-    platform: 'darwin',
+    platform: req.query.platform || 'darwin' /* TODO: remove this OR in a week */,
     version: version,
     ip: req.ip
   })
@@ -172,17 +172,17 @@ app.get('/desktop/update', function (req, res) {
 
 // WebTorrent.app Windows auto-update endpoint
 app.get('/desktop/update/*', function (req, res) {
-  logUpdateCheck({
-    date: (new Date()).toString(),
-    platform: 'win32',
-    version: req.query.version,
-    ip: req.ip
-  })
   var pathname = url.parse(req.url).pathname
   var file = pathname.replace(/^\/desktop\/update\//i, '')
   var fileVersion
   if (file === 'RELEASES') {
     fileVersion = APP_VERSION
+    logUpdateCheck({
+      date: (new Date()).toString(),
+      platform: req.query.platform || 'win32' /* TODO: remove this OR in a week */,
+      version: req.query.version,
+      ip: req.ip
+    })
   } else {
     var match = /-(\d+\.\d+\.\d+)-/.exec(file)
     fileVersion = match && match[1]
