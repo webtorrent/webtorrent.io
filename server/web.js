@@ -10,6 +10,7 @@ var jade = require('jade')
 var marked = require('marked')
 var multer = require('multer')
 var path = require('path')
+var semver = require('semver')
 var unlimited = require('unlimited')
 var url = require('url')
 
@@ -156,8 +157,9 @@ app.get('/desktop/update', function (req, res) {
     version: version,
     ip: req.ip
   })
-  if (version === APP_VERSION) {
-    // No update required. User is on latest app version.
+  if (version === APP_VERSION || semver.gt(version, APP_VERSION)) {
+    // No update required. User is on latest app version,
+    // or on a prelease (ahead of latest) version.
     res.status(204).end()
   } else {
     // Update is required. Send update JSON.
