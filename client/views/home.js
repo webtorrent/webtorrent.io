@@ -16,7 +16,7 @@ module.exports = function () {
   var graph = window.graph = new TorrentGraph('#svgWrap')
 
   getRtcConfig('https://instant.io/rtcConfig', function (err, rtcConfig) {
-    if (err) onError(err)
+    if (err) console.error(err)
     createClient(rtcConfig)
   })
 
