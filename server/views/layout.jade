@@ -1,8 +1,17 @@
 doctype html
 html(lang='en')
   head
-    title= rawTitle || (title && (title + ' - WebTorrent')) || 'WebTorrent'
     meta(charset='utf-8')
+
+    title= rawTitle || (title && (title + ' - WebTorrent')) || 'WebTorrent'
+    meta(property='og:title', content='#{ rawTitle || (title && (title + " - WebTorrent")) || "WebTorrent" }')
+
+    meta(name='description', content='#{ desc || "WebTorrent, the streaming torrent client for the browser, OS X, Windows, and Linux" }')
+    meta(property='og:description', content='#{ desc || "WebTorrent, the streaming torrent client for the browser, OS X, Windows, and Linux" }')
+
+    meta(property='og:type', content='website')
+    meta(property='og:image', content='/img/WebTorrent.png')
+
     meta(name='viewport', content='width=device-width, initial-scale=1')
 
     link(rel='apple-touch-icon', sizes='76x76', href='/apple-touch-icon-76x76.png')
