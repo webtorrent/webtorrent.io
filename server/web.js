@@ -104,7 +104,11 @@ app.get('/', function (req, res) {
 })
 
 app.get('/desktop', function (req, res) {
-  res.render('desktop', { rawTitle: 'WebTorrent Desktop', version: APP_VERSION })
+  res.render('desktop', {
+    cls: 'desktop',
+    rawTitle: 'WebTorrent Desktop',
+    version: APP_VERSION
+  })
 })
 
 app.get('/intro', function (req, res) {

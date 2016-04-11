@@ -35,7 +35,7 @@ html(lang='en')
     link(rel='stylesheet' href='//fonts.googleapis.com/css?family=Source+Sans+Pro:400,700,400italic,700italic')
     link(rel='stylesheet' href='//fonts.googleapis.com/css?family=Source+Code+Pro:400,700')
 
-  body(class=locals.cls || '')
+  body(class=cls || '')
     .headerWrap
       header.header
         h1: a(href='/') WebTorrent
@@ -45,7 +45,11 @@ html(lang='en')
           a(href='/faq') FAQ
           a(href='/desktop', class='new-release') WebTorrent Desktop
           a(href='https://instant.io', target='_blank') Instant.io
-          a.btn(href='https://github.com/feross/webtorrent', target='_blank') GitHub
+          if (cls === 'desktop')
+            a.btn(href='https://github.com/feross/webtorrent-desktop', target='_blank') GitHub
+          else
+            a.btn(href='https://github.com/feross/webtorrent', target='_blank') GitHub
+
     main
       block body
     .footerWrap
