@@ -67,7 +67,10 @@ html(lang='en')
 
         section
           h3 Support
-          a(href='https://github.com/feross/webtorrent/issues') Open an issue
+          if (cls === 'desktop')
+            a(href='https://github.com/feross/webtorrent-desktop/issues') Open an issue
+          else
+            a(href='https://github.com/feross/webtorrent/issues') Open an issue
           a(href='https://gitter.im/feross/webtorrent') Chat in Gitter
           div <strong>#webtorrent</strong> on freenode (IRC)
 
