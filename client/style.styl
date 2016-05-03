@@ -21,6 +21,15 @@ DESKTOP = 'only screen and (min-width: 900px)'
 
 PHONE_PADDING = 10px
 
+H1_FONT_SIZE = 45px
+H2_FONT_SIZE = 30px
+H3_FONT_SIZE = 24px
+H4_FONT_SIZE = 20px
+H5_FONT_SIZE = 16px
+
+mobile_font_shrink(size)
+  size * 0.8
+
 ellipsis()
   overflow: hidden
   text-overflow: ellipsis
@@ -65,16 +74,35 @@ h1, h2, h3, h4, h5
   font-family: 'Asap', sans-serif
   font-weight: 700
   line-height: 1.5em
+
 h1
-  font-size: 45px
+  font-size: H1_FONT_SIZE
+  
+  @media PHONE
+    font-size: mobile_font_shrink(H1_FONT_SIZE)
 h2
-  font-size: 30px
+  font-size: H2_FONT_SIZE
+
+  @media PHONE
+    font-size: mobile_font_shrink(H2_FONT_SIZE)
+    
 h3
-  font-size: 24px
+  font-size: H3_FONT_SIZE
+  
+  @media PHONE
+    font-size: mobile_font_shrink(H3_FONT_SIZE)
+    
 h4
-  font-size: 20px
+  font-size: H4_FONT_SIZE
+  
+  @media PHONE
+    font-size: mobile_font_shrink(H4_FONT_SIZE)
+
 h5
   font-size: 16px
+  
+  @media PHONE
+    font-size: mobile_font_shrink(H5_FONT_SIZE)
 
 p, ul, ol
   font-size: 18px
@@ -89,12 +117,17 @@ p, ul, ol
 
 code
   font-family: 'Source Code Pro', monospace
+  word-break: break-word
+  white-space: pre-wrap
 
 .hljs
   font-size: 16px
   padding: 1em !important // overrides default style
   border-radius: 3px
   margin-bottom: -15px
+  
+  @media PHONE
+    font-size: 14px
 
 iframe, img
   max-width: 100%
@@ -139,6 +172,11 @@ blockquote
   color: #FFF
   padding: 0.6em 0.7em
   font-weight: 700
+  
+  @media PHONE
+    font-size: 120%
+    margin-bottom: 5px
+    width: 80%
 
 .btn:hover, a.btn:hover, a.btn:active
   background-color: LIGHT_GREEN
@@ -155,6 +193,7 @@ blockquote
   margin: 1.5em 0
   .btn
     margin: 0 0.75em
+    
 
 //
 // LAYOUT
@@ -173,7 +212,7 @@ blockquote
   padding-right: PHONE_PADDING
 
   @media PHONE
-    height: 270px
+    height: auto
     text-align: center
 
   h1, a
@@ -193,6 +232,13 @@ blockquote
 
 nav
   float: right
+  
+  @media PHONE
+    float: none
+    display: none
+    
+  @media DESKTOP
+    vertical-align()
 
   a:link, a:visited
     color: DARK_GRAY
@@ -210,11 +256,6 @@ nav
   a:hover, a:active
     color: GREEN
 
-  @media PHONE
-    float: none
-  @media DESKTOP
-    vertical-align()
-
 .footerWrap
   background-color: BLUE
 
@@ -225,6 +266,9 @@ footer
   padding: 1em 4em 4em 4em
   font-family: 'Asap', sans-serif
   clearfix()
+  
+  @media PHONE
+    margin: 0 auto
 
   section
     width: 25%
@@ -246,6 +290,7 @@ article
   margin: 0 auto
 
   @media PHONE
+    width: auto
     padding: 0 PHONE_PADDING
 
   h1
@@ -265,8 +310,10 @@ article
 
 #hero
   background-color: BLUE
-  height: HERO_HEIGHT
-  margin: auto
+  
+  @media DESKTOP
+    height: HERO_HEIGHT
+    margin: auto
 
   .is-seed &
     background-color: DARK_GREEN
@@ -275,6 +322,11 @@ article
 #svgWrap
   position: absolute
   width: 100%
+  max-width: PAGE_WIDTH
+  height: HERO_HEIGHT
+  
+  @media PHONE
+    display: none
 
   svg
     display: block
@@ -290,19 +342,25 @@ article
 
 #videoWrap
   width: 100%
+  min-height: 100px
   max-width: PAGE_WIDTH
-  height: HERO_HEIGHT
   margin: 0 auto
+  
+  @media DESKTOP
+    height: HERO_HEIGHT
 
   .video
-    border: rgba(#FFF, 0.4)
-    width: 60%
-    vertical-align()
-    float: right
-    height: 295px
     border-radius: 3px
-    overflow: hidden
+    min-height: 100px
+    @media DESKTOP
+      float: right
+      height: 295px
+      border: rgba(#FFF, 0.4)
+      width: 60%
+      overflow: hidden
+      vertical-align()
   video
+    min-height: 100px
     border-radius: 2px
     width: 100%
 
@@ -311,15 +369,19 @@ article
   width: 0%
   background-color: GREEN
   transition: width 0.4s ease-in-out
-  position: absolute
+  
+  @media DESKTOP
+    position: absolute
 
 #statusTop, #statusBottom
-  position: absolute
   width: 100%
   font-size: 17px
   text-align: center
   color: #FFF
   z-index: 10
+  
+  @media DESKTOP
+    position: absolute
 
   code
     font-size: 90%
@@ -329,10 +391,16 @@ article
     border-bottom: 1px dashed rgba(#FFF, 0.3)
 
 #statusTop
-  margin-top: 22px
+  margin: 22px 0
+  
+  @media PHONE
+    padding: 22px 0px 0px 0px
 
 #statusBottom
-  margin-top: 376px
+  @media PHONE
+    padding: 0px 0px 22px 0px
+  @media DESKTOP
+    margin-top: 376px
 
 a#torrentLink:link, a#torrentLink:visited
   text-decoration: none
@@ -436,6 +504,13 @@ body.is-seed .show-leech
 
     &:first-child
       padding-top: 2em
+      
+      @media PHONE
+        padding-top: 1em
+      
+    @media PHONE
+      padding-top: 1em
+      padding-bottom: 1em
 
     ul > li
       margin: 11px 0
@@ -443,6 +518,10 @@ body.is-seed .show-leech
   ul, p
     font-size: 22px
     line-height: 33px
+    
+    @media PHONE
+      font-size: 18px
+      line-height: 26px
 
 
 .feature-item
