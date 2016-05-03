@@ -36,8 +36,8 @@ function TorrentGraph (root) {
       : Math.max(0.2, 1 - ((len - 10) / 100))
   }
 
-  var width = 600
-  var height = 400
+  var width = root.offsetWidth
+  var height = (window.innerWidth >= 900) ? 400 : 250
 
   var focus
 
@@ -189,8 +189,8 @@ function TorrentGraph (root) {
   }
 
   function refresh (e) {
-    width = Math.max(root.offsetWidth * 0.4, 500)
-    height = root.offsetHeight
+    width = root.offsetWidth
+    height = (window.innerWidth >= 900) ? 400 : 250
 
     force
       .size([width, height])

@@ -320,13 +320,20 @@ article
     transition: 0.5s 0.5s background-color ease-in-out
 
 #svgWrap
-  position: absolute
   width: 100%
   max-width: PAGE_WIDTH
-  height: HERO_HEIGHT
   
-  @media PHONE
-    display: none
+  @media DESKTOP
+    height: HERO_HEIGHT
+    position: absolute
+    
+  .torrent-graph
+    width: 50%
+    height: 100%
+    
+    @media PHONE
+      width: 90%
+      margin: auto 0px
 
   svg
     display: block
