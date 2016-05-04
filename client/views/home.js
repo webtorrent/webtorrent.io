@@ -38,7 +38,16 @@ module.exports = function () {
   var $remaining = document.querySelector('#remaining')
 
   function onTorrent () {
-    torrent.files[0].appendTo('#videoWrap .video', onError)
+    torrent.files[0].appendTo('#videoWrap .video', function (err, elem) {
+      if (err) return onError(err)
+      elem.addEventListener('progress', onVideoProgress)
+
+      function onVideoProgress () {
+        elem.removeEventListener('progress', onVideoProgress)
+        elem.parentElement.classList.add('playing')
+      }
+    })
+
     torrent.on('wire', onWire)
     torrent.on('done', onDone)
 

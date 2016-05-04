@@ -77,7 +77,7 @@ h1, h2, h3, h4, h5
 
 h1
   font-size: H1_FONT_SIZE
-  
+
   @media PHONE
     font-size: mobile_font_shrink(H1_FONT_SIZE)
 h2
@@ -85,22 +85,22 @@ h2
 
   @media PHONE
     font-size: mobile_font_shrink(H2_FONT_SIZE)
-    
+
 h3
   font-size: H3_FONT_SIZE
-  
+
   @media PHONE
     font-size: mobile_font_shrink(H3_FONT_SIZE)
-    
+
 h4
   font-size: H4_FONT_SIZE
-  
+
   @media PHONE
     font-size: mobile_font_shrink(H4_FONT_SIZE)
 
 h5
   font-size: 16px
-  
+
   @media PHONE
     font-size: mobile_font_shrink(H5_FONT_SIZE)
 
@@ -125,7 +125,7 @@ code
   padding: 1em !important // overrides default style
   border-radius: 3px
   margin-bottom: -15px
-  
+
   @media PHONE
     font-size: 14px
 
@@ -172,7 +172,7 @@ blockquote
   color: #FFF
   padding: 0.6em 0.7em
   font-weight: 700
-  
+
   @media PHONE
     font-size: 120%
     margin-bottom: 5px
@@ -193,7 +193,7 @@ blockquote
   margin: 1.5em 0
   .btn
     margin: 0 0.75em
-    
+
 
 //
 // LAYOUT
@@ -232,11 +232,11 @@ blockquote
 
 nav
   float: right
-  
+
   @media PHONE
     float: none
     display: none
-    
+
   @media DESKTOP
     vertical-align()
 
@@ -266,7 +266,7 @@ footer
   padding: 1em 4em 4em 4em
   font-family: 'Asap', sans-serif
   clearfix()
-  
+
   @media PHONE
     margin: 0 auto
 
@@ -310,7 +310,7 @@ article
 
 #hero
   background-color: BLUE
-  
+
   @media DESKTOP
     height: HERO_HEIGHT
     margin: auto
@@ -322,15 +322,15 @@ article
 #svgWrap
   width: 100%
   max-width: PAGE_WIDTH
-  
+
   @media DESKTOP
     height: HERO_HEIGHT
     position: absolute
-    
+
   .torrent-graph
     width: 50%
     height: 100%
-    
+
     @media PHONE
       width: 90%
       margin: auto 0px
@@ -352,7 +352,7 @@ article
   min-height: 100px
   max-width: PAGE_WIDTH
   margin: 0 auto
-  
+
   @media DESKTOP
     height: HERO_HEIGHT
 
@@ -361,11 +361,15 @@ article
     min-height: 100px
     @media DESKTOP
       float: right
-      height: 295px
-      border: rgba(#FFF, 0.4)
-      width: 60%
+      max-height: 295px
+      border: 1px solid rgba(#FFF, 0.4)
+      max-width: 60%
       overflow: hidden
       vertical-align()
+    opacity: 0
+    &.playing
+      opacity: 1
+
   video
     min-height: 100px
     border-radius: 2px
@@ -376,7 +380,7 @@ article
   width: 0%
   background-color: GREEN
   transition: width 0.4s ease-in-out
-  
+
   @media DESKTOP
     position: absolute
 
@@ -386,7 +390,7 @@ article
   text-align: center
   color: #FFF
   z-index: 10
-  
+
   @media DESKTOP
     position: absolute
 
@@ -399,7 +403,7 @@ article
 
 #statusTop
   margin: 22px 0
-  
+
   @media PHONE
     padding: 22px 0px 0px 0px
 
@@ -511,10 +515,10 @@ body.is-seed .show-leech
 
     &:first-child
       padding-top: 2em
-      
+
       @media PHONE
         padding-top: 1em
-      
+
     @media PHONE
       padding-top: 1em
       padding-bottom: 1em
@@ -525,7 +529,7 @@ body.is-seed .show-leech
   ul, p
     font-size: 22px
     line-height: 33px
-    
+
     @media PHONE
       font-size: 18px
       line-height: 26px
