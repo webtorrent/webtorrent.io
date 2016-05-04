@@ -13,7 +13,7 @@ var TORRENT = fs.readFileSync(
 )
 
 module.exports = function () {
-  var graph = window.graph = new TorrentGraph('#svgWrap')
+  var graph = window.graph = new TorrentGraph('.torrent-graph')
 
   getRtcConfig('https://instant.io/rtcConfig', function (err, rtcConfig) {
     if (err) console.error(err)
