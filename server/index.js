@@ -78,11 +78,11 @@ auto({
     tracker = spawn(path.join(__dirname, 'tracker'))
     tracker.on('message', cb.bind(null, null))
   },
-  downgrade: ['httpServer', 'httpsServer', 'tracker', function (cb) {
+  downgrade: ['httpServer', 'httpsServer', 'tracker', function (results, cb) {
     downgrade()
     cb(null)
   }],
-  web: ['downgrade', function (cb) {
+  web: ['downgrade', function (results, cb) {
     web = spawn(path.join(__dirname, 'web'))
     web.on('message', cb.bind(null, null))
   }]

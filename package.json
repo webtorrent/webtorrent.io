@@ -39,7 +39,7 @@
     "nib": "^1.0.2",
     "parse-torrent": "^5.0.1",
     "pretty-bytes": "^3.0.0",
-    "run-auto": "^1.0.0",
+    "run-auto": "^2.0.0",
     "stylus": "^0.54.0",
     "throttleit": "^1.0.0",
     "unlimited": "^1.1.0",
