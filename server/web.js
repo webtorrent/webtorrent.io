@@ -146,6 +146,11 @@ app.post('/desktop/crash-report', upload, function (req, res) {
   res.end()
 })
 
+app.get('/desktop/announcement', function (req, res) {
+  // res.status(204).end()
+  res.status(200).send('Testing 123')
+})
+
 // Deprecated: WebTorrent Desktop v0.0.0 - 0.2.0 use this update URL
 app.get('/app/update/?*', function (req, res) {
   res.redirect(301, req.url.replace('/app/', '/desktop/'))
