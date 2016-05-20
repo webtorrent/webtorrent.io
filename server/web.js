@@ -156,7 +156,7 @@ app.get('/desktop/update', function (req, res) {
   var version = req.query.version
   logUpdateCheck({
     date: (new Date()).toString(),
-    platform: req.query.platform || 'darwin' /* TODO: remove this OR in a week */,
+    platform: req.query.platform,
     version: version,
     ip: req.ip
   })
@@ -183,7 +183,7 @@ app.get('/desktop/update/*', function (req, res) {
     fileVersion = APP_VERSION
     logUpdateCheck({
       date: (new Date()).toString(),
-      platform: req.query.platform || 'win32' /* TODO: remove this OR in a week */,
+      platform: req.query.platform,
       version: req.query.version,
       ip: req.ip
     })
