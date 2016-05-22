@@ -13,12 +13,41 @@ var TORRENT = fs.readFileSync(
 )
 
 module.exports = function () {
-  var graph = window.graph = new TorrentGraph('.torrent-graph')
+  var graph
+  var hero = document.querySelector('#hero')
 
-  getRtcConfig('https://instant.io/rtcConfig', function (err, rtcConfig) {
-    if (err) console.error(err)
-    createClient(rtcConfig)
-  })
+  // Don't start the demo automatically on mobile.
+  if (window.innerWidth <= 899) {
+    var beginButton = document.createElement('a')
+    beginButton.href = '#'
+    beginButton.id = 'begin'
+    beginButton.className = 'btn large'
+    beginButton.textContent = 'Begin Demo'
+
+    beginButton.addEventListener('click', function onClick () {
+      beginButton.removeEventListener('click', onClick, false)
+      beginButton.parentNode.removeChild(beginButton)
+      beginButton = null
+
+      init()
+    })
+    hero.appendChild(beginButton)
+  } else {
+    init()
+  }
+
+  function init () {
+    // Display video and related information.
+    hero.className = 'loading'
+    hero = null
+
+    graph = window.graph = new TorrentGraph('.torrent-graph')
+
+    getRtcConfig('https://instant.io/rtcConfig', function (err, rtcConfig) {
+      if (err) console.error(err)
+      createClient(rtcConfig)
+    })
+  }
 
   var torrent
   function createClient (rtcConfig) {

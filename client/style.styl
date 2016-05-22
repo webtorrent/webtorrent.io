@@ -314,10 +314,7 @@ article
 
 #hero
   background-color: BLUE
-
-  @media DESKTOP
-    height: HERO_HEIGHT
-    margin: 0 auto
+  text-align: center
 
   .is-seed &
     background-color: DARK_GREEN
@@ -326,12 +323,29 @@ article
   h1
     color: white
     text-align: center
-    margin: 0 0 -60px 0
+    margin: 0
     padding-top: 30px
     line-height: 1
 
     em
       border-bottom: 6px solid rgba(255, 255, 255, 0.2)
+
+  #progressBar, #status, #svgWrap, #videoWrap
+    display: none
+
+  #begin
+    margin: 20px auto
+
+#hero.loading
+  @media DESKTOP
+    height: HERO_HEIGHT
+    margin: 0 auto
+
+  #progressBar, #status, #svgWrap, #videoWrap
+    display: block
+
+  h1
+    margin-bottom: -60px
 
 #svgWrap
   width: 100%
