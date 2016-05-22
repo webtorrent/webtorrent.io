@@ -13,11 +13,19 @@ var TORRENT = fs.readFileSync(
 )
 
 module.exports = function () {
-  var graph = window.graph = new TorrentGraph('.torrent-graph')
+  var graph
 
-  getRtcConfig('https://instant.io/rtcConfig', function (err, rtcConfig) {
-    if (err) console.error(err)
-    createClient(rtcConfig)
+  var beginButton = document.querySelector('#begin')
+  beginButton.addEventListener('click', function onClick () {
+    beginButton.removeEventListener('click', onClick, false)
+    document.querySelector('#hero').className = 'loading'
+
+    graph = window.graph = new TorrentGraph('.torrent-graph')
+
+    getRtcConfig('https://instant.io/rtcConfig', function (err, rtcConfig) {
+      if (err) console.error(err)
+      createClient(rtcConfig)
+    })
   })
 
   var torrent
