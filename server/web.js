@@ -165,7 +165,7 @@ app.get('/desktop/update', function (req, res) {
     version: version,
     ip: req.ip
   })
-  if (semver.lt(version, APP_VERSION)) {
+  if (!semver.valid(version) || semver.lt(version, APP_VERSION)) {
     // Update is required. Send update JSON.
     // Response format docs: https://github.com/Squirrel/Squirrel.Mac#update-json-format
     res.status(200).send({
