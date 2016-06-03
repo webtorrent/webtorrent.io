@@ -10,6 +10,7 @@ var jade = require('jade')
 var marked = require('marked')
 var multer = require('multer')
 var path = require('path')
+var semver = require('semver')
 var unlimited = require('unlimited')
 var url = require('url')
 
@@ -164,10 +165,7 @@ app.get('/desktop/update', function (req, res) {
     version: version,
     ip: req.ip
   })
-  if (version === APP_VERSION) {
-    // No update required. User is on latest app version.
-    res.status(204).end()
-  } else {
+  if (semver.lt(version, APP_VERSION)) {
     // Update is required. Send update JSON.
     // Response format docs: https://github.com/Squirrel/Squirrel.Mac#update-json-format
     res.status(200).send({
@@ -175,6 +173,9 @@ app.get('/desktop/update', function (req, res) {
       url: `${RELEASE_PATH}/v${APP_VERSION}/WebTorrent-v${APP_VERSION}-darwin.zip`,
       version: APP_VERSION
     })
+  } else {
+    // No update required. User is on latest app version.
+    res.status(204).end()
   }
 })
 
