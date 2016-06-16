@@ -46,6 +46,8 @@ function onRequest (req, res) {
   } else if (req.headers.host === 'whiteboard.webtorrent.io' ||
       req.headers.host === 'whiteboard.webtorrent.io:' + config.ports.router.https) {
     proxy.web(req, res, { target: 'http://127.0.0.1:' + config.ports.whiteboard })
+  } else if (req.headers.host === 'peerdb.io') {
+    proxy.web(req, res, { target: 'http://127.0.0.1:' + config.ports.peerdb })
   } else {
     proxy.web(req, res, { target: 'http://127.0.0.1:' + config.ports.web })
   }

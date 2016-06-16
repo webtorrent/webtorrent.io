@@ -14,7 +14,8 @@ exports.ports = {
   },
   web: 9002,
   tracker: 9003,
-  whiteboard: 8080 // TEMP
+  whiteboard: 8080, // TEMP
+  peerdb: 9200
 }
 
 exports.gitterBot = {
