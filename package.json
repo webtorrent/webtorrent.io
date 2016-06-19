@@ -17,6 +17,7 @@
   "dependencies": {
     "basic-auth": "^1.0.3",
     "bittorrent-tracker": "^8.0.6",
+    "body-parser": "^1.15.2",
     "brfs": "^1.4.0",
     "browserify": "^13.0.0",
     "compression": "^1.0.11",

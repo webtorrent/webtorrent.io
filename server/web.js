@@ -3,21 +3,18 @@ var cors = require('cors')
 var debug = require('debug')('webtorrent-www:web')
 var downgrade = require('downgrade')
 var express = require('express')
-var fs = require('fs')
 var highlight = require('highlight.js')
 var http = require('http')
 var jade = require('jade')
 var marked = require('marked')
-var multer = require('multer')
 var path = require('path')
-var semver = require('semver')
 var unlimited = require('unlimited')
 var url = require('url')
 
 var config = require('../config')
+var desktopApi = require('./desktop-api')
 
 var APP_VERSION = require('webtorrent-desktop/package.json').version
-var RELEASE_PATH = 'https://github.com/feross/webtorrent-desktop/releases/download'
 
 unlimited()
 
@@ -26,6 +23,7 @@ var server = http.createServer(app)
 
 jade.filters.markdown = marked
 
+// Use Jade + Markdown templates
 marked.setOptions({
   highlight: function (code, lang) {
     var h = lang
@@ -35,7 +33,6 @@ marked.setOptions({
   }
 })
 
-// Templating
 app.set('views', path.join(__dirname, 'views'))
 app.set('view engine', 'jade')
 app.set('x-powered-by', false)
@@ -44,8 +41,10 @@ app.engine('jade', jade.renderFile)
 // Trust the X-Forwarded-* headers from http-proxy
 app.enable('trust proxy')
 
+// Use GZIP
 app.use(compress())
 
+// Use SSL
 app.use(function (req, res, next) {
   // Force SSL
   if (config.isProd && req.protocol !== 'https') {
@@ -90,16 +89,20 @@ app.use(function (req, res, next) {
   next()
 })
 
-/**
- * Enable CORS preflight, and cache it for 1 hour. This is necessary to support
- * requests from another domain with the "Range" HTTP header.
- */
+// Serve the Webtorrent Desktop REST API
+desktopApi.serve(app)
+
+// Serve the demo torrent (Sintel)
+// Enable CORS preflight, and cache it for 1 hour. This is necessary to support
+// requests from another domain with the "Range" HTTP header.
 app.options('/torrents/*', cors({ maxAge: 60 * 60 }))
 
 app.get('/torrents/*', cors(), express.static(path.join(__dirname, '../static')))
 
+// Serve static resources
 app.use(express.static(path.join(__dirname, '../static')))
 
+// Serve all the JADE pages
 app.get('/', function (req, res) {
   res.render('home', { rawTitle: 'WebTorrent - Streaming browser torrent client' })
 })
@@ -132,81 +135,7 @@ app.get('/logs', function (req, res) {
   res.redirect(301, 'https://botbot.me/freenode/webtorrent/')
 })
 
-var crashReportsPath = path.join(__dirname, '..', 'crash-reports')
-var upload = multer({ dest: crashReportsPath }).single('upload_file_minidump')
-
-app.post('/desktop/crash-report', upload, function (req, res) {
-  req.body.filename = req.file.filename
-  var crashLog = JSON.stringify(req.body, undefined, 2)
-
-  fs.writeFile(req.file.path + '.json', crashLog, function (err) {
-    if (err) return console.error('Error saving crash report: ' + err.message)
-    console.log('Saved crash report:\n\t' + crashLog)
-  })
-
-  res.end()
-})
-
-app.get('/desktop/announcement', function (req, res) {
-  res.status(204).end()
-})
-
-// Deprecated: WebTorrent Desktop v0.0.0 - 0.2.0 use this update URL
-app.get('/app/update/?*', function (req, res) {
-  res.redirect(301, req.url.replace('/app/', '/desktop/'))
-})
-
-// WebTorrent.app OS X auto-update endpoint
-app.get('/desktop/update', function (req, res) {
-  var version = req.query.version
-  logUpdateCheck({
-    date: (new Date()).toString(),
-    platform: req.query.platform,
-    version: version,
-    ip: req.ip
-  })
-  if (!semver.valid(version) || semver.lt(version, APP_VERSION)) {
-    // Update is required. Send update JSON.
-    // Response format docs: https://github.com/Squirrel/Squirrel.Mac#update-json-format
-    res.status(200).send({
-      name: 'WebTorrent v' + APP_VERSION,
-      url: `${RELEASE_PATH}/v${APP_VERSION}/WebTorrent-v${APP_VERSION}-darwin.zip`,
-      version: APP_VERSION
-    })
-  } else {
-    // No update required. User is on latest app version.
-    res.status(204).end()
-  }
-})
-
-// WebTorrent.app Windows auto-update endpoint
-app.get('/desktop/update/*', function (req, res) {
-  var pathname = url.parse(req.url).pathname
-  var file = pathname.replace(/^\/desktop\/update\//i, '')
-  var fileVersion
-  if (file === 'RELEASES') {
-    fileVersion = APP_VERSION
-    logUpdateCheck({
-      date: (new Date()).toString(),
-      platform: req.query.platform,
-      version: req.query.version,
-      ip: req.ip
-    })
-  } else {
-    var match = /-(\d+\.\d+\.\d+)-/.exec(file)
-    fileVersion = match && match[1]
-  }
-  if (!fileVersion) {
-    return res.status(404).end()
-  }
-  var redirectURL = `${RELEASE_PATH}/v${fileVersion}/${file}`
-  res.redirect(302, redirectURL)
-})
-
-function logUpdateCheck (log) {
-  console.log('UPDATE CHECK: ' + JSON.stringify(log))
-}
-
+// Handle errors (404 for unrecognized URLs, 500 for uncaught errors)
 app.get('*', function (req, res) {
   res.status(404).render('error', {
     title: '404 Not Found',
@@ -214,7 +143,6 @@ app.get('*', function (req, res) {
   })
 })
 
-// error handling middleware
 app.use(function (err, req, res, next) {
   console.error(err.stack)
   res.status(500).render('error', {
@@ -223,6 +151,7 @@ app.use(function (err, req, res, next) {
   })
 })
 
+// Listen on port 443 (in production), then drop root privileges and start serving requests
 server.listen(config.ports.web, function () {
   debug('listening on port ' + server.address().port)
   downgrade()
