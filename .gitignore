@@ -1,7 +1,5 @@
 node_modules
-
-crash-reports/*
-!crash-reports/placeholder.txt
+logs
 
 secret/*
 !secret/index-sample.js

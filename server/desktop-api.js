@@ -7,13 +7,20 @@ module.exports = { serve }
 const bodyParser = require('body-parser')
 const config = require('../config')
 const fs = require('fs')
+const mkdirp = require('mkdirp')
 const multer = require('multer')
 const path = require('path')
 const semver = require('semver')
 const url = require('url')
 
 var DESKTOP_VERSION = config.desktopVersion
-var RELEASE_PATH = 'https://github.com/feross/webtorrent-desktop/releases/download'
+var RELEASES_URL = 'https://github.com/feross/webtorrent-desktop/releases/download'
+
+var TELEMETRY_PATH = path.join(config.logPath, 'telemetry')
+var CRASH_REPORTS_PATH = path.join(config.logPath, 'crash-reports')
+
+mkdirp.sync(TELEMETRY_PATH)
+mkdirp.sync(CRASH_REPORTS_PATH)
 
 function serve (app) {
   serveTelemetryAPI(app)
@@ -30,7 +37,7 @@ function serveTelemetryAPI (app) {
     var summaryJSON = JSON.stringify(summary)
 
     var today = new Date().toISOString().substring(0, 10) // YYYY-MM-DD
-    var telemetryPath = path.join(config.logPath, 'telemetry', today + '.log')
+    var telemetryPath = path.join(TELEMETRY_PATH, today + '.log')
 
     fs.appendFile(telemetryPath, summaryJSON + '\n', function (err) {
       if (err) {
@@ -44,8 +51,7 @@ function serveTelemetryAPI (app) {
 
 // Save electron process crash reports (from Crashpad), each in its own file
 function serveCrashReportsAPI (app) {
-  var crashReportsPath = path.join(config.logPath, 'crash-reports')
-  var upload = multer({ dest: crashReportsPath }).single('upload_file_minidump')
+  var upload = multer({ dest: CRASH_REPORTS_PATH }).single('upload_file_minidump')
 
   app.post('/desktop/crash-report', upload, function (req, res) {
     req.body.filename = req.file.filename
@@ -89,7 +95,7 @@ function serveUpdateAPI (app) {
       // Response format docs: https://github.com/Squirrel/Squirrel.Mac#update-json-format
       res.status(200).send({
         name: 'WebTorrent v' + DESKTOP_VERSION,
-        url: `${RELEASE_PATH}/v${DESKTOP_VERSION}/WebTorrent-v${DESKTOP_VERSION}-darwin.zip`,
+        url: `${RELEASES_URL}/v${DESKTOP_VERSION}/WebTorrent-v${DESKTOP_VERSION}-darwin.zip`,
         version: DESKTOP_VERSION
       })
     } else {
@@ -118,7 +124,7 @@ function serveUpdateAPI (app) {
     if (!fileVersion) {
       return res.status(404).end()
     }
-    var redirectURL = `${RELEASE_PATH}/v${fileVersion}/${file}`
+    var redirectURL = `${RELEASES_URL}/v${fileVersion}/${file}`
     res.redirect(302, redirectURL)
   })
 }

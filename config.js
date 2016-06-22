@@ -1,3 +1,5 @@
+var path = require('path')
+
 var secret
 try { secret = require('./secret') } catch (err) {}
 
@@ -26,6 +28,8 @@ exports.gitterBot = {
   gitterApiKey: secret && secret.gitterApiKey
 }
 
-exports.logPath = '/home/feross/www/log/webtorrent.io'
+exports.logPath = process.env.NODE_ENV === 'production'
+  ? '/home/feross/www/log/webtorrent.io'
+  : path.join(__dirname, 'logs')
 
 exports.desktopVersion = '0.7.2'
