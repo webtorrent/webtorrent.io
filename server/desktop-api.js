@@ -19,8 +19,9 @@ var RELEASES_URL = 'https://github.com/feross/webtorrent-desktop/releases/downlo
 var TELEMETRY_PATH = path.join(config.logPath, 'telemetry')
 var CRASH_REPORTS_PATH = path.join(config.logPath, 'crash-reports')
 
-mkdirp.sync(TELEMETRY_PATH)
-mkdirp.sync(CRASH_REPORTS_PATH)
+// Attempt to create the needed log folders
+try { mkdirp.sync(TELEMETRY_PATH) } catch (err) {}
+try { mkdirp.sync(CRASH_REPORTS_PATH) } catch (err) {}
 
 function serve (app) {
   serveTelemetryAPI(app)
