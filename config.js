@@ -25,3 +25,5 @@ exports.gitterBot = {
   gitterRoom: 'feross/webtorrent',
   gitterApiKey: secret && secret.gitterApiKey
 }
+
+exports.logPath = '/home/feross/www/log/webtorrent.io'

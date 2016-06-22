@@ -4,12 +4,13 @@
 // - Log telemetry
 module.exports = { serve }
 
+const bodyParser = require('body-parser')
+const config = require('../config')
+const fs = require('fs')
+const multer = require('multer')
 const path = require('path')
 const semver = require('semver')
-const multer = require('multer')
-const bodyParser = require('body-parser')
 const url = require('url')
-const fs = require('fs')
 
 var APP_VERSION = require('webtorrent-desktop/package.json').version
 var RELEASE_PATH = 'https://github.com/feross/webtorrent-desktop/releases/download'
@@ -31,7 +32,7 @@ function serveTelemetryAPI (app) {
     var summaryJSON = JSON.stringify(req.body)
 
     var today = new Date().toISOString().substring(0, 10) // YYYY-MM-DD
-    var telemetryPath = path.join(__dirname, '..', 'telemetry', today + '.log')
+    var telemetryPath = path.join(config.logPath, 'telemetry', today + '.log')
 
     fs.appendFile(telemetryPath, summaryJSON + '\n', function (err) {
       if (err) {
@@ -45,7 +46,7 @@ function serveTelemetryAPI (app) {
 
 // Save electron process crash reports (from Crashpad), each in its own file
 function serveCrashReportsAPI (app) {
-  var crashReportsPath = path.join(__dirname, '..', 'crash-reports')
+  var crashReportsPath = path.join(config.logPath, 'crash-reports')
   var upload = multer({ dest: crashReportsPath }).single('upload_file_minidump')
 
   app.post('/desktop/crash-report', upload, function (req, res) {

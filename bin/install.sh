@@ -1,4 +1,8 @@
 #!/bin/sh
 set -e
 
-chmod 777 crash-reports
+mkdir -p /home/feross/www/log/webtorrent.io/crash-reports
+chmod 777 /home/feross/www/log/webtorrent.io/crash-reports
+
+mkdir -p /home/feross/www/log/webtorrent.io/telemetry
+chmod 777 /home/feross/www/log/webtorrent.io/telemetry
