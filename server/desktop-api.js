@@ -34,7 +34,7 @@ function serveTelemetryAPI (app) {
 
     fs.appendFile(telemetryPath, summaryJSON + '\n', function (err) {
       if (err) {
-        console.error('Error saving telemetry', err)
+        console.error('Error saving telemetry: ' + err.message)
         res.status(500)
       }
       res.end()
@@ -52,11 +52,12 @@ function serveCrashReportsAPI (app) {
     var crashLog = JSON.stringify(req.body, undefined, 2)
 
     fs.writeFile(req.file.path + '.json', crashLog, function (err) {
-      if (err) return console.error('Error saving crash report: ' + err.message)
-      console.log('Saved crash report:\n\t' + crashLog)
+      if (err) {
+        console.error('Error saving crash report: ' + err.message)
+        res.status(500)
+      }
+      res.end()
     })
-
-    res.end()
   })
 }
 
