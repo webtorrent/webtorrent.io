@@ -29,7 +29,7 @@ function serveTelemetryAPI (app) {
 
     var summary = req.body
     summary.ip = req.ip
-    var summaryJSON = JSON.stringify(req.body)
+    var summaryJSON = JSON.stringify(summary)
 
     var today = new Date().toISOString().substring(0, 10) // YYYY-MM-DD
     var telemetryPath = path.join(config.logPath, 'telemetry', today + '.log')
