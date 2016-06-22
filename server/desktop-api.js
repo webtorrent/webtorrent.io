@@ -25,8 +25,6 @@ function serve (app) {
 // Log telemetry JSON summaries to a file, one per line
 function serveTelemetryAPI (app) {
   app.post('/desktop/telemetry', bodyParser.json(), function (req, res) {
-    console.log('Saving telemetry from ' + req.ip)
-
     var summary = req.body
     summary.ip = req.ip
     var summaryJSON = JSON.stringify(summary)
