@@ -1,8 +1,10 @@
 #!/bin/sh
 set -e
 
-mkdir -p /home/feross/www/log/webtorrent.io/crash-reports
-chmod 777 /home/feross/www/log/webtorrent.io/crash-reports
+if [[ -d "$HOME/www/log/webtorrent.io" ]] ; then
+  mkdir -p $HOME/www/log/webtorrent.io/crash-reports
+  chmod 777 $HOME/www/log/webtorrent.io/crash-reports
 
-mkdir -p /home/feross/www/log/webtorrent.io/telemetry
-chmod 777 /home/feross/www/log/webtorrent.io/telemetry
+  mkdir -p $HOME/www/log/webtorrent.io/telemetry
+  chmod 777 $HOME/www/log/webtorrent.io/telemetry
+fi
