@@ -12,7 +12,7 @@ const path = require('path')
 const semver = require('semver')
 const url = require('url')
 
-var APP_VERSION = require('webtorrent-desktop/package.json').version
+var DESKTOP_VERSION = config.desktopVersion
 var RELEASE_PATH = 'https://github.com/feross/webtorrent-desktop/releases/download'
 
 function serve (app) {
@@ -84,13 +84,13 @@ function serveUpdateAPI (app) {
       version: version,
       ip: req.ip
     })
-    if (!semver.valid(version) || semver.lt(version, APP_VERSION)) {
+    if (!semver.valid(version) || semver.lt(version, DESKTOP_VERSION)) {
       // Update is required. Send update JSON.
       // Response format docs: https://github.com/Squirrel/Squirrel.Mac#update-json-format
       res.status(200).send({
-        name: 'WebTorrent v' + APP_VERSION,
-        url: `${RELEASE_PATH}/v${APP_VERSION}/WebTorrent-v${APP_VERSION}-darwin.zip`,
-        version: APP_VERSION
+        name: 'WebTorrent v' + DESKTOP_VERSION,
+        url: `${RELEASE_PATH}/v${DESKTOP_VERSION}/WebTorrent-v${DESKTOP_VERSION}-darwin.zip`,
+        version: DESKTOP_VERSION
       })
     } else {
       // No update required. User is on latest app version.
@@ -104,7 +104,7 @@ function serveUpdateAPI (app) {
     var file = pathname.replace(/^\/desktop\/update\//i, '')
     var fileVersion
     if (file === 'RELEASES') {
-      fileVersion = APP_VERSION
+      fileVersion = DESKTOP_VERSION
       logUpdateCheck({
         date: (new Date()).toString(),
         platform: req.query.platform,

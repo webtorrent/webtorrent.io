@@ -14,8 +14,6 @@ var url = require('url')
 var config = require('../config')
 var desktopApi = require('./desktop-api')
 
-var APP_VERSION = require('webtorrent-desktop/package.json').version
-
 unlimited()
 
 var app = express()
@@ -111,7 +109,7 @@ app.get('/desktop', function (req, res) {
   res.render('desktop', {
     cls: 'desktop',
     rawTitle: 'WebTorrent Desktop',
-    version: APP_VERSION
+    version: config.desktopVersion
   })
 })
 

@@ -27,3 +27,5 @@ exports.gitterBot = {
 }
 
 exports.logPath = '/home/feross/www/log/webtorrent.io'
+
+exports.desktopVersion = '0.7.2'

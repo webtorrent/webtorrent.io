@@ -46,7 +46,6 @@
     "throttleit": "^1.0.0",
     "unlimited": "^1.1.0",
     "webtorrent": "0.x",
-    "webtorrent-desktop": "github:feross/webtorrent-desktop",
     "xhr": "^2.2.0"
   },
   "devDependencies": {
