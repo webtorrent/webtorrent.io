@@ -32,4 +32,4 @@ exports.logPath = process.env.NODE_ENV === 'production'
   ? '/home/feross/www/log/webtorrent.io'
   : path.join(__dirname, 'logs')
 
-exports.desktopVersion = '0.7.2'
+exports.desktopVersion = '0.8.0'
