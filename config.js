@@ -3,6 +3,8 @@ var path = require('path')
 var secret
 try { secret = require('./secret') } catch (err) {}
 
+exports.desktopVersion = '0.8.1'
+
 exports.isProd = process.env.NODE_ENV === 'production'
 exports.host = process.env.NODE_ENV === 'production' && '23.92.26.245'
 
@@ -31,5 +33,3 @@ exports.gitterBot = {
 exports.logPath = process.env.NODE_ENV === 'production'
   ? '/home/feross/www/log/webtorrent.io'
   : path.join(__dirname, 'logs')
-
-exports.desktopVersion = '0.8.0'
