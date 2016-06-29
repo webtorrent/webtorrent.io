@@ -5,13 +5,18 @@
 module.exports = { serve }
 
 const bodyParser = require('body-parser')
-const config = require('../config')
+const express = require('express')
 const fs = require('fs')
 const mkdirp = require('mkdirp')
 const multer = require('multer')
 const path = require('path')
 const semver = require('semver')
+const serveIndex = require('serve-index')
 const url = require('url')
+
+const auth = require('./auth')
+const config = require('../config')
+const secret = require('../secret')
 
 var DESKTOP_VERSION = config.desktopVersion
 var RELEASES_URL = 'https://github.com/feross/webtorrent-desktop/releases/download'
@@ -48,6 +53,11 @@ function serveTelemetryAPI (app) {
       res.end()
     })
   })
+
+  var basicAuth = auth(secret.credentials)
+  var fileServer = express.static(TELEMETRY_PATH)
+  var indexServer = serveIndex(TELEMETRY_PATH)
+  app.use('/desktop/telemetry', [basicAuth, indexServer, fileServer])
 }
 
 // Save electron process crash reports (from Crashpad), each in its own file
@@ -133,4 +143,3 @@ function serveUpdateAPI (app) {
 function logUpdateCheck (log) {
   console.log('UPDATE CHECK: ' + JSON.stringify(log))
 }
-

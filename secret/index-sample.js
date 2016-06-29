@@ -1,5 +1,5 @@
 exports.gitterApiKey = ''
-exports.statsCredentials = {
-  name: '',
-  pass: ''
+exports.credentials = {
+  user1: 'password1',
+  user2: 'password2'
 }
