@@ -1,28 +1,25 @@
-var compress = require('compression')
-var cors = require('cors')
-var debug = require('debug')('webtorrent-www:web')
-var downgrade = require('downgrade')
-var express = require('express')
-var highlight = require('highlight.js')
-var http = require('http')
-var jade = require('jade')
-var marked = require('marked')
-var path = require('path')
-var unlimited = require('unlimited')
-var url = require('url')
+const compress = require('compression')
+const cors = require('cors')
+const debug = require('debug')('webtorrent-www:web')
+const downgrade = require('downgrade')
+const express = require('express')
+const highlight = require('highlight.js')
+const http = require('http')
+const jade = require('jade')
+const Remarkable = require('remarkable')
+const path = require('path')
+const unlimited = require('unlimited')
+const url = require('url')
 
-var config = require('../config')
-var desktopApi = require('./desktop-api')
+const config = require('../config')
+const desktopApi = require('./desktop-api')
 
 unlimited()
 
 var app = express()
 var server = http.createServer(app)
 
-jade.filters.markdown = marked
-
-// Use Jade + Markdown templates
-marked.setOptions({
+var remark = new Remarkable({
   highlight: function (code, lang) {
     var h = lang
       ? highlight.highlight(lang, code)
@@ -30,6 +27,8 @@ marked.setOptions({
     return '<div class="hljs">' + h.value + '</div>'
   }
 })
+
+jade.filters.markdown = (md) => remark.render(md)
 
 app.set('views', path.join(__dirname, 'views'))
 app.set('view engine', 'jade')
