@@ -5,7 +5,7 @@ const downgrade = require('downgrade')
 const express = require('express')
 const highlight = require('highlight.js')
 const http = require('http')
-const jade = require('jade')
+const pug = require('pug')
 const Remarkable = require('remarkable')
 const path = require('path')
 const unlimited = require('unlimited')
@@ -28,12 +28,12 @@ var remark = new Remarkable({
   }
 })
 
-jade.filters.markdown = (md) => remark.render(md)
+pug.filters.markdown = (md) => remark.render(md)
 
 app.set('views', path.join(__dirname, 'views'))
-app.set('view engine', 'jade')
+app.set('view engine', 'pug')
 app.set('x-powered-by', false)
-app.engine('jade', jade.renderFile)
+app.engine('pug', pug.renderFile)
 
 // Trust the X-Forwarded-* headers from http-proxy
 app.enable('trust proxy')
@@ -99,7 +99,7 @@ app.get('/torrents/*', cors(), express.static(path.join(__dirname, '../static'))
 // Serve static resources
 app.use(express.static(path.join(__dirname, '../static')))
 
-// Serve all the JADE pages
+// Serve all the pug pages
 app.get('/', function (req, res) {
   res.render('home', { rawTitle: 'WebTorrent - Streaming browser torrent client' })
 })
