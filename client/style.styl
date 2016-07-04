@@ -310,14 +310,28 @@ article
 
 #hero
   background-color: BLUE
+  text-align: center
 
-  @media DESKTOP
-    height: HERO_HEIGHT
-    margin: auto
+  #progressBar, #statusTop, #statusBottom, #svgWrap, #videoWrap
+    display: none
 
   .is-seed &
     background-color: DARK_GREEN
     transition: 0.5s 0.5s background-color ease-in-out
+
+#hero.loading
+  @media DESKTOP
+    height: HERO_HEIGHT
+    margin: auto
+
+  #progressBar, #statusTop, #statusBottom, #svgWrap, #videoWrap
+    display: block
+
+  #begin
+    display: none
+
+#begin
+  margin: 20px auto
 
 #svgWrap
   width: 100%
@@ -387,7 +401,6 @@ article
 #statusTop, #statusBottom
   width: 100%
   font-size: 17px
-  text-align: center
   color: #FFF
   z-index: 10
 
