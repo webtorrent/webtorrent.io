@@ -1,28 +1,26 @@
-var compress = require('compression')
-var cors = require('cors')
-var debug = require('debug')('webtorrent-www:web')
-var downgrade = require('downgrade')
-var express = require('express')
-var highlight = require('highlight.js')
-var http = require('http')
-var jade = require('jade')
-var marked = require('marked')
-var path = require('path')
-var unlimited = require('unlimited')
-var url = require('url')
+const compress = require('compression')
+const cors = require('cors')
+const debug = require('debug')('webtorrent-www:web')
+const downgrade = require('downgrade')
+const express = require('express')
+const highlight = require('highlight.js')
+const http = require('http')
+const pug = require('pug')
+const Remarkable = require('remarkable')
+const path = require('path')
+const unlimited = require('unlimited')
+const url = require('url')
+const fs = require('fs')
 
-var config = require('../config')
-var desktopApi = require('./desktop-api')
+const config = require('../config')
+const desktopApi = require('./desktop-api')
 
 unlimited()
 
 var app = express()
 var server = http.createServer(app)
 
-jade.filters.markdown = marked
-
-// Use Jade + Markdown templates
-marked.setOptions({
+var remark = new Remarkable({
   highlight: function (code, lang) {
     var h = lang
       ? highlight.highlight(lang, code)
@@ -31,10 +29,21 @@ marked.setOptions({
   }
 })
 
+pug.filters.markdown = (md, options) => {
+  // Workaround a Pug bug: https://github.com/pugjs/pug/issues/2440
+  if (md === options.filename) {
+    // This only happens once at compile time, so a synchronous read is fine.
+    var contents = fs.readFileSync(md, 'utf8')
+    return remark.render(contents)
+  } else {
+    return remark.render(md)
+  }
+}
+
 app.set('views', path.join(__dirname, 'views'))
-app.set('view engine', 'jade')
+app.set('view engine', 'pug')
 app.set('x-powered-by', false)
-app.engine('jade', jade.renderFile)
+app.engine('pug', pug.renderFile)
 
 // Trust the X-Forwarded-* headers from http-proxy
 app.enable('trust proxy')
@@ -100,7 +109,7 @@ app.get('/torrents/*', cors(), express.static(path.join(__dirname, '../static'))
 // Serve static resources
 app.use(express.static(path.join(__dirname, '../static')))
 
-// Serve all the JADE pages
+// Serve all the pug pages
 app.get('/', function (req, res) {
   res.render('home', { rawTitle: 'WebTorrent - Streaming browser torrent client' })
 })

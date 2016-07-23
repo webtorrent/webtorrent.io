@@ -33,14 +33,13 @@
     "gitter-irc-bot": "^1.0.0",
     "highlight.js": "^9.2.0",
     "http-proxy": "^1.9.0",
-    "jade": "^1.6.0",
-    "marked": "^0.3.5",
+    "pug": "2.0.0-beta3",
     "mkdirp": "^0.5.1",
     "moment": "^2.10.6",
     "multer": "^1.1.0",
-    "nib": "^1.0.2",
     "parse-torrent": "^5.0.1",
     "pretty-bytes": "^3.0.0",
+    "remarkable": "^1.6.2",
     "run-auto": "^2.0.0",
     "semver": "^5.1.0",
     "serve-index": "^1.8.0",
@@ -75,7 +74,7 @@
   },
   "scripts": {
     "build": "npm run build-css && npm run build-js",
-    "build-css": "stylus -u nib --include-css client/style.styl -o static/ -c",
+    "build-css": "stylus --include-css client/style.styl -o static/ -c",
     "build-js": "browserify client > static/bundle.js",
     "download-secret": "rsync -a -O -v --delete -e \"ssh\" feross@webtorrent:\"/home/feross/www/webtorrent.io/secret/\" secret/",
     "download-static": "rsync -a -O -v --delete -e \"ssh\" feross@webtorrent:\"/home/feross/www/webtorrent.io/static/torrents/\" static/torrents/",
@@ -84,7 +83,7 @@
     "upload-secret": "rsync -a -O -v --delete -e \"ssh\" secret/ feross@webtorrent:/home/feross/www/webtorrent.io/secret/",
     "upload-static": "rsync -a -O -v --delete -e \"ssh\" static/torrents/ feross@webtorrent:/home/feross/www/webtorrent.io/static/torrents/",
     "watch": "npm run watch-css & npm run watch-js & DEBUG=webtorrent*,bittorrent* nodemon server",
-    "watch-css": "stylus -u nib --include-css client/style.styl -o static/ -w",
+    "watch-css": "stylus --include-css client/style.styl -o static/ -w",
     "watch-js": "watchify client -o static/bundle.js -dv"
   }
 }
