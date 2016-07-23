@@ -30,14 +30,7 @@ var remark = new Remarkable({
 })
 
 pug.filters.markdown = (md, options) => {
-  // Workaround a Pug bug: https://github.com/pugjs/pug/issues/2440
-  if (md === options.filename) {
-    // This only happens once at compile time, so a synchronous read is fine.
-    var contents = fs.readFileSync(md, 'utf8')
-    return remark.render(contents)
-  } else {
-    return remark.render(md)
-  }
+  return remark.render(md)
 }
 
 app.set('views', path.join(__dirname, 'views'))
