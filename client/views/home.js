@@ -22,7 +22,11 @@ module.exports = function () {
 
   var torrent
   function createClient (rtcConfig) {
-    var client = window.client = new WebTorrent({ rtcConfig: rtcConfig })
+    var client = window.client = new WebTorrent({
+      tracker: {
+        rtcConfig: rtcConfig
+      }
+    })
     client.on('warning', onWarning)
     client.on('error', onError)
 
