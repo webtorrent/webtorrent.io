@@ -79,6 +79,9 @@ h1
   @media PHONE
     font-size: mobile_font_shrink(H1_FONT_SIZE)
 
+  em
+    border-bottom: 6px solid rgba(0, 0, 0, 0.2)
+
 h2
   font-size: H2_FONT_SIZE
 
@@ -327,6 +330,9 @@ article
     padding-top: 30px
     line-height: 1
 
+    em
+      border-bottom: 6px solid rgba(255, 255, 255, 0.2)
+
 #svgWrap
   width: 100%
   max-width: PAGE_WIDTH
@@ -493,6 +499,7 @@ body.is-seed .show-leech
 .downloads
   text-align: center
   margin-bottom: 0
+  font-size: 18px
 
   .download
     display: inline-block
@@ -510,6 +517,16 @@ body.is-seed .show-leech
   .download:hover
     text-decoration: none
     background-color: LIGHT_GREEN
+
+.feature-block p.downloads
+  font-size: 18px
+  line-height: 27px
+
+.feature-block p.other-downloads
+  font-size: 14px
+  line-height: 21px
+  a
+    color: DARK_GREEN
 
 .other-downloads
   text-align: center
