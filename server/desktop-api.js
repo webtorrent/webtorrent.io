@@ -92,7 +92,7 @@ function serveUpdateAPI (app) {
     res.redirect(301, req.url.replace('/app/', '/desktop/'))
   })
 
-  // WebTorrent Desktop OS X auto-update endpoint
+  // WebTorrent Desktop Mac auto-update endpoint
   app.get('/desktop/update', function (req, res) {
     var version = req.query.version
     logUpdateCheck({
