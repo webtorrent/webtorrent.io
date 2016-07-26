@@ -3,20 +3,22 @@ extends layout
 block body
   #hero
     #progressBar
-    #statusTop
-      span.show-leech #{ 'Downloading ' }
-      span.show-seed #{ 'Seeding ' }
-      code: a#torrentLink(href='https://webtorrent.io/torrents/sintel.torrent') sintel.torrent
-      span.show-leech #{ ' from ' }
-      span.show-seed #{ ' to ' }
-      code#numPeers 0 peers
-      | #{ '. ' }
-    #statusBottom
-      code#downloaded
-      | #{ ' of '}
-      code#total
-      | #{ ' — '}
-      span#remaining
+    h1 Torrents on the <u>web</u>
+    #status
+      #statusLeft
+        span.show-leech #{ 'Downloading ' }
+        span.show-seed #{ 'Seeding ' }
+        code: a#torrentLink(href='https://webtorrent.io/torrents/sintel.torrent') sintel.torrent
+        span.show-leech #{ ' from ' }
+        span.show-seed #{ ' to ' }
+        code#numPeers 0 peers
+        | #{ '. ' }
+      #statusRight
+        code#downloaded
+        | #{ ' of '}
+        code#total
+        | #{ ' — '}
+        span#remaining
     #svgWrap
       div.torrent-graph
     #videoWrap
@@ -24,37 +26,56 @@ block body
 
   .feature-block
     article
-      h1.beta-release Introducing WebTorrent Desktop
+      h1.minimal.beta-release Torrents on the <u>deskop</u>
       a(href='/desktop', title='WebTorrent Desktop')
         img(src='/img/screenshot-player.png')
-      h2 The streaming torrent client for OS X, Windows, and Linux
-      p WebTorrent Desktop is fast, free, totally non-commercial and open source. WebTorrent Desktop can talk to both BitTorrent and WebTorrent peers.
+      h2 The streaming torrent client for Mac, Windows, &amp; Linux
+      p
+        | WebTorrent Desktop lets you stream torrents. Whether it's
+        | video from the
+        = ' '
+        a(href='https://archive.org') Internet Archive
+        | , music from
+        = ' '
+        a(href='https://creativecommons.org/music-communities/') Creative Commons
+        | , or audiobooks from
+        = ' '
+        a(href='https://librivox.org/') Librivox
+        | , you can play it right away. You don't have to wait for it to finish downloading.
+
+      p WebTorrent Desktop is fast, free, non-commercial &amp; open source.
       div.featuredCenter
-        a.btn.large(href='/desktop') Check It Out
+        a.btn.large(href='/desktop') Get WebTorrent Desktop
 
   .feature-block
     article
       :markdown
-        # BitTorrent over WebRTC
+        # What is WebTorrent?
 
-        **WebTorrent** is a streaming torrent client for the **browser**. YEP, THAT'S RIGHT. THE BROWSER.
+        **WebTorrent** is a streaming torrent client for the **web browser** and the **desktop**.
 
-        It's written completely in JavaScript – the language of the web – and uses
-        **WebRTC** for true peer-to-peer transport. No browser plugins, extensions, or
-        installation is required.
+        WebTorrent is written completely in JavaScript – the language of the web –
+        and uses **WebRTC** for peer-to-peer transport whenever possible. No
+        browser plugins, extensions, or installation is required to use WebTorrent
+        in your browser.
 
         ## Why?
 
-        Imagine a peer-to-peer YouTube where viewers help to host the site's content. By making BitTorrent easier to use, we can get more people to participate and take the first steps to re-decentralizing the Internet.
+        Imagine a peer-to-peer YouTube where viewers help to host the site's
+        content. By making BitTorrent easier to use, we can get more people to
+        participate and take the first steps to re-decentralizing the Internet.
 
         ## How do I try it out?
 
-        You can see WebTorrent in action at [Instant.io](https://instant.io).
+        See WebTorrent in action on the Web at [Instant.io](https://instant.io).
         Send a file to a friend using BitTorrent!
+
+        Or, install [WebTorrent Desktop](/desktop) for Mac, Windows, and Linux.
+        Try out a fast, lightweight, new torrent client today!
 
   .feature-block
     article
-      h1 Learn more about WebTorrent
+      h1.minimal Learn more about WebTorrent
       div.featuredCenter
         a.btn.large(href='/intro') Get Started
         a.btn.large(href='/docs') Docs

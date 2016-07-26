@@ -12,7 +12,7 @@ BLUE = #2A3749
 
 PAGE_WIDTH = 1150px
 ARTICLE_WIDTH = 840px
-HERO_HEIGHT = 420px
+HERO_HEIGHT = 460px
 
 PHONE = 'only screen and (max-width: 899px)'
 DESKTOP = 'only screen and (min-width: 900px)'
@@ -78,6 +78,7 @@ h1
 
   @media PHONE
     font-size: mobile_font_shrink(H1_FONT_SIZE)
+
 h2
   font-size: H2_FONT_SIZE
 
@@ -293,13 +294,16 @@ article
   h1
     text-align: center
 
-  h1:after
+  h1:not(.minimal):after
     content: ''
     display: block
     width: 100px
     height: 5px
     background: GRAY
     margin: 5px auto
+
+  h1.minimal
+    margin: 0
 
 //
 // HERO
@@ -310,11 +314,18 @@ article
 
   @media DESKTOP
     height: HERO_HEIGHT
-    margin: auto
+    margin: 0 auto
 
   .is-seed &
     background-color: DARK_GREEN
     transition: 0.5s 0.5s background-color ease-in-out
+
+  h1
+    color: white
+    text-align: center
+    margin: 0 0 -60px 0
+    padding-top: 30px
+    line-height: 1
 
 #svgWrap
   width: 100%
@@ -381,15 +392,15 @@ article
   @media DESKTOP
     position: absolute
 
-#statusTop, #statusBottom
-  width: 100%
-  font-size: 17px
-  text-align: center
+#status
   color: #FFF
+  font-size: 17px
+  width: 100%
+  max-width: PAGE_WIDTH
+  margin-left: auto
+  margin-right: auto
   z-index: 10
-
-  @media DESKTOP
-    position: absolute
+  position: relative
 
   code
     font-size: 90%
@@ -398,17 +409,29 @@ article
     margin-right: 3px
     border-bottom: 1px dashed rgba(#FFF, 0.3)
 
-#statusTop
-  margin: 22px 0
+#statusLeft, #statusRight
+  text-align: center
+  // border: 1px solid red
 
-  @media PHONE
-    padding: 22px 0px 0px 0px
-
-#statusBottom
-  @media PHONE
-    padding: 0px 0px 22px 0px
   @media DESKTOP
-    margin-top: 376px
+    position: absolute
+    margin-top: 400px
+
+#statusLeft
+  @media DESKTOP
+    width: 40%
+    margin-left: 0
+
+  @media PHONE
+    margin-top: 90px
+
+#statusRight
+  @media DESKTOP
+    width: 60%
+    margin-left: 40%
+
+  @media PHONE
+    margin-top: 15px
 
 a#torrentLink:link, a#torrentLink:visited
   text-decoration: none
