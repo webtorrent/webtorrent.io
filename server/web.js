@@ -20,6 +20,7 @@ var app = express()
 var server = http.createServer(app)
 
 var remark = new Remarkable({
+  html: true,
   highlight: function (code, lang) {
     var h = lang
       ? highlight.highlight(lang, code)
