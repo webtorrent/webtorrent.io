@@ -1,0 +1,32 @@
+extends layout
+
+block head
+  link(
+    rel='stylesheet',
+    href='//cdnjs.cloudflare.com/ajax/libs/nvd3/1.8.4/nv.d3.min.css'
+  )
+
+block body
+  article.telemetry-dashboard
+    h1 Telemetry dashboard
+
+    h2 Stats
+    div.telemetry-charts
+      h3 Active users
+      svg#chart-actives
+      h3 Retention
+      svg#chart-retention
+
+    h2 Log files
+    div.telemetry-logs
+      each month in filesByMonth
+        div
+          each file in month
+            a(href=file)
+              =file
+
+    script.
+      window.summary = !{JSON.stringify(summary)}
+    script(src='//cdnjs.cloudflare.com/ajax/libs/d3/3.5.17/d3.js')
+    script(src='//cdnjs.cloudflare.com/ajax/libs/nvd3/1.8.4/nv.d3.js')
+    script(src='script.js')

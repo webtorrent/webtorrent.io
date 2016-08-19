@@ -11,7 +11,6 @@ const mkdirp = require('mkdirp')
 const multer = require('multer')
 const path = require('path')
 const semver = require('semver')
-const serveIndex = require('serve-index')
 const url = require('url')
 
 const auth = require('./auth')
@@ -54,10 +53,108 @@ function serveTelemetryAPI (app) {
     })
   })
 
-  var basicAuth = auth(secret.credentials)
-  var fileServer = express.static(TELEMETRY_PATH)
-  var indexServer = serveIndex(TELEMETRY_PATH)
-  app.use('/desktop/telemetry', [basicAuth, indexServer, fileServer])
+  app.use('/desktop/telemetry/', [
+    auth(secret.credentials),
+    serveTelemetryDashboard,
+    express.static(TELEMETRY_PATH)
+  ])
+}
+
+// Summarize telemetry information: active users, monthly growth, most common errors, etc
+function serveTelemetryDashboard (req, res, next) {
+  var isSummary = false
+  if (req.url === '/') {
+    var path = req.originalUrl // eg '/desktop/telemetry'
+    if (!path.endsWith('/')) return res.redirect(path + '/')
+  } else if (req.url === '/summary') {
+    isSummary = true
+  } else {
+    return next()
+  }
+
+  fs.readdir(TELEMETRY_PATH, function (err, files) {
+    if (err) return res.status(500).send(err.message)
+
+    var filesByMonth = []
+    files.forEach(function (file, i) {
+      if (i === 0 || file.substring(0, 7) !== files[i - 1].substring(0, 7)) {
+        filesByMonth.push([])
+      }
+      filesByMonth[filesByMonth.length - 1].push(file)
+    })
+
+    loadSummary(files).then(function (summary) {
+      if (isSummary) res.json(summary)
+      else res.render('telemetry-dashboard', {filesByMonth, summary})
+    }).catch(function (err) {
+      res.status(500).send(err.message)
+    })
+  })
+}
+
+function loadSummary (files) {
+  var logFiles = files.filter((f) => /\d{4}-\d{2}-\d{2}.log/.test(f))
+  console.log('Computing summary for ' + logFiles.length + ' files')
+  return Promise.all(logFiles.map(function (file) {
+    return new Promise(function (resolve, reject) {
+      var filePath = path.join(TELEMETRY_PATH, file)
+      fs.readFile(filePath, 'utf8', function (err, json) {
+        if (err) return reject(err)
+        try {
+          var lines = json.trim().split('\n')
+          var records = lines.map(JSON.parse)
+        } catch (err) {
+          return reject(err)
+        }
+        console.log('Read ' + records.length + ' rows from ' + file)
+        var uniqueUsers = {}
+        records.forEach(function (record) {
+          uniqueUsers[record.userID] = true
+        })
+        return resolve({
+          date: file.substring(0, 10),
+          uniqueUsers
+        })
+      })
+    })
+  })).then(function (days) {
+    var uniqueUsers = {}
+    return days.map(function (day, i) {
+      Object.assign(uniqueUsers, day.uniqueUsers)
+      return {
+        date: day.date,
+        actives: {
+          today: computeActives(days, i, 1),
+          day7: computeActives(days, i, 7),
+          day30: computeActives(days, i, 30)
+        },
+        retention: {
+          day1: i < 1 ? null : computeRetention(day, days[i - 1]),
+          day7: i < 7 ? null : computeRetention(day, days[i - 7]),
+          day28: i < 28 ? null : computeRetention(day, days[i - 28])
+        },
+        errors: {} // TODO
+      }
+    })
+  })
+}
+
+function computeActives (days, index, numPrev) {
+  if (index < numPrev - 1) return null
+  var combined = {}
+  for (var i = index - numPrev + 1; i <= index; i++) {
+    Object.assign(combined, days[i].uniqueUsers)
+  }
+  return Object.keys(combined).length
+}
+
+function computeRetention (day, prevDay) {
+  var combined = Object.assign({}, day.uniqueUsers, prevDay.uniqueUsers)
+  var numCombined = Object.keys(combined).length
+  var numToday = Object.keys(day.uniqueUsers).length
+  var numPrev = Object.keys(prevDay.uniqueUsers).length
+  var numLost = numCombined - numToday
+  return (numPrev - numLost) / numPrev
 }
 
 // Save electron process crash reports (from Crashpad), each in its own file
