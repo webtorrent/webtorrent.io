@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 
+const get = require('simple-get')
 const config = require('../config')
 const path = require('path')
 const fs = require('fs')
@@ -16,8 +17,14 @@ function main () {
     // Filter down to just log files...
     var logFiles = files.filter((f) => /\d{4}-\d{2}-\d{2}.log/.test(f))
 
+    var summary = {}
     // Read them all and collect summary stats...
-    loadSummary(logFiles).then(function (summary) {
+    loadTelemetrySummary(logFiles).then(function (telemetry) {
+      summary.telemetry = telemetry
+      // Load WebTorrent Desktop release history from Github...
+      return loadReleases()
+    }).then(function (releases) {
+      summary.releases = releases
       // Finally, write summary.json
       var summaryPath = path.join(TELEMETRY_PATH, 'summary.json')
       var summaryJSON = JSON.stringify(summary, null, 2) // pretty print
@@ -25,9 +32,7 @@ function main () {
         if (err) die(err)
         console.log('Done!')
       })
-    }, function (err) {
-      die(err)
-    })
+    }).catch(die)
   })
 }
 
@@ -38,7 +43,7 @@ function die (err) {
 
 // Reads telemetry log files in parallel, then produces a summary array, one
 // entry for each day: [{date, actives, retention, ...}, ...]
-function loadSummary (logFiles) {
+function loadTelemetrySummary (logFiles) {
   console.log('Summarizing ' + logFiles.length + ' telemetry log files')
   return Promise.all(logFiles.map(function (file) {
     return new Promise(function (resolve, reject) {
@@ -104,4 +109,28 @@ function computeRetention (day, prevDay) {
   var numPrev = Object.keys(prevDay.uniqueUsers).length
   var numLost = numCombined - numToday
   return (numPrev - numLost) / numPrev
+}
+
+// Loads all WebTorrent Desktop releases
+// Callback: (err, [{tag_name, published_at}, ...])
+function loadReleases (cb) {
+  var opts = {
+    url: 'https://api.github.com/repos/feross/webtorrent-desktop/releases',
+    json: true,
+    headers: {
+      'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/52.0.2743.116 Safari/537.36'
+    }
+  }
+
+  return new Promise(function (resolve, reject) {
+    console.log('Fetching ' + opts.url)
+    get.concat(opts, function (err, res, data) {
+      if (err) return reject(err)
+      console.log('Got ' + data.length + ' WebTorrent Desktop releases')
+      var releases = data.map(function (d) {
+        return {tag_name: d.tag_name, published_at: d.published_at}
+      })
+      resolve(releases)
+    })
+  })
 }
