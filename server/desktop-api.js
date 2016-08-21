@@ -103,7 +103,7 @@ function serveTelemetryDashboard (req, res, next) {
         var today = summary.telemetry[summary.telemetry.length - 1]
         var tMinus7 = summary.telemetry[summary.telemetry.length - 8]
         var percentWeeklyGrowth =
-          (100 * today.actives.day7 / tMinus7.actives.day7 - 100).toFixed(1)
+          (100 * today.actives.last7 / tMinus7.actives.last7 - 100).toFixed(1)
       }
       res.render('telemetry-dashboard',
         {filesByMonth, summary, percentWeeklyGrowth})
