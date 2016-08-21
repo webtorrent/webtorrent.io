@@ -38,6 +38,9 @@ app.set('view engine', 'pug')
 app.set('x-powered-by', false)
 app.engine('pug', pug.renderFile)
 
+// Pretty print JSON
+app.set('json spaces', 2)
+
 // Trust the X-Forwarded-* headers from http-proxy
 app.enable('trust proxy')
 

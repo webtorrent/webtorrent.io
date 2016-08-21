@@ -11,7 +11,6 @@ const mkdirp = require('mkdirp')
 const multer = require('multer')
 const path = require('path')
 const semver = require('semver')
-const serveIndex = require('serve-index')
 const url = require('url')
 
 const auth = require('./auth')
@@ -54,10 +53,42 @@ function serveTelemetryAPI (app) {
     })
   })
 
-  var basicAuth = auth(secret.credentials)
-  var fileServer = express.static(TELEMETRY_PATH)
-  var indexServer = serveIndex(TELEMETRY_PATH)
-  app.use('/desktop/telemetry', [basicAuth, indexServer, fileServer])
+  app.use('/desktop/telemetry/', [
+    auth(secret.credentials),
+    serveTelemetryDashboard,
+    express.static(TELEMETRY_PATH)
+  ])
+}
+
+// Summarize telemetry information: active users, monthly growth, most common errors, etc
+function serveTelemetryDashboard (req, res, next) {
+  if (req.url !== '/') return next()
+  var orig = req.originalUrl // eg '/desktop/telemetry'
+  if (!orig.endsWith('/')) return res.redirect(orig + '/')
+
+  // Once we get here, we're serving this exact path: /desktop/telemetry/
+  fs.readdir(TELEMETRY_PATH, function (err, files) {
+    if (err) return res.status(500).send(err.message)
+
+    var filesByMonth = []
+    files.forEach(function (file, i) {
+      if (i === 0 || file.substring(0, 7) !== files[i - 1].substring(0, 7)) {
+        filesByMonth.push([])
+      }
+      filesByMonth[filesByMonth.length - 1].push(file)
+    })
+
+    var summaryPath = path.join(TELEMETRY_PATH, 'summary.json')
+    fs.readFile(summaryPath, 'utf8', function (err, summaryJSON) {
+      var summary = err ? [] : JSON.parse(summaryJSON)
+      var today = summary.telemetry[summary.telemetry.length - 1]
+      var tMinus7 = summary.telemetry[summary.telemetry.length - 8]
+      var percentWeeklyGrowth =
+        (100 * today.actives.day7 / tMinus7.actives.day7 - 100).toFixed(1)
+      res.render('telemetry-dashboard',
+        {filesByMonth, summary, percentWeeklyGrowth})
+    })
+  })
 }
 
 // Save electron process crash reports (from Crashpad), each in its own file

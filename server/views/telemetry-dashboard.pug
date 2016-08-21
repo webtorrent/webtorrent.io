@@ -1,0 +1,46 @@
+extends layout
+
+block head
+  link(
+    rel='stylesheet',
+    href='//cdnjs.cloudflare.com/ajax/libs/nvd3/1.8.4/nv.d3.min.css'
+  )
+
+block body
+  article.telemetry-dashboard
+    h1 Telemetry dashboard
+
+    h2 Stats
+    div.telemetry-charts
+      section
+        h3 Active users
+        p For each date, how many unique users ran the app that day? (If they opened the app before but left it running overnight, that still counts.) How many people ran the app anytime in the last week? Last month?
+        svg#chart-actives
+        p
+          strong Week-over-week growth: #{percentWeeklyGrowth}%
+        p Calculated by dividing the number of users in the last 7 days by the previous 7 days. Target: 5+%
+
+      section
+        h3 Installs
+        svg#chart-installs
+
+      section
+        h3 Retention
+        p
+          | !{'Classic retention: of users who installed the app exactly <i>n</i> days ago, how many used the app today? More details:  '}
+          a(href='http://www.applift.com/blog/user-retention') calculating retention
+        svg#chart-retention
+
+    h2 Log files
+    div.telemetry-logs
+      each month in filesByMonth
+        div
+          each file in month
+            a(href=file)
+              =file
+
+    script.
+      window.summary = !{JSON.stringify(summary)}
+    script(src='//cdnjs.cloudflare.com/ajax/libs/d3/3.5.17/d3.js')
+    script(src='//cdnjs.cloudflare.com/ajax/libs/nvd3/1.8.4/nv.d3.js')
+    script(src='script.js')
