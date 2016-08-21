@@ -5,6 +5,7 @@
 module.exports = { serve }
 
 const bodyParser = require('body-parser')
+const cp = require('child_process')
 const express = require('express')
 const fs = require('fs')
 const mkdirp = require('mkdirp')
@@ -23,9 +24,22 @@ var RELEASES_URL = 'https://github.com/feross/webtorrent-desktop/releases/downlo
 var TELEMETRY_PATH = path.join(config.logPath, 'telemetry')
 var CRASH_REPORTS_PATH = path.join(config.logPath, 'crash-reports')
 
+var SUMMARIZE_PATH = path.join(__dirname, '..', 'bin', 'summarize-telemetry.js')
+
 // Attempt to create the needed log folders
 try { mkdirp.sync(TELEMETRY_PATH) } catch (err) {}
 try { mkdirp.sync(CRASH_REPORTS_PATH) } catch (err) {}
+
+/**
+ * Summarize the telemetry into summary.json, every once in a while. Takes
+ * a bit of time to crunch, so we do it in the background. The dashboard uses
+ * the data in summary.json.
+ *
+ * This is a poor-man's cron-job :) It's nice because it keeps everything in
+ * this repo, though.
+ */
+summarizeTelemetry()
+setInterval(summarizeTelemetry, 24 * 3600 * 1000)
 
 function serve (app) {
   serveTelemetryAPI(app)
@@ -81,10 +95,12 @@ function serveTelemetryDashboard (req, res, next) {
     var summaryPath = path.join(TELEMETRY_PATH, 'summary.json')
     fs.readFile(summaryPath, 'utf8', function (err, summaryJSON) {
       var summary = err ? [] : JSON.parse(summaryJSON)
-      var today = summary.telemetry[summary.telemetry.length - 1]
-      var tMinus7 = summary.telemetry[summary.telemetry.length - 8]
-      var percentWeeklyGrowth =
-        (100 * today.actives.day7 / tMinus7.actives.day7 - 100).toFixed(1)
+      if (summary.telemetry) {
+        var today = summary.telemetry[summary.telemetry.length - 1]
+        var tMinus7 = summary.telemetry[summary.telemetry.length - 8]
+        var percentWeeklyGrowth =
+          (100 * today.actives.day7 / tMinus7.actives.day7 - 100).toFixed(1)
+      }
       res.render('telemetry-dashboard',
         {filesByMonth, summary, percentWeeklyGrowth})
     })
@@ -173,4 +189,11 @@ function serveUpdateAPI (app) {
 
 function logUpdateCheck (log) {
   console.log('UPDATE CHECK: ' + JSON.stringify(log))
+}
+
+function summarizeTelemetry () {
+  var child = cp.spawn(SUMMARIZE_PATH, [])
+  child.on('close', function (code) {
+    console.log(`Summarize telemetry script exited with code: ${code}`)
+  })
 }
