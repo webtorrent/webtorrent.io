@@ -94,8 +94,10 @@ function serveTelemetryDashboard (req, res, next) {
 
     var summaryPath = path.join(TELEMETRY_PATH, 'summary.json')
     fs.readFile(summaryPath, 'utf8', function (err, summaryJSON) {
-      var summary = err ? [] : JSON.parse(summaryJSON)
-      if (summary.telemetry) {
+      var summary = err
+        ? { telemetry: [] }
+        : JSON.parse(summaryJSON)
+      if (summary.telemetry && summary.telemetry.length > 0) {
         var today = summary.telemetry[summary.telemetry.length - 1]
         var tMinus7 = summary.telemetry[summary.telemetry.length - 8]
         var percentWeeklyGrowth =
