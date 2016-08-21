@@ -10,25 +10,38 @@ block body
   article.telemetry-dashboard
     h1 Telemetry dashboard
 
-    h2 Stats
-    div.telemetry-charts
-      section
-        h3 Active users
-        p For each date, how many unique users ran the app that day? (If they opened the app before but left it running overnight, that still counts.) How many people ran the app anytime in the last week? Last month?
-        svg#chart-actives
-        p
-          strong Week-over-week growth: #{percentWeeklyGrowth}%
-        p Calculated by dividing the number of users in the last 7 days by the previous 7 days. Target: 5+%
+    h2 Growth
+    section
+      h3 Active users
+      p For each date, how many unique users ran the app that day? (If they opened the app before but left it running overnight, that still counts.) How many people ran the app anytime in the last week? Last month?
+      svg#chart-actives
+      p
+        strong Week-over-week growth: #{percentWeeklyGrowth}%
+      p Calculated by dividing the number of users in the last 7 days by the previous 7 days. Target: 5+%
 
-      section
-        h3 Installs
-        svg#chart-installs
+    section
+      h3 Installs
+      svg#chart-installs
 
-      section
-        h3 Retention
-        p
-          | <a href="http://www.applift.com/blog/user-retention">Classic retention</a>: Of users who installed the app exactly <i>n</i> days ago, what percentage used the app today?
-        svg#chart-retention
+    section
+      h3 Retention
+      p
+        | <a href="http://www.applift.com/blog/user-retention">Classic retention</a>: Of users who installed the app exactly <i>n</i> days ago, what percentage used the app today?
+      svg#chart-retention
+
+    h2 Quality
+    section
+      h3 Error rate
+      p The fraction of telemetry reports that have uncaught errors. The app sends a report every time it starts, plus once every 24 hours.
+      svg#chart-error
+
+    //-
+      h3 Most common errors this week
+      each error in mostCommonErrors
+        div.error-row
+          span.error-count #{error.count}
+          span.error-message #{error.message}
+          div.error-stacktrace #{error.stackTrace}
 
     h2 Log files
     div.telemetry-logs

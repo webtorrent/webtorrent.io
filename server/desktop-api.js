@@ -31,15 +31,17 @@ try { mkdirp.sync(TELEMETRY_PATH) } catch (err) {}
 try { mkdirp.sync(CRASH_REPORTS_PATH) } catch (err) {}
 
 /**
- * Summarize the telemetry into summary.json, every once in a while. Takes
+ * Summarize the telemetry into summary.json, every three hours. Takes
  * a bit of time to crunch, so we do it in the background. The dashboard uses
  * the data in summary.json.
  *
- * This is a poor-man's cron-job :) It's nice because it keeps everything in
- * this repo, though.
+ * This is a poor-man's cron-job. Not running in development by default to
+ * avoid hitting Github's API too often.
  */
-summarizeTelemetry()
-setInterval(summarizeTelemetry, 24 * 3600 * 1000)
+if (process.env.NODE_ENV === 'production') {
+  summarizeTelemetry()
+  setInterval(summarizeTelemetry, 3 * 3600 * 1000)
+}
 
 function serve (app) {
   serveTelemetryAPI(app)

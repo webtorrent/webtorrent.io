@@ -2,8 +2,11 @@ var nv = window.nv
 var d3 = window.d3
 var summary = window.summary
 
-var dataActives = ['today', 'day7', 'day30'].map(function (key) {
-  var values = summary.telemetry.map(function (day) {
+// Don't include partial data from today
+var telemetry = summary.telemetry.slice(0, summary.telemetry.length - 1)
+
+var dataActives = ['today', 'last7', 'last30'].map(function (key) {
+  var values = telemetry.map(function (day) {
     return {
       x: new Date(day.date).getTime(),
       y: day.actives[key]
@@ -14,7 +17,7 @@ var dataActives = ['today', 'day7', 'day30'].map(function (key) {
 
 var dataInstalls = [{
   key: 'new users',
-  values: summary.telemetry.map(function (day) {
+  values: telemetry.map(function (day) {
     return {
       x: new Date(day.date).getTime(),
       y: day.installs
@@ -23,10 +26,20 @@ var dataInstalls = [{
 }]
 
 var dataRetention = ['day1', 'day7', 'day28'].map(function (key) {
-  var values = summary.telemetry.map(function (day) {
+  var values = telemetry.map(function (day) {
     return {
       x: new Date(day.date).getTime(),
       y: day.retention[key]
+    }
+  })
+  return {key, values}
+})
+
+var dataErrors = ['today', 'last7'].map(function (key) {
+  var values = telemetry.map(function (day) {
+    return {
+      x: new Date(day.date).getTime(),
+      y: day.errorRates[key]
     }
   })
   return {key, values}
@@ -43,6 +56,10 @@ var chartInfos = [{
 }, {
   selector: '#chart-retention',
   data: dataRetention,
+  yFormat: d3.format(',.2f')
+}, {
+  selector: '#chart-error',
+  data: dataErrors,
   yFormat: d3.format(',.2f')
 }]
 
