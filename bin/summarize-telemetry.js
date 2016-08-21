@@ -70,7 +70,9 @@ function loadTelemetrySummary (logFiles) {
   })).then(function (days) {
     var uniqueUsers = {}
     return days.map(function (day, i) {
+      var numUsersYesterday = Object.keys(uniqueUsers).length
       Object.assign(uniqueUsers, day.uniqueUsers)
+      var numInstalls = Object.keys(uniqueUsers).length - numUsersYesterday
       return {
         date: day.date,
         actives: {
@@ -78,6 +80,7 @@ function loadTelemetrySummary (logFiles) {
           day7: computeActives(days, i, 7),
           day30: computeActives(days, i, 30)
         },
+        installs: numInstalls,
         retention: {
           day1: i < 1 ? null : computeRetention(day, days[i - 1]),
           day7: i < 7 ? null : computeRetention(day, days[i - 7]),

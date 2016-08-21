@@ -12,6 +12,16 @@ var dataActives = ['today', 'day7', 'day30'].map(function (key) {
   return {key, values}
 })
 
+var dataInstalls = [{
+  key: 'new users',
+  values: summary.telemetry.map(function (day) {
+    return {
+      x: new Date(day.date).getTime(),
+      y: day.installs
+    }
+  })
+}]
+
 var dataRetention = ['day1', 'day7', 'day28'].map(function (key) {
   var values = summary.telemetry.map(function (day) {
     return {
@@ -25,6 +35,10 @@ var dataRetention = ['day1', 'day7', 'day28'].map(function (key) {
 var chartInfos = [{
   selector: '#chart-actives',
   data: dataActives,
+  yFormat: d3.format(',.0f')
+}, {
+  selector: '#chart-installs',
+  data: dataInstalls,
   yFormat: d3.format(',.0f')
 }, {
   selector: '#chart-retention',

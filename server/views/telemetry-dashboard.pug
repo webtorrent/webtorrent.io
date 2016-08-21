@@ -12,17 +12,24 @@ block body
 
     h2 Stats
     div.telemetry-charts
-      h3 Active users
-      p For each date, how many unique users ran the app that day? (If they opened the app before but left it running overnight, that still counts.) How many people ran the app anytime in the last week? Last month?
-      h4 Week-over-week growth: #{percentWeeklyGrowth}%
-      p !{'Calculated by dividing the number of users in the last 7 days by the previous 7 days. Target: 5+%'}
-      svg#chart-actives
+      section
+        h3 Active users
+        p For each date, how many unique users ran the app that day? (If they opened the app before but left it running overnight, that still counts.) How many people ran the app anytime in the last week? Last month?
+        svg#chart-actives
+        p
+          strong Week-over-week growth: #{percentWeeklyGrowth}%
+        p Calculated by dividing the number of users in the last 7 days by the previous 7 days. Target: 5+%
 
-      h3 Retention
-      p
-        | !{'Classic retention: of users who installed the app exactly <i>n</i> days ago, how many are still here? More details:  '}
-        a(href='http://www.applift.com/blog/user-retention') calculating retention
-      svg#chart-retention
+      section
+        h3 Installs
+        svg#chart-installs
+
+      section
+        h3 Retention
+        p
+          | !{'Classic retention: of users who installed the app exactly <i>n</i> days ago, how many used the app today? More details:  '}
+          a(href='http://www.applift.com/blog/user-retention') calculating retention
+        svg#chart-retention
 
     h2 Log files
     div.telemetry-logs
