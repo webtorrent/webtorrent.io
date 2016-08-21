@@ -38,7 +38,7 @@ try { mkdirp.sync(CRASH_REPORTS_PATH) } catch (err) {}
  * This is a poor-man's cron-job. Not running in development by default to
  * avoid hitting Github's API too often.
  */
-if (process.env.NODE_ENV === 'production') {
+if (config.isProd) {
   summarizeTelemetry()
   setInterval(summarizeTelemetry, 3 * 3600 * 1000)
 }
