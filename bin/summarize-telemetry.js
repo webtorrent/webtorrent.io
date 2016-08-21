@@ -58,11 +58,16 @@ function loadTelemetrySummary (logFiles) {
         }
         console.log('Read ' + records.length + ' rows from ' + file)
         var uniqueUsers = {}
+        var sessions = { total: 0, errored: 0 }
         records.forEach(function (record) {
           uniqueUsers[record.userID] = true
+          sessions.total++
+          var errs = record.uncaughtErrors
+          if (errs && errs.length > 0) sessions.errored++
         })
         return resolve({
           date: file.substring(0, 10),
+          sessions,
           uniqueUsers
         })
       })
@@ -77,8 +82,8 @@ function loadTelemetrySummary (logFiles) {
         date: day.date,
         actives: {
           today: computeActives(days, i, 1),
-          day7: computeActives(days, i, 7),
-          day30: computeActives(days, i, 30)
+          last7: computeActives(days, i, 7),
+          last30: computeActives(days, i, 30)
         },
         installs: numInstalls,
         retention: {
@@ -86,10 +91,25 @@ function loadTelemetrySummary (logFiles) {
           day7: i < 7 ? null : computeRetention(day, days[i - 7]),
           day28: i < 28 ? null : computeRetention(day, days[i - 28])
         },
-        errors: {} // TODO
+        errorRates: {
+          today: computeErrorRate(days, i, 1),
+          last7: computeErrorRate(days, i, 7)
+        }
       }
     })
   })
+}
+
+// Finds the fraction of telemetry reports that contain an error
+function computeErrorRate (days, index, n) {
+  if (index < n - 1) return null
+  var total = 0
+  var errored = 0
+  for (var i = index - n + 1; i <= index; i++) {
+    total += days[i].sessions.total
+    errored += days[i].sessions.errored
+  }
+  return errored / total
 }
 
 // Finds the number of unique active users over the last n days
