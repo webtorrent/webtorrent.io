@@ -45,58 +45,95 @@ function die (err) {
 // entry for each day: [{date, actives, retention, ...}, ...]
 function loadTelemetrySummary (logFiles) {
   console.log('Summarizing ' + logFiles.length + ' telemetry log files')
-  return Promise.all(logFiles.map(function (file) {
+  return Promise.all(logFiles.map(function (filename) {
     return new Promise(function (resolve, reject) {
-      var filePath = path.join(TELEMETRY_PATH, file)
+      // Read each telemetry log file, one per day...
+      var filePath = path.join(TELEMETRY_PATH, filename)
       fs.readFile(filePath, 'utf8', function (err, json) {
         if (err) return reject(err)
+
+        // Each log file contains one JSON record per line
         try {
           var lines = json.trim().split('\n')
           var records = lines.map(JSON.parse)
         } catch (err) {
           return reject(err)
         }
-        console.log('Read ' + records.length + ' rows from ' + file)
-        var uniqueUsers = {}
-        var sessions = { total: 0, errored: 0 }
-        records.forEach(function (record) {
-          uniqueUsers[record.userID] = true
-          sessions.total++
-          var errs = record.uncaughtErrors
-          if (errs && errs.length > 0) sessions.errored++
-        })
-        return resolve({
-          date: file.substring(0, 10),
-          sessions,
-          uniqueUsers
-        })
+        console.log('Read ' + records.length + ' rows from ' + filename)
+        resolve(summarizeDailyTelemetryLog(filename, records))
       })
     })
-  })).then(function (days) {
-    var uniqueUsers = {}
-    return days.map(function (day, i) {
-      var numUsersYesterday = Object.keys(uniqueUsers).length
-      Object.assign(uniqueUsers, day.uniqueUsers)
-      var numInstalls = Object.keys(uniqueUsers).length - numUsersYesterday
-      return {
-        date: day.date,
-        actives: {
-          today: computeActives(days, i, 1),
-          last7: computeActives(days, i, 7),
-          last30: computeActives(days, i, 30)
-        },
-        installs: numInstalls,
-        retention: {
-          day1: i < 1 ? null : computeRetention(day, days[i - 1]),
-          day7: i < 7 ? null : computeRetention(day, days[i - 7]),
-          day28: i < 28 ? null : computeRetention(day, days[i - 28])
-        },
-        errorRates: {
-          today: computeErrorRate(days, i, 1),
-          last7: computeErrorRate(days, i, 7)
-        }
+  })).then(combineDailyTelemetrySummaries)
+}
+
+// Summarize a potentially huge (GB+) log file down to a few KB...
+function summarizeDailyTelemetryLog (filename, records) {
+  var uniqueUsers = {}
+  var sessions = { total: 0, errored: 0 }
+  var errors = {}
+
+  records.forEach(function (record) {
+    // Count unique users
+    uniqueUsers[record.userID] = true
+
+    // Approximate sessions by # of telemetry reports
+    sessions.total++
+
+    // Summarize uncaught errors
+    var errs = record.uncaughtErrors
+    if (!errs || errs.length === 0) return
+    sessions.errored++
+
+    errs.forEach(function (error) {
+      var key = error.message ? error.message.substring(0, 30) : '<missing error message>'
+      if (errors[key]) return errors[key].count++
+      errors[key] = {
+        key: key,
+        message: error.message,
+        stack: error.stack,
+        count: 1
       }
     })
+  })
+
+  return {
+    date: filename.substring(0, 10), // YYYY-MM-DD
+    sessions,
+    uniqueUsers,
+    errors
+  }
+}
+
+// Combine all the per-day summaries into a single summary...
+function combineDailyTelemetrySummaries (days) {
+  var uniqueUsers = {}
+  return days.map(function (day, i) {
+    var numUsersYesterday = Object.keys(uniqueUsers).length
+    Object.assign(uniqueUsers, day.uniqueUsers)
+    var numInstalls = Object.keys(uniqueUsers).length - numUsersYesterday
+    var errors = Object.keys(day.errors)
+      .map((key) => day.errors[key])
+      .sort((a, b) => b.count - a.count)
+      .slice(0, 10)
+    return {
+      date: day.date,
+      actives: {
+        today: computeActives(days, i, 1),
+        last7: computeActives(days, i, 7),
+        last30: computeActives(days, i, 30)
+      },
+      installs: numInstalls,
+      retention: {
+        day1: i < 1 ? null : computeRetention(day, days[i - 1]),
+        day7: i < 7 ? null : computeRetention(day, days[i - 7]),
+        day28: i < 28 ? null : computeRetention(day, days[i - 28])
+      },
+      errorRates: {
+        today: computeErrorRate(days, i, 1),
+        last7: computeErrorRate(days, i, 7)
+      },
+      errors
+    }
   })
 }
 
