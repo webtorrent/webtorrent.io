@@ -94,19 +94,35 @@ function serveTelemetryDashboard (req, res, next) {
       filesByMonth[filesByMonth.length - 1].push(file)
     })
 
+    // Load summary.json from the telemetry log folder...
     var summaryPath = path.join(TELEMETRY_PATH, 'summary.json')
     fs.readFile(summaryPath, 'utf8', function (err, summaryJSON) {
       var summary = err
         ? { telemetry: [] }
         : JSON.parse(summaryJSON)
-      if (summary.telemetry && summary.telemetry.length > 0) {
-        var today = summary.telemetry[summary.telemetry.length - 1]
-        var tMinus7 = summary.telemetry[summary.telemetry.length - 8]
-        var percentWeeklyGrowth =
-          (100 * today.actives.last7 / tMinus7.actives.last7 - 100).toFixed(1)
-      }
-      res.render('telemetry-dashboard',
-        {filesByMonth, summary, percentWeeklyGrowth})
+
+      // Calculate week-on-week growth
+      var telem = summary.telemetry
+      var yesterday = telem && telem[telem.length - 2]
+      var t7 = telem && telem[telem.length - 9]
+      var percentWeeklyGrowth = (yesterday && t7)
+        ? (100 * yesterday.actives.last7 / t7.actives.last7 - 100).toFixed(1)
+        : '-'
+
+      // Most common errors
+      var mostCommonErrorsDate = yesterday ? yesterday.date : '-'
+      var mostCommonErrors = yesterday ? yesterday.errors : []
+      mostCommonErrors.forEach(function (err) {
+        err.stack = err.stack.replace(/\(.*app.asar/g, '(...')
+      })
+
+      res.render('telemetry-dashboard', {
+        filesByMonth,
+        summary,
+        percentWeeklyGrowth,
+        mostCommonErrors,
+        mostCommonErrorsDate
+      })
     })
   })
 }
