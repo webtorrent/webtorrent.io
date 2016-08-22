@@ -672,4 +672,46 @@ body.is-seed .show-leech
 .telemetry-dashboard svg g.nv-axisMax-x text
   transform: translateX(-12px)
 
+.error-header
+  font-weight: bold
+
+.error-header > span,
+.error-summary > span
+  display: inline-block
+  padding-left: 4px
+  background-color: #ddd
+  overflow: hidden
+  white-space: nowrap
+  text-overflow: ellipsis
+  height: 22px
+
+.error-summary
+  cursor: pointer
+
+.error-count
+  width: 80px
+  margin-right: 4px
+
+.error-message
+  width: calc(100% - 84px)
+
+.error-summary .error-message
+  font: 10px monospace
+  padding-top: 5px
+
+.error-message .error-message-key
+  color: GREEN
+
+.error-stacktrace
+  background-color: #ddd
+  margin-bottom: 4px
+  padding: 6px
+  font: 10px monospace
+  white-space: pre
+  display: none
+  overflow: hidden
+
+.error-stacktrace.visible
+  display: block
+
 @import '../node_modules/highlight.js/styles/zenburn.css'

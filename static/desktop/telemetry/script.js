@@ -166,3 +166,13 @@ function updateEvents (chart, i) {
   sel.exit()
     .remove()
 }
+
+// Add event handlers to the errors tables
+var rows = document.querySelectorAll('.error-row')
+Array.prototype.forEach.call(rows, function (row) {
+  var stackElem = row.querySelector('.error-stacktrace')
+  var summaryElem = row.querySelector('.error-summary')
+  summaryElem.addEventListener('click', function (e) {
+    stackElem.classList.toggle('visible')
+  })
+})

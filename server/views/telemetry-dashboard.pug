@@ -35,13 +35,23 @@ block body
       p The fraction of telemetry reports that have uncaught errors. The app sends a report every time it starts, plus once every 24 hours.
       svg#chart-error
 
-    //-
-      h3 Most common errors this week
+    section
+      h3 Most common errors on #{mostCommonErrorsDate}
+      p Errors are aggregated by the first 30 characters of the message, highlighted in green. Click on any error to see an example stacktrace.
+      div.error-header
+        span.error-count Count
+        span.error-message Example message
       each error in mostCommonErrors
         div.error-row
-          span.error-count #{error.count}
-          span.error-message #{error.message}
-          div.error-stacktrace #{error.stackTrace}
+          div.error-summary
+            span.error-count #{error.count}
+            span.error-message
+              span.error-message-key #{error.key}
+              span.error-message-rest #{error.message.substring(error.key.length)}
+          if error.stack
+            div.error-stacktrace #{error.stack}
+          else
+            div.error-stacktrace No stack trace
 
     h2 Log files
     div.telemetry-logs
