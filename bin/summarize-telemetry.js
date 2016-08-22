@@ -71,10 +71,17 @@ function summarizeDailyTelemetryLog (filename, records) {
   var uniqueUsers = {}
   var sessions = { total: 0, errored: 0 }
   var errors = {}
+  var versionByUser = {}
 
   records.forEach(function (record) {
+    // Filter out *very* rare empty records that only have {ip}
+    if (!record.system) return
+
     // Count unique users
+    var version = (record.version || 'pre-0.12')
+    var platform = record.system.osPlatform
     uniqueUsers[record.userID] = true
+    versionByUser[record.userID] = {version, platform}
 
     // Approximate sessions by # of telemetry reports
     sessions.total++
@@ -86,22 +93,51 @@ function summarizeDailyTelemetryLog (filename, records) {
 
     errs.forEach(function (error) {
       var key = error.message ? error.message.substring(0, 30) : '<missing error message>'
-      if (errors[key]) return errors[key].count++
+      if (errors[key]) {
+        errors[key].count++
+        addToSet(platform, errors[key].platforms)
+        addToSet(version, errors[key].versions)
+        return
+      }
       errors[key] = {
         key: key,
         message: error.message,
         stack: error.stack,
-        count: 1
+        count: 1,
+        versions: [version],
+        platforms: [platform]
       }
     })
   })
+
+  // Summarize usage by app version and OS
+  var usage = {
+    version: {},
+    platform: {},
+    versionPlatform: {}
+  }
+  for (var uid in versionByUser) {
+    var v = versionByUser[uid]
+    var vp = v.version + '-' + v.platform
+    usage.version[v.version] = (usage.version[v.version] || 0) + 1
+    usage.platform[v.platform] = (usage.platform[v.platform] || 0) + 1
+    usage.versionPlatform[vp] = (usage.versionPlatform[vp] || 0) + 1
+  }
 
   return {
     date: filename.substring(0, 10), // YYYY-MM-DD
     sessions,
     uniqueUsers,
-    errors
+    errors,
+    usage
   }
+}
+
+// Adds an element to an array if it doesn't exist yet, the sorts the array
+function addToSet (elem, arr) {
+  if (arr.includes(elem)) return
+  arr.push(elem)
+  arr.sort()
 }
 
 // Combine all the per-day summaries into a single summary...
@@ -128,6 +164,7 @@ function combineDailyTelemetrySummaries (days) {
         day7: i < 7 ? null : computeRetention(day, days[i - 7]),
         day28: i < 28 ? null : computeRetention(day, days[i - 28])
       },
+      usage: day.usage,
       errorRates: {
         today: computeErrorRate(days, i, 1),
         last7: computeErrorRate(days, i, 7)
