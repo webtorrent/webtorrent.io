@@ -33,7 +33,7 @@ block body
     section
       h3 Error rate
       p The fraction of telemetry reports that have uncaught errors. The app sends a report every time it starts, plus once every 24 hours.
-      svg#chart-error
+      svg#chart-error-rate
 
     section
       h3 Most common errors on #{mostCommonErrorsDate}
@@ -53,6 +53,12 @@ block body
           else
             div.error-stacktrace No stack trace
 
+    h2 Usage
+    section
+      h3 Version skew
+      p Shows which fraction of users are on each version and how fast updates propagate.
+      svg#chart-versions
+
     h2 Log files
     div.telemetry-logs
       each month in filesByMonth
@@ -63,6 +69,7 @@ block body
 
     script.
       window.summary = !{JSON.stringify(summary)}
+      window.versions = !{JSON.stringify(versions)}
     script(src='//cdnjs.cloudflare.com/ajax/libs/d3/3.5.17/d3.js')
     script(src='//cdnjs.cloudflare.com/ajax/libs/nvd3/1.8.4/nv.d3.js')
     script(src='script.js')

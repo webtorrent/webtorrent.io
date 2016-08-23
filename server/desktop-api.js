@@ -101,6 +101,17 @@ function serveTelemetryDashboard (req, res, next) {
         ? { telemetry: [] }
         : JSON.parse(summaryJSON)
 
+      // Versions
+      var versions = summary.releases
+        .map(function (release) {
+          // Tag name is something like 'v0.12.0', version is '0.12.0'
+          return release.tag_name.substring(1)
+        }).filter(function (version) {
+          return semver.gt(version, '0.10.0')
+        }).map(function (version) {
+          return version === '0.11.0' ? 'pre-0.12' : version
+        }).reverse()
+
       // Calculate week-on-week growth
       var telem = summary.telemetry
       var yesterday = telem && telem[telem.length - 2]
@@ -121,7 +132,8 @@ function serveTelemetryDashboard (req, res, next) {
         summary,
         percentWeeklyGrowth,
         mostCommonErrors,
-        mostCommonErrorsDate
+        mostCommonErrorsDate,
+        versions
       })
     })
   })

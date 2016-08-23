@@ -1,9 +1,11 @@
 var nv = window.nv
 var d3 = window.d3
 var summary = window.summary
+var versions = window.versions
 
 // Don't include partial data from today
 var telemetry = summary.telemetry.slice(0, summary.telemetry.length - 1)
+var yesterday = telemetry[telemetry.length - 1]
 
 var dataActives = ['today', 'last7', 'last30'].map(function (key) {
   var values = telemetry.map(function (day) {
@@ -45,6 +47,62 @@ var dataErrors = ['today', 'last7'].map(function (key) {
   return {key, values}
 })
 
+var versionColors = [
+  '#1f77b4',
+  '#fdae61',
+  '#f46d43',
+  '#d73027',
+  '#a50026'
+]
+var dataVersions = versions.map(function (key, i) {
+  var values = telemetry.map(function (day) {
+    return {
+      x: new Date(day.date).getTime(),
+      y: (day.usage.version[key] || 0) / day.actives.today
+    }
+  })
+  var color = versionColors[Math.min(versions.length - i - 1, 6)]
+  return {key, values, color}
+})
+
+var dataVersionPlatform = []
+var platforms = ['win32', 'darwin', 'linux']
+var platformColors = {
+  linux: [
+    '#fee5d9',
+    '#fcae91',
+    '#fb6a4a',
+    '#de2d26',
+    '#a50f15'
+  ],
+  darwin: [
+    '#edf8e9',
+    '#bae4b3',
+    '#74c476',
+    '#31a354',
+    '#006d2c'
+  ],
+  win32: [
+    '#eff3ff',
+    '#bdd7e7',
+    '#6baed6',
+    '#3182bd',
+    '#08519c'
+  ]
+}
+platforms.forEach(function (platform) {
+  versions.forEach(function (version, i) {
+    var n = versions.length
+    var versionIndex = n - i < 2
+      ? (5 + i - n) // latest two releases: darkest colors
+      : (i + n + 2) % 3 // all previous releases: cycle lighter colors
+    var color = platformColors[platform][versionIndex]
+    var key = version + '-' + platform
+    var value = yesterday.usage.versionPlatform[key]
+    dataVersionPlatform.push({key, value, color})
+  })
+})
+
 var chartInfos = [{
   selector: '#chart-actives',
   data: dataActives,
@@ -58,8 +116,12 @@ var chartInfos = [{
   data: dataRetention,
   yFormat: d3.format(',.2f')
 }, {
-  selector: '#chart-error',
+  selector: '#chart-error-rate',
   data: dataErrors,
+  yFormat: d3.format(',.2f')
+}, {
+  selector: '#chart-versions',
+  data: dataVersions,
   yFormat: d3.format(',.2f')
 }]
 
