@@ -4,6 +4,7 @@ const get = require('simple-get')
 const config = require('../config')
 const path = require('path')
 const fs = require('fs')
+const semver = require('semver')
 
 const TELEMETRY_PATH = path.join(config.logPath, 'telemetry')
 
@@ -25,6 +26,16 @@ function main () {
       return loadReleases()
     }).then(function (releases) {
       summary.releases = releases
+      summary.totalInstalls = releases
+        .map((r) => r.installs)
+        .reduce(function (a, b) {
+          a.win32 += b.win32
+          a.linux += b.linux
+          a.darwin += b.darwin
+          a.total += b.total
+          return a
+        }, { win32: 0, linux: 0, darwin: 0, total: 0 })
+
       // Finally, write summary.json
       var summaryPath = path.join(TELEMETRY_PATH, 'summary.json')
       var summaryJSON = JSON.stringify(summary, null, 2) // pretty print
@@ -69,7 +80,7 @@ function loadTelemetrySummary (logFiles) {
 // Summarize a potentially huge (GB+) log file down to a few KB...
 function summarizeDailyTelemetryLog (filename, records) {
   var uniqueUsers = {}
-  var sessions = { total: 0, errored: 0 }
+  var sessions = { total: 0, errored: 0, byVersion: {} }
   var errors = {}
   var versionByUser = {}
 
@@ -85,11 +96,15 @@ function summarizeDailyTelemetryLog (filename, records) {
 
     // Approximate sessions by # of telemetry reports
     sessions.total++
+    var byV = sessions.byVersion[version]
+    if (!byV) byV = sessions.byVersion[version] = { total: 0, errored: 0 }
+    byV.total++
 
     // Summarize uncaught errors
     var errs = record.uncaughtErrors
     if (!errs || errs.length === 0) return
     sessions.errored++
+    byV.errored++
 
     errs.forEach(function (error) {
       var key = error.message ? error.message.substring(0, 30) : '<missing error message>'
@@ -166,8 +181,10 @@ function combineDailyTelemetrySummaries (days) {
       },
       usage: day.usage,
       errorRates: {
+        last7: computeErrorRate(days, i, 7),
         today: computeErrorRate(days, i, 1),
-        last7: computeErrorRate(days, i, 7)
+        'today-latest': computeErrorRate(days, i, 1, true),
+        'last7-latest': computeErrorRate(days, i, 7, true)
       },
       errors
     }
@@ -175,15 +192,32 @@ function combineDailyTelemetrySummaries (days) {
 }
 
 // Finds the fraction of telemetry reports that contain an error
-function computeErrorRate (days, index, n) {
+function computeErrorRate (days, index, n, latestVersionOnly) {
   if (index < n - 1) return null
   var total = 0
   var errored = 0
   for (var i = index - n + 1; i <= index; i++) {
-    total += days[i].sessions.total
-    errored += days[i].sessions.errored
+    var day = days[i]
+
+    // Use either *all* sessions from that UTC day, or only those sessions
+    // which were at the latest released version as of the end of the day
+    var sessions
+    if (latestVersionOnly) {
+      var latest = '0.12.0'
+      Object.keys(day.usage.version).forEach(function (version) {
+        if (version === 'pre-0.12') return
+        if (semver.gt(version, latest)) latest = version
+      })
+      sessions = day.sessions.byVersion[latest] || { total: 0, errored: 0 }
+    } else {
+      sessions = day.sessions
+    }
+
+    total += sessions.total
+    errored += sessions.errored
   }
-  return errored / total
+
+  return total ? (errored / total) : null
 }
 
 // Finds the number of unique active users over the last n days
@@ -225,7 +259,25 @@ function loadReleases (cb) {
       if (err) return reject(err)
       console.log('Got ' + data.length + ' WebTorrent Desktop releases')
       var releases = data.map(function (d) {
-        return {tag_name: d.tag_name, published_at: d.published_at}
+        // Count total downloads
+        var win32 = 0
+        var darwin = 0
+        var linux = 0
+        d.assets.map(function (a) {
+          if (a.name.endsWith('.dmg')) {
+            darwin += a.download_count
+          } else if (a.name.endsWith('.exe')) {
+            win32 += a.download_count
+          } else if (a.name.endsWith('.deb') ||
+                     a.name.endsWith('linux-ia32.zip') ||
+                     a.name.endsWith('linux-x64.zip')) {
+            linux += a.download_count
+          }
+        })
+        var total = win32 + darwin + linux
+        var installs = {win32, darwin, linux, total}
+
+        return {tag_name: d.tag_name, published_at: d.published_at, installs}
       })
       resolve(releases)
     })
