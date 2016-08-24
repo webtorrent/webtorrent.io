@@ -7,43 +7,32 @@ var versions = window.versions
 var telemetry = summary.telemetry.slice(0, summary.telemetry.length - 1)
 var yesterday = telemetry[telemetry.length - 1]
 
-var dataActives = ['today', 'last7', 'last30'].map(function (key) {
-  var values = telemetry.map(function (day) {
+function getValues (fn) {
+  return telemetry.filter(fn).map(function (day) {
     return {
       x: getEndOfDay(day.date),
-      y: day.actives[key]
+      y: fn(day)
     }
   })
+}
+
+var dataActives = ['today', 'last7', 'last30'].map(function (key) {
+  var values = getValues(function (day) { return day.actives[key] })
   return {key, values}
 })
 
 var dataInstalls = [{
   key: 'new users',
-  values: telemetry.map(function (day) {
-    return {
-      x: getEndOfDay(day.date),
-      y: day.installs
-    }
-  })
+  values: getValues(function (day) { return day.installs })
 }]
 
 var dataRetention = ['day1', 'day7', 'day28'].map(function (key) {
-  var values = telemetry.map(function (day) {
-    return {
-      x: getEndOfDay(day.date),
-      y: day.retention[key]
-    }
-  })
+  var values = getValues(function (day) { return day.retention[key] })
   return {key, values}
 })
 
 var dataErrors = ['last7', 'today', 'today-latest'].map(function (key) {
-  var values = telemetry.map(function (day) {
-    return {
-      x: getEndOfDay(day.date),
-      y: day.errorRates[key]
-    }
-  })
+  var values = getValues(function (day) { return day.errorRates[key] })
   return {key, values}
 })
 

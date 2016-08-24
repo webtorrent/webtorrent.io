@@ -161,14 +161,25 @@ function addToSet (elem, arr, sortFn) {
 
 // Combine all the per-day summaries into a single summary...
 function combineDailyTelemetrySummaries (days) {
-  var uniqueUsers = {}
+  var uniqueUsers = {} // Running set, all unique users so far
+  var newUsersByDay = [] // First-time users each day
+
+  // Loop thru all days since we started collecting telemetry...
   return days.map(function (day, i) {
-    var numUsersYesterday = Object.keys(uniqueUsers).length
-    Object.assign(uniqueUsers, day.uniqueUsers)
-    var numInstalls = Object.keys(uniqueUsers).length - numUsersYesterday
+    // Find out who installed the app that day
+    var newUsers = {}
+    Object.keys(day.uniqueUsers).forEach(function (user) {
+      if (uniqueUsers[user]) return
+      uniqueUsers[user] = true
+      newUsers[user] = true
+    })
+    var numInstalls = Object.keys(newUsers).length
+    newUsersByDay[i] = newUsers
+
     var errors = Object.keys(day.errors)
       .map((key) => day.errors[key])
       .sort((a, b) => b.count - a.count)
+
     return {
       date: day.date,
       actives: {
@@ -178,9 +189,9 @@ function combineDailyTelemetrySummaries (days) {
       },
       installs: numInstalls,
       retention: {
-        day1: i < 1 ? null : computeRetention(day, days[i - 1]),
-        day7: i < 7 ? null : computeRetention(day, days[i - 7]),
-        day28: i < 28 ? null : computeRetention(day, days[i - 28])
+        day1: i < 2 ? null : computeRetention(day, newUsersByDay[i - 1]),
+        day7: i < 8 ? null : computeRetention(day, newUsersByDay[i - 7]),
+        day28: i < 29 ? null : computeRetention(day, newUsersByDay[i - 28])
       },
       usage: day.usage,
       errorRates: {
@@ -236,11 +247,11 @@ function computeActives (days, index, n) {
 
 // Computes retention: the # of new users from some past day that used the
 // app on this day.
-function computeRetention (day, prevDay) {
-  var combined = Object.assign({}, day.uniqueUsers, prevDay.uniqueUsers)
+function computeRetention (day, prevNewUsers) {
+  var combined = Object.assign({}, day.uniqueUsers, prevNewUsers)
   var numCombined = Object.keys(combined).length
   var numToday = Object.keys(day.uniqueUsers).length
-  var numPrev = Object.keys(prevDay.uniqueUsers).length
+  var numPrev = Object.keys(prevNewUsers).length
   var numLost = numCombined - numToday
   return (numPrev - numLost) / numPrev
 }
