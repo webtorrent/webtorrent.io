@@ -111,7 +111,11 @@ function summarizeDailyTelemetryLog (filename, records) {
       if (errors[key]) {
         errors[key].count++
         addToSet(platform, errors[key].platforms)
-        addToSet(version, errors[key].versions)
+        addToSet(version, errors[key].versions, function (a, b) {
+          if (a === 'pre-0.12') return b === 'pre-0.12' ? 0 : -1
+          if (b === 'pre-0.12') return 1
+          return semver.compare(a, b)
+        })
         return
       }
       errors[key] = {
@@ -149,10 +153,10 @@ function summarizeDailyTelemetryLog (filename, records) {
 }
 
 // Adds an element to an array if it doesn't exist yet, the sorts the array
-function addToSet (elem, arr) {
+function addToSet (elem, arr, sortFn) {
   if (arr.includes(elem)) return
   arr.push(elem)
-  arr.sort()
+  arr.sort(sortFn)
 }
 
 // Combine all the per-day summaries into a single summary...
@@ -165,7 +169,6 @@ function combineDailyTelemetrySummaries (days) {
     var errors = Object.keys(day.errors)
       .map((key) => day.errors[key])
       .sort((a, b) => b.count - a.count)
-      .slice(0, 10)
     return {
       date: day.date,
       actives: {

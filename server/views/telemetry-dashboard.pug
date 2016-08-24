@@ -20,7 +20,7 @@ block body
       p Calculated by dividing the number of users in the last 7 days by the previous 7 days. Target: 5+%
       p
         strong Total installs: #{summary.totalInstalls.total.toLocaleString()}.
-        |  Windows: #{summary.totalInstalls.win32.toLocaleString()} Mac: #{summary.totalInstalls.darwin.toLocaleString()} Linux: #{summary.totalInstalls.linux.toLocaleString()}
+        | Windows: #{summary.totalInstalls.win32.toLocaleString()} Mac: #{summary.totalInstalls.darwin.toLocaleString()} Linux: #{summary.totalInstalls.linux.toLocaleString()}
 
     section
       h3 Installs
@@ -41,20 +41,27 @@ block body
     section
       h3 Most common errors on #{mostCommonErrorsDate}
       p Errors are aggregated by the first 30 characters of the message, highlighted in green. Click on any error to see an example stacktrace.
+      p
+        input(type='checkbox', id='latest-only', checked='checked')
+        label(for='latest-only') Show errors that occur in the latest version (#{latestVersion}) only
       div.error-header
         span.error-count Count
         span.error-message Example message
-      each error in mostCommonErrors
-        div.error-row
-          div.error-summary
-            span.error-count #{error.count}
-            span.error-message
-              span.error-message-key #{error.key}
-              span.error-message-rest #{error.message.substring(error.key.length)}
-          if error.stack
-            div.error-stacktrace #{error.stack}
-          else
-            div.error-stacktrace No stack trace
+      each errVersion in ['latest', 'all']
+        div.error-list(id=('errors-' + errVersion))
+          each error in mostCommonErrors[errVersion]
+            div.error-row
+              div.error-summary
+                span.error-count #{error.count}
+                span.error-message
+                  span.error-message-key #{error.key}
+                  span.error-message-rest #{error.message.substring(error.key.length)}
+              div.error-stacktrace Versions: #{error.versions.join(' ')}, platforms: #{error.platforms.join(' ')}
+                |<br />
+                if error.stack
+                  |#{error.stack}
+                else
+                  |No stack trace
 
     h2 Usage
     section

@@ -239,6 +239,19 @@ function updateEvents (chart, i) {
 }
 
 // Add event handlers to the errors tables
+var checkbox = document.querySelector('#latest-only')
+checkbox.addEventListener('change', onCheck)
+onCheck()
+function onCheck (e) {
+  document.querySelectorAll('.error-stacktrace').forEach(function (elem) {
+    elem.classList.remove('visible')
+  })
+  var showId = checkbox.checked ? 'errors-latest' : 'errors-all'
+  var hideId = checkbox.checked ? 'errors-all' : 'errors-latest'
+  document.querySelector('#' + showId).classList.add('visible')
+  document.querySelector('#' + hideId).classList.remove('visible')
+}
+
 var rows = document.querySelectorAll('.error-row')
 Array.prototype.forEach.call(rows, function (row) {
   var stackElem = row.querySelector('.error-stacktrace')
