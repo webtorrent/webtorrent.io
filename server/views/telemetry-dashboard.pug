@@ -18,6 +18,9 @@ block body
       p
         strong Week-over-week growth: #{percentWeeklyGrowth}%
       p Calculated by dividing the number of users in the last 7 days by the previous 7 days. Target: 5+%
+      p
+        strong Total installs: #{summary.totalInstalls.total.toLocaleString()}.
+        |  Windows: #{summary.totalInstalls.win32.toLocaleString()} Mac: #{summary.totalInstalls.darwin.toLocaleString()} Linux: #{summary.totalInstalls.linux.toLocaleString()}
 
     section
       h3 Installs
@@ -32,7 +35,7 @@ block body
     h2 Quality
     section
       h3 Error rate
-      p The fraction of telemetry reports that have uncaught errors. The app sends a report every time it starts, plus once every 24 hours.
+      p The fraction of telemetry reports that have uncaught errors. The app sends a report every time it starts, plus once every 24 hours. Shows trailing week average error rate, daily error rate, and the error rate for the latest released version as of the end of each day.
       svg#chart-error-rate
 
     section

@@ -37,7 +37,7 @@ var dataRetention = ['day1', 'day7', 'day28'].map(function (key) {
   return {key, values}
 })
 
-var dataErrors = ['today', 'last7'].map(function (key) {
+var dataErrors = ['last7', 'today', 'today-latest'].map(function (key) {
   var values = telemetry.map(function (day) {
     return {
       x: getEndOfDay(day.date),
