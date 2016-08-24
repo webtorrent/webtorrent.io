@@ -10,7 +10,7 @@ var yesterday = telemetry[telemetry.length - 1]
 var dataActives = ['today', 'last7', 'last30'].map(function (key) {
   var values = telemetry.map(function (day) {
     return {
-      x: new Date(day.date).getTime(),
+      x: getEndOfDay(day.date),
       y: day.actives[key]
     }
   })
@@ -21,7 +21,7 @@ var dataInstalls = [{
   key: 'new users',
   values: telemetry.map(function (day) {
     return {
-      x: new Date(day.date).getTime(),
+      x: getEndOfDay(day.date),
       y: day.installs
     }
   })
@@ -30,7 +30,7 @@ var dataInstalls = [{
 var dataRetention = ['day1', 'day7', 'day28'].map(function (key) {
   var values = telemetry.map(function (day) {
     return {
-      x: new Date(day.date).getTime(),
+      x: getEndOfDay(day.date),
       y: day.retention[key]
     }
   })
@@ -40,7 +40,7 @@ var dataRetention = ['day1', 'day7', 'day28'].map(function (key) {
 var dataErrors = ['today', 'last7'].map(function (key) {
   var values = telemetry.map(function (day) {
     return {
-      x: new Date(day.date).getTime(),
+      x: getEndOfDay(day.date),
       y: day.errorRates[key]
     }
   })
@@ -57,7 +57,7 @@ var versionColors = [
 var dataVersions = versions.map(function (key, i) {
   var values = telemetry.map(function (day) {
     return {
-      x: new Date(day.date).getTime(),
+      x: getEndOfDay(day.date),
       y: (day.usage.version[key] || 0) / day.actives.today
     }
   })
@@ -125,7 +125,7 @@ var chartInfos = [{
   yFormat: d3.format(',.2f')
 }]
 
-var dateScale = d3.time.scale()
+var dateScale = d3.time.scale.utc()
 var dateFormat = function (t) {
   return d3.time.format.utc('%Y-%m-%d')(new Date(t))
 }
@@ -170,8 +170,13 @@ function updateAll () {
   })
 }
 
+function getEndOfDay (date) {
+  return new Date(date + 'T23:59:59Z').getTime()
+}
+
 // Draw a red line at each event (eg, new release of the app)
 function updateEvents (chart, i) {
+  // First, update the date range
   var xDomain = chart.xAxis.domain()
   var yDomain = chart.yAxis.domain()
   var events = summary.releases.map(function (release) {
@@ -179,10 +184,13 @@ function updateEvents (chart, i) {
       t: new Date(release.published_at).getTime(),
       name: release.tag_name
     }
+  }).filter(function (release) {
+    return release.t >= xDomain[0] && release.t <= xDomain[1]
   })
-  events = events.filter(function (release) {
-    return release.t > xDomain[0] && release.t < xDomain[1]
-  })
+
+  // Then, draw the ticks, at most one per day
+  var numDays = (xDomain[1] - xDomain[0]) / 24 / 3600 / 1000
+  chart.xAxis.ticks(Math.min(10, numDays))
 
   // First, draw the lines
   var yPixels = yDomain.map(chart.yAxis.scale())
@@ -210,7 +218,7 @@ function updateEvents (chart, i) {
 
   // Then, draw labels
   var textXScale = function (event) {
-    return xScale(event) + 2
+    return xScale(event) - 2
   }
 
   sel = container
@@ -220,6 +228,7 @@ function updateEvents (chart, i) {
   sel.enter()
     .append('text')
     .attr('class', 'event')
+    .attr('text-anchor', 'end')
 
   sel.attr('x', textXScale)
     .attr('y', 12)
