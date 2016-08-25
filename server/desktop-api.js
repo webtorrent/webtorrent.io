@@ -170,12 +170,7 @@ function serveCrashReportsAPI (app) {
 // This lets us send a message to all WebTorrent Desktop users
 function serveAnnouncementsAPI (app) {
   app.get('/desktop/announcement', function (req, res) {
-    res.status(200).json({
-      title: 'WebTorrent Desktop Announcement',
-      message: '🎉 WebTorrent just hit 250,000 installs! 🎉',
-      detail: 'Thanks everyone!'
-    })
-    // res.status(204).end()
+    res.status(204).end()
   })
 }
 
