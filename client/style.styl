@@ -672,6 +672,10 @@ body.is-seed .show-leech
 .telemetry-dashboard svg g.nv-axisMax-x text
   transform: translateX(-12px)
 
+.telemetry-dashboard input
+  margin: 0 10px 0 0
+  font-size: 18px
+
 .error-header
   font-weight: bold
 
@@ -712,6 +716,12 @@ body.is-seed .show-leech
   overflow: hidden
 
 .error-stacktrace.visible
+  display: block
+
+.error-list
+  display: none
+
+.error-list.visible
   display: block
 
 @import '../node_modules/highlight.js/styles/zenburn.css'

@@ -121,11 +121,20 @@ function serveTelemetryDashboard (req, res, next) {
         : '-'
 
       // Most common errors
+      var latestVersion = versions[versions.length - 1]
       var mostCommonErrorsDate = yesterday ? yesterday.date : '-'
-      var mostCommonErrors = yesterday ? yesterday.errors : []
-      mostCommonErrors.forEach(function (err) {
-        err.stack = err.stack.replace(/\(.*app.asar/g, '(...')
-      })
+      var allErrors = (yesterday ? yesterday.errors : [])
+        .map(function (err) {
+          err.stack = err.stack.replace(/\(.*app.asar/g, '(...')
+          return err
+        })
+      var mostCommonErrors = {
+        all: allErrors.slice(0, 10),
+        latest: allErrors.filter(function (err) {
+          return err.versions.includes(latestVersion)
+        }).slice(0, 10)
+      }
+      console.log('Latest version: ' + latestVersion)
 
       res.render('telemetry-dashboard', {
         filesByMonth,
@@ -133,7 +142,8 @@ function serveTelemetryDashboard (req, res, next) {
         percentWeeklyGrowth,
         mostCommonErrors,
         mostCommonErrorsDate,
-        versions
+        versions,
+        latestVersion
       })
     })
   })
