@@ -106,24 +106,43 @@ function summarizeDailyTelemetryLog (filename, records) {
     sessions.errored++
     byV.errored++
 
-    errs.forEach(function (error) {
-      var key = error.message ? error.message.substring(0, 30) : '<missing error message>'
-      if (errors[key]) {
-        errors[key].count++
-        addToSet(platform, errors[key].platforms)
-        addToSet(version, errors[key].versions, function (a, b) {
+    errs.forEach(function (err) {
+      var key = err.message ? err.message.substring(0, 30) : '<missing error message>'
+
+      // Before 0.13, we didn't log the app version for each uncaught error
+      // Before 0.12, we didn't log the app version altogether, and also
+      // didn't redact stacktraces.
+      var errVersion = err.version
+         ? err.version
+         : err.stack.includes('app.asar') ? 'pre-0.12' : version
+
+      // 1. Either update the stats for an existing error...
+      var error = errors[key]
+      if (error) {
+        error.count++
+        addToSet(platform, error.platforms)
+        addToSet(errVersion, error.versions, function (a, b) {
           if (a === 'pre-0.12') return b === 'pre-0.12' ? 0 : -1
           if (b === 'pre-0.12') return 1
           return semver.compare(a, b)
         })
+
+        // Use the message and stack from the latest possible version
+        if (errVersion === error.versions[error.versions.length - 1]) {
+          error.message = err.message
+          error.stack = err.stack
+        }
+
         return
       }
+
+      // 2. ...or create a new error
       errors[key] = {
         key: key,
-        message: error.message,
-        stack: error.stack,
+        message: err.message,
+        stack: err.stack,
         count: 1,
-        versions: [version],
+        versions: [errVersion],
         platforms: [platform]
       }
     })
