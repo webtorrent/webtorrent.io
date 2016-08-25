@@ -56,7 +56,7 @@ block body
                 span.error-message
                   span.error-message-key #{error.key}
                   span.error-message-rest #{error.message.substring(error.key.length)}
-              div.error-stacktrace Versions: #{error.versions.join(' ')}, platforms: #{error.platforms.join(' ')}
+              div.error-stacktrace Processes: #{error.processes.join(' ')}, platforms: #{error.platforms.join(' ')}, versions: #{error.versions.join(' ')} 
                 |<br />
                 if error.stack
                   |#{error.stack}
