@@ -16,7 +16,9 @@ function main () {
     if (err) die(err)
 
     // Filter down to just log files...
-    var logFiles = files.filter((f) => /\d{4}-\d{2}-\d{2}.log/.test(f))
+    var logFiles = files
+      .filter((f) => /\d{4}-\d{2}-\d{2}.log/.test(f))
+      .sort()
 
     var summary = {}
     // Read them all and collect summary stats...
@@ -166,6 +168,14 @@ function combineDailyTelemetrySummaries (days) {
 
   // Loop thru all days since we started collecting telemetry...
   return days.map(function (day, i) {
+    // Sanity check: we should have consecutive days, correctly sorted
+    if (i > 0) {
+      var delta = new Date(day.date).getTime() -
+                  new Date(days[i - 1].date).getTime()
+      var deltaDays = delta / 24 / 3600 / 1000
+      if (deltaDays !== 1) throw new Error('Missing telemetry before ' + day.date)
+    }
+
     // Find out who installed the app that day
     var newUsers = {}
     Object.keys(day.uniqueUsers).forEach(function (user) {
@@ -189,9 +199,10 @@ function combineDailyTelemetrySummaries (days) {
       },
       installs: numInstalls,
       retention: {
-        day1: i < 2 ? null : computeRetention(day, newUsersByDay[i - 1]),
-        day7: i < 8 ? null : computeRetention(day, newUsersByDay[i - 7]),
-        day28: i < 29 ? null : computeRetention(day, newUsersByDay[i - 28])
+        day1: i < 2 ? null : computeRetention(days, i, 1, newUsersByDay[i - 1]),
+        day7: i < 8 ? null : computeRetention(days, i, 1, newUsersByDay[i - 7]),
+        day28: i < 29 ? null : computeRetention(days, i, 1, newUsersByDay[i - 28]),
+        day30to60: i < 61 ? null : computeRetention(days, i, 30, newUsersByDay[i - 60])
       },
       usage: day.usage,
       errorRates: {
@@ -247,10 +258,15 @@ function computeActives (days, index, n) {
 
 // Computes retention: the # of new users from some past day that used the
 // app on this day.
-function computeRetention (day, prevNewUsers) {
-  var combined = Object.assign({}, day.uniqueUsers, prevNewUsers)
-  var numCombined = Object.keys(combined).length
-  var numToday = Object.keys(day.uniqueUsers).length
+function computeRetention (days, index, n, prevNewUsers) {
+  var uniques = {}
+  for (var i = index - n + 1; i <= index; i++) {
+    Object.assign(uniques, days[i].uniqueUsers)
+  }
+
+  var numToday = Object.keys(uniques).length
+  Object.assign(uniques, prevNewUsers)
+  var numCombined = Object.keys(uniques).length
   var numPrev = Object.keys(prevNewUsers).length
   var numLost = numCombined - numToday
   return (numPrev - numLost) / numPrev

@@ -26,7 +26,7 @@ var dataInstalls = [{
   values: getValues(function (day) { return day.installs })
 }]
 
-var dataRetention = ['day1', 'day7', 'day28'].map(function (key) {
+var dataRetention = ['day1', 'day7', 'day28', 'day30to60'].map(function (key) {
   var values = getValues(function (day) { return day.retention[key] })
   return {key, values}
 })
