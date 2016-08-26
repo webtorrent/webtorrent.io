@@ -51,7 +51,7 @@
   },
   "devDependencies": {
     "nodemon": "^1.2.1",
-    "standard": "^7.1.1",
+    "standard": "*",
     "watchify": "^3.1.2"
   },
   "homepage": "https://webtorrent.io",
