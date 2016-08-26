@@ -1,12 +1,12 @@
 #!/usr/bin/env node
 
-const get = require('simple-get')
-const config = require('../config')
-const path = require('path')
-const fs = require('fs')
-const semver = require('semver')
+var get = require('simple-get')
+var config = require('../config')
+var path = require('path')
+var fs = require('fs')
+var semver = require('semver')
 
-const TELEMETRY_PATH = path.join(config.logPath, 'telemetry')
+var TELEMETRY_PATH = path.join(config.logPath, 'telemetry')
 
 main()
 
@@ -123,6 +123,7 @@ function summarizeDailyTelemetryLog (filename, records) {
       if (error) {
         error.count++
         addToSet(platform, error.platforms)
+        addToSet(err.process, error.processes)
         addToSet(errVersion, error.versions, function (a, b) {
           if (a === 'pre-0.12') return b === 'pre-0.12' ? 0 : -1
           if (b === 'pre-0.12') return 1
@@ -145,7 +146,8 @@ function summarizeDailyTelemetryLog (filename, records) {
         stack: err.stack,
         count: 1,
         versions: [errVersion],
-        platforms: [platform]
+        platforms: [platform],
+        processes: [err.process]
       }
     })
   })

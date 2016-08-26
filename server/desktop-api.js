@@ -4,19 +4,19 @@
 // - Log telemetry
 module.exports = { serve }
 
-const bodyParser = require('body-parser')
-const cp = require('child_process')
-const express = require('express')
-const fs = require('fs')
-const mkdirp = require('mkdirp')
-const multer = require('multer')
-const path = require('path')
-const semver = require('semver')
-const url = require('url')
+var bodyParser = require('body-parser')
+var cp = require('child_process')
+var express = require('express')
+var fs = require('fs')
+var mkdirp = require('mkdirp')
+var multer = require('multer')
+var path = require('path')
+var semver = require('semver')
+var url = require('url')
 
-const auth = require('./auth')
-const config = require('../config')
-const secret = require('../secret')
+var auth = require('./auth')
+var config = require('../config')
+var secret = require('../secret')
 
 var DESKTOP_VERSION = config.desktopVersion
 var RELEASES_URL = 'https://github.com/feross/webtorrent-desktop/releases/download'
