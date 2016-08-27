@@ -31,16 +31,25 @@ try { mkdirp.sync(TELEMETRY_PATH) } catch (err) {}
 try { mkdirp.sync(CRASH_REPORTS_PATH) } catch (err) {}
 
 /**
- * Summarize the telemetry into summary.json, every three hours. Takes
+ * Summarize the telemetry into summary.json, every day at UTC 12:15AM. Takes
  * a bit of time to crunch, so we do it in the background. The dashboard uses
  * the data in summary.json.
  *
  * This is a poor-man's cron-job. Not running in development by default to
  * avoid hitting Github's API too often.
  */
-if (config.isProd) {
+if (config.isProd) cronSummarizeTelemetry()
+
+function cronSummarizeTelemetry () {
+  // Run immediately
   summarizeTelemetry()
-  setInterval(summarizeTelemetry, 3 * 3600 * 1000)
+  // Wait until tomorrow, 12:15AM UTC
+  var msPerDay = 24 * 3600 * 1000
+  var msUntilMidnight = msPerDay - (new Date().getTime() % msPerDay)
+  var msWait = msUntilMidnight + 15 * 60 * 1000
+  var minsWait = msUntilMidnight / 60 / 1000
+  console.log('Running summarizeTelemetry next in ' + minsWait + ' minutes')
+  setTimeout(cronSummarizeTelemetry, msWait)
 }
 
 function serve (app) {
