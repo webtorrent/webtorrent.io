@@ -30,6 +30,8 @@ block body
       h3 Retention
       p
         | <a href="http://www.applift.com/blog/user-retention">Classic retention</a>: Of users who installed the app exactly <i>n</i> days ago, what percentage used the app today?
+      p
+        | The last timeseries, day30to60, measures bracket retention. Of users who installed the app exactly 60 days ago, how many used the app anytime in the last 30 days?
       svg#chart-retention
 
     h2 Quality
@@ -56,7 +58,7 @@ block body
                 span.error-message
                   span.error-message-key #{error.key}
                   span.error-message-rest #{error.message.substring(error.key.length)}
-              div.error-stacktrace Processes: #{error.processes.join(' ')}, platforms: #{error.platforms.join(' ')}, versions: #{error.versions.join(' ')} 
+              div.error-stacktrace Processes: #{error.processes.join(' ')}, platforms: #{error.platforms.join(' ')}, versions: #{error.versions.join(' ')}
                 |<br />
                 if error.stack
                   |#{error.stack}
