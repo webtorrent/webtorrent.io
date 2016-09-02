@@ -219,8 +219,16 @@ function updateEvents (chart, i) {
     .attr('class', 'event')
     .attr('text-anchor', 'end')
 
+  var ys = []
+  var yoffset = 15
+  ys[events.length - 1] = yoffset
+  for (var j = events.length - 2; j >= 0; j--) {
+    ys[j] = textXScale(events[j]) - textXScale(events[j + 1]) < 40
+      ? ys[j + 1] + yoffset
+      : yoffset
+  }
   sel.attr('x', textXScale)
-    .attr('y', 12)
+    .attr('y', function (_, i) { return ys[i] })
     .text(function (event) { return event.name })
 
   sel.exit()
