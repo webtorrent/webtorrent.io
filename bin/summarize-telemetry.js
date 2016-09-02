@@ -116,7 +116,11 @@ function summarizeDailyTelemetryLog (filename, records) {
       // didn't redact stacktraces.
       var errVersion = err.version
          ? err.version
-         : err.stack.includes('app.asar') ? 'pre-0.12' : version
+         : err.stack.includes('app.asar')
+         ? 'pre-0.12'
+         : versionCompare(version, '0.12.0') < 0
+         ? version
+         : '0.12.0'
 
       // 1. Either update the stats for an existing error...
       var error = errors[key]
@@ -124,11 +128,7 @@ function summarizeDailyTelemetryLog (filename, records) {
         error.count++
         addToSet(platform, error.platforms)
         addToSet(err.process, error.processes)
-        addToSet(errVersion, error.versions, function (a, b) {
-          if (a === 'pre-0.12') return b === 'pre-0.12' ? 0 : -1
-          if (b === 'pre-0.12') return 1
-          return semver.compare(a, b)
-        })
+        addToSet(errVersion, error.versions, versionCompare)
 
         // Use the message and stack from the latest possible version
         if (errVersion === error.versions[error.versions.length - 1]) {
@@ -173,6 +173,12 @@ function summarizeDailyTelemetryLog (filename, records) {
     errors,
     usage
   }
+}
+
+function versionCompare (a, b) {
+  if (a === 'pre-0.12') return b === 'pre-0.12' ? 0 : -1
+  if (b === 'pre-0.12') return 1
+  return semver.compare(a, b)
 }
 
 // Adds an element to an array if it doesn't exist yet, the sorts the array
