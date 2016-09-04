@@ -3,7 +3,7 @@ var path = require('path')
 var secret
 try { secret = require('./secret') } catch (err) {}
 
-exports.desktopVersion = '0.13.1'
+exports.desktopVersion = '0.14.0'
 
 exports.isProd = process.env.NODE_ENV === 'production'
 exports.host = process.env.NODE_ENV === 'production' && '23.92.26.245'
