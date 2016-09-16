@@ -113,7 +113,7 @@ app.get('/', function (req, res) {
 app.get('/desktop', function (req, res) {
   res.render('desktop', {
     cls: 'desktop',
-    rawTitle: 'WebTorrent Desktop',
+    rawTitle: 'WebTorrent Desktop - Streaming torrent app for Mac, Windows, and Linux',
     version: config.desktopVersion
   })
 })
