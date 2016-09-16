@@ -7,9 +7,9 @@ module.exports = function () {
    * This checks the operating system CPU architecture itself, as opposed to
    * merely the architecture of the browser, unlike os.arch() in Node.js.
    *
-   * If there is no affirmitive indication that the architecture is 64-bit,
+   * If there is no affirmative indication that the architecture is 64-bit,
    * then arch() assumes 32-bit. This is perfect for determining what installer
-   * exectuable to offer to desktop app users. If there is ambiguity, then the
+   * executable to offer to desktop app users. If there is ambiguity, then the
    * user will get the 32-bit installer, which will work fine even on a 64-bit OS.
    *
    * We do the detection client-side because JavaScript provides additional
@@ -17,7 +17,9 @@ module.exports = function () {
    * accurate determination.
    */
   if (arch() === 'x64') {
-    document.querySelectorAll('.download-linux').forEach(function ($link) {
+    // Offer 64-bit Linux installer
+    var $linuxLinks = Array.from(document.querySelectorAll('.download-linux'))
+    $linuxLinks.forEach(function ($link) {
       $link.href = $link.href.replace(/i386\.deb$/, 'amd64.deb')
     })
   }

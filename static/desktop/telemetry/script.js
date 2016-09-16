@@ -240,8 +240,9 @@ var checkbox = document.querySelector('#latest-only')
 checkbox.addEventListener('change', onCheck)
 onCheck()
 function onCheck (e) {
-  document.querySelectorAll('.error-stacktrace').forEach(function (elem) {
-    elem.classList.remove('visible')
+  var $stacktraces = Array.from(document.querySelectorAll('.error-stacktrace'))
+  $stacktraces.forEach(function ($elem) {
+    $elem.classList.remove('visible')
   })
   var showId = checkbox.checked ? 'errors-latest' : 'errors-all'
   var hideId = checkbox.checked ? 'errors-all' : 'errors-latest'
