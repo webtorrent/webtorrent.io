@@ -22,5 +22,11 @@ module.exports = function () {
     $linuxLinks.forEach(function ($link) {
       $link.href = $link.href.replace(/i386\.deb$/, 'amd64.deb')
     })
+
+    // Offer 64-bit Windows installer
+    var $windowsLinks = Array.from(document.querySelectorAll('.download-windows'))
+    $windowsLinks.forEach(function ($link) {
+      $link.href = $link.href.replace(/-ia32.exe$/, '.exe')
+    })
   }
 }
