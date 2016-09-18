@@ -229,7 +229,7 @@ function serveUpdateAPI (app) {
         sysarch: sysarch,
         ip: req.ip
       })
-      fileVersion = req.ip.startsWith('76.21.115.2') ? '0.15.99' : DESKTOP_VERSION
+      fileVersion = DESKTOP_VERSION
       if (sysarch === 'ia32') {
         // 32-bit Windows users get a different Squirrel RELEASES file
         filename = 'RELEASES-ia32'
