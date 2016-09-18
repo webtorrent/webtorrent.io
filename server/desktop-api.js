@@ -229,7 +229,7 @@ function serveUpdateAPI (app) {
         sysarch: sysarch,
         ip: req.ip
       })
-      fileVersion = req.ip.startsWith('76.21.115.2') ? '0.15.99' : DESKTOP_VERSION
+      fileVersion = DESKTOP_VERSION
       if (sysarch === 'ia32') {
         // 32-bit Windows users get a different Squirrel RELEASES file
         filename = 'RELEASES-ia32'
@@ -237,10 +237,6 @@ function serveUpdateAPI (app) {
     } else {
       var match = /-(\d+\.\d+\.\d+)-/.exec(filename)
       fileVersion = match && match[1]
-      if (sysarch === 'ia32') {
-        // 32-bit Windows users get different Squirrel update (*.nupkg) files
-        filename.replace(/\.nupkg$/, '-ia32.nupkg')
-      }
     }
     if (!fileVersion) {
       return res.status(404).end()
