@@ -139,8 +139,9 @@ block body
         include includes/desktop-download-links
 
   script.
-    document.querySelectorAll('a.download').forEach(function (link) {
-      link.addEventListener('click', function () {
+    var $downloadLinks = Array.from(document.querySelectorAll('a.download'))
+    $downloadLinks.forEach(function ($link) {
+      $link.addEventListener('click', function () {
         console.log('Download link clicked!')
         window.ga('send', 'event', 'app', 'download')
       })
