@@ -24,9 +24,9 @@ module.exports = function () {
     })
 
     // Offer 64-bit Windows installer
-    var $windowsLinks = Array.from(document.querySelectorAll('.download-windows'))
-    $windowsLinks.forEach(function ($link) {
-      $link.href = $link.href.replace(/-ia32.exe$/, '.exe')
-    })
+    // var $windowsLinks = Array.from(document.querySelectorAll('.download-windows'))
+    // $windowsLinks.forEach(function ($link) {
+    //   $link.href = $link.href.replace(/-ia32.exe$/, '.exe')
+    // })
   }
 }
