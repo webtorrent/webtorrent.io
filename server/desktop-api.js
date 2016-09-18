@@ -197,6 +197,7 @@ function serveUpdateAPI (app) {
       date: (new Date()).toString(),
       platform: req.query.platform,
       version: version,
+      sysarch: req.query.sysarch,
       ip: req.ip
     })
     if (!semver.valid(version) || semver.lt(version, DESKTOP_VERSION)) {
@@ -216,24 +217,35 @@ function serveUpdateAPI (app) {
   // WebTorrent Desktop Windows auto-update endpoint
   app.get('/desktop/update/*', function (req, res) {
     var pathname = url.parse(req.url).pathname
-    var file = pathname.replace(/^\/desktop\/update\//i, '')
+    var filename = pathname.replace(/^\/desktop\/update\//i, '')
+
+    var sysarch = req.query.sysarch || 'ia32' // if not specified, default to ia32
     var fileVersion
-    if (file === 'RELEASES') {
-      fileVersion = DESKTOP_VERSION
+    if (filename === 'RELEASES') {
       logUpdateCheck({
         date: (new Date()).toString(),
         platform: req.query.platform,
         version: req.query.version,
+        sysarch: sysarch,
         ip: req.ip
       })
+      fileVersion = DESKTOP_VERSION
+      if (sysarch === 'ia32') {
+        // 32-bit Windows users get a different Squirrel RELEASES file
+        filename = 'RELEASES-ia32'
+      }
     } else {
-      var match = /-(\d+\.\d+\.\d+)-/.exec(file)
+      var match = /-(\d+\.\d+\.\d+)-/.exec(filename)
       fileVersion = match && match[1]
+      if (sysarch === 'ia32') {
+        // 32-bit Windows users get different Squirrel update (*.nupkg) files
+        filename.replace(/\.nupkg$/, '-ia32.nupkg')
+      }
     }
     if (!fileVersion) {
       return res.status(404).end()
     }
-    var redirectURL = `${RELEASES_URL}/v${fileVersion}/${file}`
+    var redirectURL = `${RELEASES_URL}/v${fileVersion}/${filename}`
     res.redirect(302, redirectURL)
   })
 }
