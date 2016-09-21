@@ -1,10 +1,10 @@
 var debug = require('debug')('webtorrent-www:home')
 var fs = require('fs')
+var P2PGraph = require('p2p-graph')
 var moment = require('moment')
 var path = require('path')
 var prettyBytes = require('pretty-bytes')
 var throttle = require('throttleit')
-var TorrentGraph = require('../lib/torrent-graph')
 var WebTorrent = require('webtorrent')
 var xhr = require('xhr')
 
@@ -41,7 +41,7 @@ module.exports = function () {
     hero.className = 'loading'
     hero = null
 
-    graph = window.graph = new TorrentGraph('.torrent-graph')
+    graph = window.graph = new P2PGraph('.torrent-graph')
 
     getRtcConfig('https://instant.io/rtcConfig', function (err, rtcConfig) {
       if (err) console.error(err)
@@ -60,7 +60,7 @@ module.exports = function () {
     client.on('error', onError)
 
     torrent = client.add(TORRENT, onTorrent)
-    graph.add({ id: 'You', me: true })
+    graph.add({ id: 'You', name: 'You', me: true })
   }
 
   var $body = document.body
@@ -92,7 +92,7 @@ module.exports = function () {
 
   function onWire (wire) {
     var id = wire.peerId.toString()
-    graph.add({ id: id, ip: wire.remoteAddress || 'Unknown' })
+    graph.add({ id: id, name: wire.remoteAddress || 'Unknown' })
     graph.connect('You', id)
     wire.once('close', function () {
       graph.disconnect('You', id)
