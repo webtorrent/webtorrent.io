@@ -37,7 +37,7 @@
     "multer": "^1.1.0",
     "p2p-graph": "^1.0.0",
     "parse-torrent": "^5.0.1",
-    "pretty-bytes": "^3.0.0",
+    "prettier-bytes": "^1.0.3",
     "pug": "^2.0.0-beta4",
     "remarkable": "^1.6.2",
     "run-auto": "^2.0.0",

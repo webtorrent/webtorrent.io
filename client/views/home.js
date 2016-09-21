@@ -3,7 +3,7 @@ var fs = require('fs')
 var P2PGraph = require('p2p-graph')
 var moment = require('moment')
 var path = require('path')
-var prettyBytes = require('pretty-bytes')
+var prettierBytes = require('prettier-bytes')
 var throttle = require('throttleit')
 var WebTorrent = require('webtorrent')
 var xhr = require('xhr')
@@ -105,8 +105,8 @@ module.exports = function () {
     $progressBar.style.width = percent + '%'
     $numPeers.innerHTML = torrent.numPeers + (torrent.numPeers === 1 ? ' peer' : ' peers')
 
-    $downloaded.innerHTML = prettyBytes(torrent.downloaded)
-    $total.innerHTML = prettyBytes(torrent.length)
+    $downloaded.innerHTML = prettierBytes(torrent.downloaded)
+    $total.innerHTML = prettierBytes(torrent.length)
 
     var remaining
     if (torrent.done) {
