@@ -17,8 +17,6 @@ exports.ports = {
     https: PORT_443
   },
   web: 9002,
-  tracker: 9003,
-  whiteboard: 8080, // TEMP
   peerdb: 9200
 }
 
