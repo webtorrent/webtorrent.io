@@ -26,6 +26,10 @@ var CRASH_REPORTS_PATH = path.join(config.logPath, 'crash-reports')
 
 var SUMMARIZE_PATH = path.join(__dirname, '..', 'bin', 'summarize-telemetry.js')
 
+// Queue telemetry messages, log them to a file in order
+var telemetryLines = []
+var isWritingTelemetry = false
+
 // Attempt to create the needed log folders
 try { mkdirp.sync(TELEMETRY_PATH) } catch (err) {}
 try { mkdirp.sync(CRASH_REPORTS_PATH) } catch (err) {}
@@ -65,17 +69,9 @@ function serveTelemetryAPI (app) {
     var summary = req.body
     summary.ip = req.ip
     var summaryJSON = JSON.stringify(summary)
-
-    var today = new Date().toISOString().substring(0, 10) // YYYY-MM-DD
-    var telemetryPath = path.join(TELEMETRY_PATH, today + '.log')
-
-    fs.appendFile(telemetryPath, summaryJSON + '\n', function (err) {
-      if (err) {
-        console.error('Error saving telemetry: ' + err.message)
-        res.status(500)
-      }
-      res.end()
-    })
+    telemetryLines.push(summaryJSON)
+    writeTelemetryLines()
+    res.end()
   })
 
   app.use('/desktop/telemetry/', [
@@ -83,6 +79,22 @@ function serveTelemetryAPI (app) {
     serveTelemetryDashboard,
     express.static(TELEMETRY_PATH)
   ])
+}
+
+function writeTelemetryLines () {
+  if (isWritingTelemetry) return // Don't interleave writes
+  if (telemetryLines.length === 0) return // Nothing to do
+
+  var today = new Date().toISOString().substring(0, 10) // YYYY-MM-DD
+  var telemetryPath = path.join(TELEMETRY_PATH, today + '.log')
+  var lines = telemetryLines.join('\n') + '\n'
+  telemetryLines = []
+  isWritingTelemetry = true
+  fs.appendFile(telemetryPath, lines, function (err) {
+    isWritingTelemetry = false
+    if (err) console.error('Error saving telemetry: ' + err.message)
+    writeTelemetryLines()
+  })
 }
 
 // Summarize telemetry information: active users, monthly growth, most common errors, etc
