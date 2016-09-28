@@ -66,9 +66,20 @@ function loadTelemetrySummary (logFiles) {
         if (err) return reject(err)
 
         // Each log file contains one JSON record per line
+        console.log('Parsing ' + filename)
         try {
           var lines = json.trim().split('\n')
-          var records = lines.map(JSON.parse)
+          var records = lines
+            .map(function (line, i) {
+              try {
+                return JSON.parse(line)
+              } catch (err) {
+                console.log('Skipping invalid line %s:%d', filename, i + 1)
+                console.log(err)
+                return null
+              }
+            })
+            .filter((line) => line)
         } catch (err) {
           return reject(err)
         }
