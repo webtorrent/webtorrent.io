@@ -47,11 +47,12 @@ if (config.isProd) cronSummarizeTelemetry()
 function cronSummarizeTelemetry () {
   // Run immediately
   summarizeTelemetry()
+
   // Wait until tomorrow, 12:15AM UTC
   var msPerDay = 24 * 3600 * 1000
-  var msUntilMidnight = msPerDay - (new Date().getTime() % msPerDay)
-  var msWait = msUntilMidnight + 15 * 60 * 1000
-  var minsWait = msUntilMidnight / 60 / 1000
+  var msOfDay = new Date().getTime() % msPerDay
+  var msWait = (msPerDay - msOfDay + 15 * 60 * 1000) % msPerDay
+  var minsWait = msWait / 60 / 1000
   console.log('Running summarizeTelemetry next in ' + minsWait + ' minutes')
   setTimeout(cronSummarizeTelemetry, msWait)
 }
