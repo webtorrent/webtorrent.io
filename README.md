@@ -23,4 +23,4 @@ For local development (not using `NODE_ENV="production"` environment variable), 
 
 ## license
 
-MIT. Copyright (c) [Feross Aboukhadijeh](http://feross.org).
+MIT. Copyright (c) [WebTorrent, LLC](https://webtorrent.io).
