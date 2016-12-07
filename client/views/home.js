@@ -43,7 +43,7 @@ module.exports = function () {
 
     graph = window.graph = new P2PGraph('.torrent-graph')
 
-    getRtcConfig('https://instant.io/rtcConfig', function (err, rtcConfig) {
+    getRtcConfig(function (err, rtcConfig) {
       if (err) console.error(err)
       createClient(rtcConfig)
     })
@@ -136,8 +136,9 @@ module.exports = function () {
     }
   }
 
-  function getRtcConfig (url, cb) {
-    xhr(url, function (err, res) {
+  function getRtcConfig (cb) {
+    // WARNING: This is *NOT* a public endpoint. Do not depend on it in your app.
+    xhr('https://instant.io/_rtcConfig', function (err, res) {
       if (err || res.statusCode !== 200) {
         cb(new Error('Could not get WebRTC config from server. Using default (without TURN).'))
       } else {
