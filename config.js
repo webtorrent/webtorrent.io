@@ -6,7 +6,7 @@ try { secret = require('./secret') } catch (err) {}
 exports.desktopVersion = '0.17.2'
 
 exports.isProd = process.env.NODE_ENV === 'production'
-exports.port = exports.isProd ? 80 : 9000
+exports.port = 9000
 
 exports.gitterBot = {
   ircChannel: '#webtorrent',
