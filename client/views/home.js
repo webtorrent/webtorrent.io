@@ -1,4 +1,3 @@
-var debug = require('debug')('webtorrent-www:home')
 var fs = require('fs')
 var get = require('simple-get')
 var moment = require('moment')
@@ -151,7 +150,6 @@ module.exports = function () {
         } catch (err) {
           return cb(new Error('Got invalid WebRTC config from server: ' + res.body))
         }
-        debug('got rtc config: %o', rtcConfig)
         cb(null, rtcConfig)
       }
     })
