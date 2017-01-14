@@ -42,11 +42,11 @@
     "run-auto": "^2.0.0",
     "semver": "^5.1.0",
     "serve-index": "^1.8.0",
+    "simple-get": "^2.3.0",
     "stylus": "^0.54.0",
     "throttleit": "^1.0.0",
     "unlimited": "^1.1.0",
-    "webtorrent": "0.x",
-    "xhr": "^2.2.0"
+    "webtorrent": "0.x"
   },
   "devDependencies": {
     "nodemon": "^1.2.1",

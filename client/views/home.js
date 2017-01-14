@@ -1,12 +1,12 @@
 var debug = require('debug')('webtorrent-www:home')
 var fs = require('fs')
-var P2PGraph = require('p2p-graph')
+var get = require('simple-get')
 var moment = require('moment')
+var P2PGraph = require('p2p-graph')
 var path = require('path')
 var prettierBytes = require('prettier-bytes')
 var throttle = require('throttleit')
 var WebTorrent = require('webtorrent')
-var xhr = require('xhr')
 
 var TORRENT = fs.readFileSync(
   path.join(__dirname, '../../static/torrents/sintel.torrent')
@@ -138,7 +138,10 @@ module.exports = function () {
 
   function getRtcConfig (cb) {
     // WARNING: This is *NOT* a public endpoint. Do not depend on it in your app.
-    xhr('https://instant.io/_rtcConfig', function (err, res) {
+    get({
+      url: 'https://instant.io/_rtcConfig',
+      timeout: 5000
+    }, function (err, res) {
       if (err || res.statusCode !== 200) {
         cb(new Error('Could not get WebRTC config from server. Using default (without TURN).'))
       } else {
