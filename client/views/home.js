@@ -140,15 +140,15 @@ module.exports = function () {
     get.concat({
       url: 'https://instant.io/_rtcConfig',
       timeout: 5000
-    }, function (err, res) {
+    }, function (err, res, data) {
       if (err || res.statusCode !== 200) {
         cb(new Error('Could not get WebRTC config from server. Using default (without TURN).'))
       } else {
         var rtcConfig
         try {
-          rtcConfig = JSON.parse(res.body)
+          rtcConfig = JSON.parse(data)
         } catch (err) {
-          return cb(new Error('Got invalid WebRTC config from server: ' + res.body))
+          return cb(new Error('Got invalid WebRTC config from server: ' + data))
         }
         cb(null, rtcConfig)
       }
