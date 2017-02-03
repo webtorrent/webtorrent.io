@@ -1,99 +1,162 @@
-/**
- * HTTP reverse proxy server. Yo dawg, I heard you like HTTP servers, so here
- * is an HTTP server for your HTTP servers.
- */
-
-var auto = require('run-auto')
-var config = require('../config')
-var cp = require('child_process')
-var debug = require('debug')('webtorrent-www:router')
+var compress = require('compression')
+var cors = require('cors')
 var downgrade = require('downgrade')
-var fs = require('fs')
+var express = require('express')
+var highlight = require('highlight.js')
 var http = require('http')
-var httpProxy = require('http-proxy')
-var https = require('https')
 var path = require('path')
+var pug = require('pug')
+var Remarkable = require('remarkable')
 var unlimited = require('unlimited')
+var url = require('url')
+
+var config = require('../config')
+var desktopApi = require('./desktop-api')
 
 unlimited()
 
-var proxy = httpProxy.createProxyServer({
-  xfwd: true
+var app = express()
+var server = http.createServer(app)
+
+var remark = new Remarkable({
+  html: true,
+  highlight: function (code, lang) {
+    var h = lang
+      ? highlight.highlight(lang, code)
+      : highlight.highlightAuto(code)
+    return '<div class="hljs">' + h.value + '</div>'
+  }
 })
 
-proxy.on('error', function (err, req, res) {
-  debug('[proxy error] %s %s %s', req.method, req.url, err.message)
+pug.filters.markdown = (md, options) => {
+  return remark.render(md)
+}
 
-  if (!res) return
+// Trust "X-Forwarded-For" and "X-Forwarded-Proto" nginx headers
+app.enable('trust proxy')
 
-  if (!res.headersSent) {
-    res.writeHead(500, { 'content-type': 'application/json' })
+// Disable "powered by express" header
+app.set('x-powered-by', false)
+
+// Use pug for templates
+app.set('views', path.join(__dirname, 'views'))
+app.set('view engine', 'pug')
+app.engine('pug', pug.renderFile)
+
+// Pretty print JSON
+app.set('json spaces', 2)
+
+// Use GZIP
+app.use(compress())
+
+// Use SSL
+app.use(function (req, res, next) {
+  // Force SSL
+  if (config.isProd && req.protocol !== 'https') {
+    return res.redirect('https://' + (req.hostname || 'webtorrent.io') + req.url)
   }
 
-  res.end(JSON.stringify({ err: err.message }))
-})
-
-var secretKey, secretCert
-try {
-  secretKey = fs.readFileSync(path.join(__dirname, '../secret/webtorrent.io.key'))
-  secretCert = fs.readFileSync(path.join(__dirname, '../secret/webtorrent.io.chained.crt'))
-} catch (err) {}
-
-function onRequest (req, res) {
-  if (req.headers.host === 'peerdb.io') {
-    proxy.web(req, res, { target: 'http://127.0.0.1:' + config.ports.peerdb })
-  } else {
-    proxy.web(req, res, { target: 'http://127.0.0.1:' + config.ports.web })
+  // Redirect www to non-www
+  if (config.isProd && req.hostname === 'www.webtorrent.io') {
+    return res.redirect('https://webtorrent.io' + req.url)
   }
-}
 
-var httpServer = http.createServer(onRequest)
+  // Use HTTP Strict Transport Security
+  // Lasts 1 year, incl. subdomains, allow browser preload list
+  if (config.isProd) {
+    res.header(
+      'Strict-Transport-Security',
+      'max-age=31536000; includeSubDomains; preload'
+    )
+  }
 
-var httpsServer
-if (secretKey && secretCert) {
-  httpsServer = https.createServer({ key: secretKey, cert: secretCert }, onRequest)
-}
+  // Add cross-domain header for fonts, required by spec, Firefox, and IE.
+  var extname = path.extname(url.parse(req.url).pathname)
+  if (['.eot', '.ttf', '.otf', '.woff'].indexOf(extname) >= 0) {
+    res.header('Access-Control-Allow-Origin', '*')
+  }
 
-var web
+  // Prevents IE and Chrome from MIME-sniffing a response. Reduces exposure to
+  // drive-by download attacks on sites serving user uploaded content.
+  res.header('X-Content-Type-Options', 'nosniff')
 
-auto({
-  httpServer: function (cb) {
-    httpServer.listen(config.ports.router.http, config.host, cb)
-  },
-  httpsServer: function (cb) {
-    if (httpsServer) httpsServer.listen(config.ports.router.https, config.host, cb)
-    else cb(null)
-  },
-  downgrade: ['httpServer', 'httpsServer', function (results, cb) {
-    downgrade()
-    cb(null)
-  }],
-  web: ['downgrade', function (results, cb) {
-    web = spawn(path.join(__dirname, 'web'))
-    web.on('message', cb.bind(null, null))
-  }]
-}, function (err) {
-  debug('listening on %s', JSON.stringify(config.ports.router))
-  if (err) throw err
+  // Prevent rendering of site within a frame.
+  res.header('X-Frame-Options', 'DENY')
+
+  // Enable the XSS filter built into most recent web browsers. It's usually
+  // enabled by default anyway, so role of this headers is to re-enable for this
+  // particular website if it was disabled by the user.
+  res.header('X-XSS-Protection', '1; mode=block')
+
+  // Force IE to use latest rendering engine or Chrome Frame
+  res.header('X-UA-Compatible', 'IE=Edge,chrome=1')
+
+  next()
 })
 
-function onError (err) {
-  console.error(err.stack || err.message || err)
-}
+// Serve the Webtorrent Desktop REST API
+desktopApi.serve(app)
 
-function spawn (program) {
-  var child = cp.spawn('node', [ program ], {
-    stdio: [ process.stdin, process.stdout, process.stderr, 'ipc' ]
+// Serve the demo torrent (Sintel)
+// Enable CORS preflight, and cache it for 1 hour. This is necessary to support
+// requests from another domain with the "Range" HTTP header.
+app.options('/torrents/*', cors({ maxAge: 60 * 60 }))
+
+app.get('/torrents/*', cors(), express.static(path.join(__dirname, '../static')))
+
+// Serve static resources
+app.use(express.static(path.join(__dirname, '../static')))
+
+// Serve all the pug pages
+app.get('/', function (req, res) {
+  res.render('home', { rawTitle: 'WebTorrent - Streaming browser torrent client' })
+})
+
+app.get('/desktop', function (req, res) {
+  res.render('desktop', {
+    cls: 'desktop',
+    rawTitle: 'WebTorrent Desktop - Streaming torrent app for Mac, Windows, and Linux',
+    version: config.desktopVersion
   })
-  child.on('error', onError)
-  return child
-}
+})
 
-process.on('uncaughtException', function (err) {
-  onError(err)
+app.get('/intro', function (req, res) {
+  res.render('intro', { rawTitle: 'WebTorrent Tutorial - Get Started' })
+})
 
-  // kill all processes in the "process group", i.e. this process and the children
-  try {
-    process.kill(-process.pid)
-  } catch (err) {}
+app.get('/docs', function (req, res) {
+  res.render('docs', { rawTitle: 'WebTorrent API Documentation' })
+})
+
+app.get('/faq', function (req, res) {
+  res.render('faq', { rawTitle: 'WebTorrent FAQ' })
+})
+
+app.get('/create', function (req, res) {
+  res.render('create', { title: 'Create a .torrent file' })
+})
+
+app.get('/logs', function (req, res) {
+  res.redirect(301, 'https://botbot.me/freenode/webtorrent/')
+})
+
+// Handle errors (404 for unrecognized URLs, 500 for uncaught errors)
+app.get('*', function (req, res) {
+  res.status(404).render('error', {
+    title: '404 Not Found',
+    message: '404 Not Found'
+  })
+})
+
+app.use(function (err, req, res, next) {
+  console.error(err.stack)
+  res.status(500).render('error', {
+    title: '500 Server Error',
+    message: '500 Server Error'
+  })
+})
+
+server.listen(config.port, function () {
+  console.log('Listening on port %s', config.port)
+  downgrade()
 })

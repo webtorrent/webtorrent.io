@@ -1,7 +1,7 @@
-# webtorrent-www [![travis][travis-image]][travis-url]
+# webtorrent.io [![travis][travis-image]][travis-url]
 
-[travis-image]: https://img.shields.io/travis/feross/webtorrent-www/master.svg
-[travis-url]: https://travis-ci.org/feross/webtorrent-www
+[travis-image]: https://img.shields.io/travis/feross/webtorrent.io/master.svg
+[travis-url]: https://travis-ci.org/feross/webtorrent.io
 
 ### The website for the [WebTorrent](https://webtorrent.io) project
 

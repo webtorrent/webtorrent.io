@@ -1,12 +1,11 @@
-var debug = require('debug')('webtorrent-www:home')
 var fs = require('fs')
-var P2PGraph = require('p2p-graph')
+var get = require('simple-get')
 var moment = require('moment')
+var P2PGraph = require('p2p-graph')
 var path = require('path')
 var prettierBytes = require('prettier-bytes')
 var throttle = require('throttleit')
 var WebTorrent = require('webtorrent')
-var xhr = require('xhr')
 
 var TORRENT = fs.readFileSync(
   path.join(__dirname, '../../static/torrents/sintel.torrent')
@@ -43,7 +42,7 @@ module.exports = function () {
 
     graph = window.graph = new P2PGraph('.torrent-graph')
 
-    getRtcConfig('https://instant.io/rtcConfig', function (err, rtcConfig) {
+    getRtcConfig(function (err, rtcConfig) {
       if (err) console.error(err)
       createClient(rtcConfig)
     })
@@ -136,18 +135,21 @@ module.exports = function () {
     }
   }
 
-  function getRtcConfig (url, cb) {
-    xhr(url, function (err, res) {
+  function getRtcConfig (cb) {
+    // WARNING: This is *NOT* a public endpoint. Do not depend on it in your app.
+    get.concat({
+      url: 'https://instant.io/_rtcConfig',
+      timeout: 5000
+    }, function (err, res, data) {
       if (err || res.statusCode !== 200) {
         cb(new Error('Could not get WebRTC config from server. Using default (without TURN).'))
       } else {
         var rtcConfig
         try {
-          rtcConfig = JSON.parse(res.body)
+          rtcConfig = JSON.parse(data)
         } catch (err) {
-          return cb(new Error('Got invalid WebRTC config from server: ' + res.body))
+          return cb(new Error('Got invalid WebRTC config from server: ' + data))
         }
-        debug('got rtc config: %o', rtcConfig)
         cb(null, rtcConfig)
       }
     })
