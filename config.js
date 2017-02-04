@@ -10,7 +10,7 @@ exports.isProd = isProd
 /**
  * WebTorrent Desktop version (used by auto-updater, landing page, etc.)
  */
-exports.desktopVersion = '0.17.2'
+exports.desktopVersion = '0.18.0'
 
 /**
  * Server listening port
