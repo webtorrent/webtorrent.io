@@ -51,7 +51,7 @@ function cronSummarizeTelemetry () {
   // Wait until tomorrow, 12:15AM UTC
   var msPerDay = 24 * 3600 * 1000
   var msOfDay = new Date().getTime() % msPerDay
-  var msWait = (msPerDay - msOfDay + 15 * 60 * 1000) % msPerDay
+  var msWait = (msPerDay - msOfDay + (15 * 60 * 1000)) % msPerDay
   var minsWait = msWait / 60 / 1000
   console.log('Running summarizeTelemetry next in ' + minsWait + ' minutes')
   setTimeout(cronSummarizeTelemetry, msWait)
@@ -139,7 +139,7 @@ function serveTelemetryDashboard (req, res, next) {
       var yesterday = telem && telem[telem.length - 2]
       var t7 = telem && telem[telem.length - 9]
       var percentWeeklyGrowth = (yesterday && t7)
-        ? (100 * yesterday.actives.last7 / t7.actives.last7 - 100).toFixed(1)
+        ? ((100 * yesterday.actives.last7 / t7.actives.last7) - 100).toFixed(1)
         : '-'
 
       // Most common errors
