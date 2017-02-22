@@ -8,4 +8,5 @@ static/bundle.js
 static/style.css
 
 static/torrents/*
+!static/torrents/*.torrent
 !static/torrents/README.md
