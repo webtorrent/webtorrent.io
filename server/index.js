@@ -124,6 +124,10 @@ app.get('/intro', function (req, res) {
   res.render('intro', { rawTitle: 'WebTorrent Tutorial - Get Started' })
 })
 
+app.get('/free-torrents', function (req, res) {
+  res.render('free-torrents', { title: 'Free Torrents - Public Domain, Creative Commons' })
+})
+
 app.get('/docs', function (req, res) {
   res.render('docs', { rawTitle: 'WebTorrent API Documentation' })
 })
