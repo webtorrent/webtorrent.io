@@ -70,7 +70,10 @@ module.exports = function () {
   var $remaining = document.querySelector('#remaining')
 
   function onTorrent () {
-    torrent.files[0].appendTo('#videoWrap .video', function (err, elem) {
+    var file = torrent.files.find(function (file) {
+      return file.name.endsWith('.mp4')
+    })
+    file.appendTo('#videoWrap .video', function (err, elem) {
       if (err) return onError(err)
       elem.addEventListener('progress', onVideoProgress)
 
