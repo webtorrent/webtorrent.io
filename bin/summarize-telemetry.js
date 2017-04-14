@@ -314,7 +314,7 @@ function computeRetention (days, index, n, prevNewUsers) {
 // Callback: (err, [{tag_name, published_at}, ...])
 function loadReleases (cb) {
   var opts = {
-    url: 'https://api.github.com/repos/feross/webtorrent-desktop/releases',
+    url: 'https://api.github.com/repos/webtorrent/webtorrent-desktop/releases',
     json: true,
     headers: {
       'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/52.0.2743.116 Safari/537.36'

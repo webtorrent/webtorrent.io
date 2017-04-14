@@ -19,7 +19,7 @@ var config = require('../config')
 var secret = require('../secret')
 
 var DESKTOP_VERSION = config.desktopVersion
-var RELEASES_URL = 'https://github.com/feross/webtorrent-desktop/releases/download'
+var RELEASES_URL = 'https://github.com/webtorrent/webtorrent-desktop/releases/download'
 
 var TELEMETRY_PATH = path.join(config.logPath, 'telemetry')
 var CRASH_REPORTS_PATH = path.join(config.logPath, 'crash-reports')

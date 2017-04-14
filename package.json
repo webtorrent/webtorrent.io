@@ -2,9 +2,9 @@
   "name": "webtorrent.io",
   "version": "0.0.1",
   "author": {
-    "name": "Feross Aboukhadijeh",
-    "email": "feross@feross.org",
-    "url": "http://feross.org/"
+    "name": "WebTorrent, LLC",
+    "email": "feross@webtorrent.io",
+    "url": "https://webtorrent.io"
   },
   "browserify": {
     "transform": [
@@ -12,7 +12,7 @@
     ]
   },
   "bugs": {
-    "url": "https://github.com/feross/webtorrent.io/issues"
+    "url": "https://github.com/webtorrent/webtorrent.io/issues"
   },
   "dependencies": {
     "arch": "^2.0.0",
@@ -66,7 +66,7 @@
   "private": true,
   "repository": {
     "type": "git",
-    "url": "git://github.com/feross/webtorrent.io.git"
+    "url": "git://github.com/webtorrent/webtorrent.io.git"
   },
   "scripts": {
     "build": "npm run build-css && npm run build-js",

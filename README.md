@@ -1,7 +1,7 @@
 # webtorrent.io [![travis][travis-image]][travis-url] [![javascript style guide][standard-image]][standard-url]
 
-[travis-image]: https://img.shields.io/travis/feross/webtorrent.io/master.svg
-[travis-url]: https://travis-ci.org/feross/webtorrent.io
+[travis-image]: https://img.shields.io/travis/webtorrent/webtorrent.io/master.svg
+[travis-url]: https://travis-ci.org/webtorrent/webtorrent.io
 [standard-image]: https://img.shields.io/badge/code_style-standard-brightgreen.svg
 [standard-url]: https://standardjs.com
 
