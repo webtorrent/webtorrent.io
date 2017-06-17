@@ -144,6 +144,10 @@ app.get('/logs', function (req, res) {
   res.redirect(301, 'https://botbot.me/freenode/webtorrent/')
 })
 
+app.get('/500', (req, res, next) => {
+  next(new Error('Manually visited /500'))
+})
+
 // Handle errors (404 for unrecognized URLs, 500 for uncaught errors)
 app.get('*', function (req, res) {
   res.status(404).render('error', {
@@ -154,7 +158,8 @@ app.get('*', function (req, res) {
 
 app.use(function (err, req, res, next) {
   console.error(err.stack)
-  res.status(500).render('error', {
+  const code = typeof err.code === 'number' ? err.code : 500
+  res.status(code).render('error', {
     title: '500 Server Error',
     message: '500 Server Error'
   })
