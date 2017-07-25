@@ -46,6 +46,7 @@
     "brfs": "^1.4.0",
     "browserify": "^14.0.0",
     "nodemon": "^1.2.1",
+    "run-parallel-limit": "^1.0.3",
     "standard": "*",
     "stylus": "^0.54.0",
     "watchify": "^3.1.2"

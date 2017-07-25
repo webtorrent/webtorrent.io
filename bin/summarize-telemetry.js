@@ -1,32 +1,43 @@
 #!/usr/bin/env node
 
-var get = require('simple-get')
-var config = require('../config')
-var path = require('path')
-var fs = require('fs')
-var semver = require('semver')
+const config = require('../config')
+const fs = require('fs')
+const get = require('simple-get')
+const path = require('path')
+const runParallelLimit = require('run-parallel-limit')
+const semver = require('semver')
 
-var TELEMETRY_PATH = path.join(config.logPath, 'telemetry')
+const TELEMETRY_PATH = path.join(config.logPath, 'telemetry')
+const PARALLEL_LIMIT = 5
 
 main()
 
 function main () {
   // Find all files in the telemetry folder...
   fs.readdir(TELEMETRY_PATH, function (err, files) {
-    if (err) die(err)
+    if (err) throw err
 
     // Filter down to just log files...
-    var logFiles = files
+    const logFiles = files
       .filter((f) => /\d{4}-\d{2}-\d{2}.log/.test(f))
       .sort()
 
-    var summary = {}
+    const summary = {}
     // Read them all and collect summary stats...
-    loadTelemetrySummary(logFiles).then(function (telemetry) {
+    loadTelemetrySummary(logFiles, onTelemetrySummary)
+
+    function onTelemetrySummary (err, telemetry) {
+      if (err) throw err
+
       summary.telemetry = telemetry
+
       // Load WebTorrent Desktop release history from Github...
-      return loadReleases()
-    }).then(function (releases) {
+      loadReleases(onLoadReleases)
+    }
+
+    function onLoadReleases (err, releases) {
+      if (err) throw err
+
       summary.releases = releases
       summary.totalInstalls = releases
         .map((r) => r.installs)
@@ -42,52 +53,55 @@ function main () {
       var summaryPath = path.join(TELEMETRY_PATH, 'summary.json')
       var summaryJSON = JSON.stringify(summary, null, 2) // pretty print
       fs.writeFile(summaryPath, summaryJSON, function (err) {
-        if (err) die(err)
+        if (err) throw err
         console.log('Done!')
       })
-    }).catch(die)
+    }
   })
-}
-
-function die (err) {
-  console.error(err)
-  process.exit(1)
 }
 
 // Reads telemetry log files in parallel, then produces a summary array, one
 // entry for each day: [{date, actives, retention, ...}, ...]
-function loadTelemetrySummary (logFiles) {
+function loadTelemetrySummary (logFiles, cb) {
   console.log('Summarizing ' + logFiles.length + ' telemetry log files')
-  return Promise.all(logFiles.map(function (filename) {
-    return new Promise(function (resolve, reject) {
+
+  const tasks = logFiles.map(function (filename) {
+    return function (cb) {
       // Read each telemetry log file, one per day...
-      var filePath = path.join(TELEMETRY_PATH, filename)
+      const filePath = path.join(TELEMETRY_PATH, filename)
+      console.log('Reading ' + filename)
       fs.readFile(filePath, 'utf8', function (err, json) {
-        if (err) return reject(err)
+        if (err) return cb(err)
 
         // Each log file contains one JSON record per line
         console.log('Parsing ' + filename)
+        let records
         try {
-          var lines = json.trim().split('\n')
-          var records = lines
+          const lines = json.trim().split('\n')
+          records = lines
             .map(function (line, i) {
               try {
                 return JSON.parse(line)
               } catch (err) {
-                console.log('Skipping invalid line %s:%d', filename, i + 1)
-                console.log(err)
+                console.error('Skipping invalid line %s:%d', filename, i + 1)
+                console.error(err)
                 return null
               }
             })
-            .filter((line) => line)
+            .filter(Boolean)
         } catch (err) {
-          return reject(err)
+          return cb(err)
         }
         console.log('Read ' + records.length + ' rows from ' + filename)
-        resolve(summarizeDailyTelemetryLog(filename, records))
+        cb(null, summarizeDailyTelemetryLog(filename, records))
       })
-    })
-  })).then(combineDailyTelemetrySummaries)
+    }
+  })
+
+  runParallelLimit(tasks, PARALLEL_LIMIT, function (err, days) {
+    if (err) return cb(err)
+    cb(null, combineDailyTelemetrySummaries(days))
+  })
 }
 
 // Summarize a potentially huge (GB+) log file down to a few KB...
@@ -201,11 +215,14 @@ function addToSet (elem, arr, sortFn) {
 
 // Combine all the per-day summaries into a single summary...
 function combineDailyTelemetrySummaries (days) {
+  console.log('Combining daily telemetry summaries...')
+
   var uniqueUsers = {} // Running set, all unique users so far
   var newUsersByDay = [] // First-time users each day
 
   // Loop thru all days since we started collecting telemetry...
   return days.map(function (day, i) {
+    console.log('Processing ' + day.date + '...')
     // Sanity check: we should have consecutive days, correctly sorted
     if (i > 0) {
       var delta = new Date(day.date).getTime() -
@@ -321,33 +338,31 @@ function loadReleases (cb) {
     }
   }
 
-  return new Promise(function (resolve, reject) {
-    console.log('Fetching ' + opts.url)
-    get.concat(opts, function (err, res, data) {
-      if (err) return reject(err)
-      console.log('Got ' + data.length + ' WebTorrent Desktop releases')
-      var releases = data.map(function (d) {
-        // Count total downloads
-        var win32 = 0
-        var darwin = 0
-        var linux = 0
-        d.assets.map(function (a) {
-          if (a.name.endsWith('.dmg')) {
-            darwin += a.download_count
-          } else if (a.name.endsWith('.exe')) {
-            win32 += a.download_count
-          } else if (a.name.endsWith('.deb') ||
-                     a.name.endsWith('linux-ia32.zip') ||
-                     a.name.endsWith('linux-x64.zip')) {
-            linux += a.download_count
-          }
-        })
-        var total = win32 + darwin + linux
-        var installs = {win32, darwin, linux, total}
-
-        return {tag_name: d.tag_name, published_at: d.published_at, installs}
+  console.log('Fetching ' + opts.url)
+  get.concat(opts, function (err, res, data) {
+    if (err) return cb(err)
+    console.log('Got ' + data.length + ' WebTorrent Desktop releases')
+    var releases = data.map(function (d) {
+      // Count total downloads
+      var win32 = 0
+      var darwin = 0
+      var linux = 0
+      d.assets.map(function (a) {
+        if (a.name.endsWith('.dmg')) {
+          darwin += a.download_count
+        } else if (a.name.endsWith('.exe')) {
+          win32 += a.download_count
+        } else if (a.name.endsWith('.deb') ||
+                   a.name.endsWith('linux-ia32.zip') ||
+                   a.name.endsWith('linux-x64.zip')) {
+          linux += a.download_count
+        }
       })
-      resolve(releases)
+      var total = win32 + darwin + linux
+      var installs = {win32, darwin, linux, total}
+
+      return {tag_name: d.tag_name, published_at: d.published_at, installs}
     })
+    cb(null, releases)
   })
 }
