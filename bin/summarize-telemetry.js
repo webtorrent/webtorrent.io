@@ -75,23 +75,20 @@ function loadTelemetrySummary (logFiles, cb) {
 
         // Each log file contains one JSON record per line
         console.log('Parsing ' + filename)
-        let records
-        try {
-          const lines = json.trim().split('\n')
-          records = lines
-            .map(function (line, i) {
-              try {
-                return JSON.parse(line)
-              } catch (err) {
-                console.error('Skipping invalid line %s:%d', filename, i + 1)
-                console.error(err)
-                return null
-              }
-            })
-            .filter(Boolean)
-        } catch (err) {
-          return cb(err)
-        }
+
+        const lines = json.trim().split('\n')
+        const records = lines
+          .map(function (line, i) {
+            try {
+              return JSON.parse(line)
+            } catch (err) {
+              console.error('Skipping invalid line %s:%d', filename, i + 1)
+              console.error(err)
+              return null
+            }
+          })
+          .filter(Boolean)
+
         console.log('Read ' + records.length + ' rows from ' + filename)
         cb(null, summarizeDailyTelemetryLog(filename, records))
       })
