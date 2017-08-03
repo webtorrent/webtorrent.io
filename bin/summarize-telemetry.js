@@ -333,6 +333,7 @@ function loadReleases (cb) {
   var opts = {
     url: 'https://api.github.com/repos/webtorrent/webtorrent-desktop/releases',
     json: true,
+    timeout: 30 * 1000,
     headers: {
       'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/52.0.2743.116 Safari/537.36'
     }
