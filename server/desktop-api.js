@@ -265,6 +265,11 @@ function logUpdateCheck (log) {
 
 function summarizeTelemetry () {
   var child = cp.spawn(SUMMARIZE_PATH, [])
+
+  // Log the progress, for easier debugging...
+  child.stdout.pipe(process.stdout)
+  child.stderr.pipe(process.stderr)
+
   child.on('close', function (code) {
     console.log(`Summarize telemetry script exited with code: ${code}`)
   })
