@@ -1,5 +1,7 @@
 # webtorrent.io [![travis][travis-image]][travis-url] [![javascript style guide][standard-image]][standard-url]
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/webtorrent/webtorrent.io.svg)](https://greenkeeper.io/)
+
 [travis-image]: https://img.shields.io/travis/webtorrent/webtorrent.io/master.svg
 [travis-url]: https://travis-ci.org/webtorrent/webtorrent.io
 [standard-image]: https://img.shields.io/badge/code_style-standard-brightgreen.svg
