@@ -1,19 +1,16 @@
 var compress = require('compression')
 var cors = require('cors')
-var downgrade = require('downgrade')
 var express = require('express')
 var highlight = require('highlight.js')
 var http = require('http')
 var path = require('path')
 var pug = require('pug')
 var Remarkable = require('remarkable')
-var unlimited = require('unlimited')
 var url = require('url')
 
 var config = require('../config')
 var desktopApi = require('./desktop-api')
 
-unlimited()
 
 var app = express()
 var server = http.createServer(app)
@@ -166,6 +163,5 @@ app.use(function (err, req, res, next) {
 })
 
 server.listen(config.port, function () {
-  console.log('Listening on port %s', config.port)
-  downgrade()
+  console.log('Listening on port %s', server.address().port)
 })
