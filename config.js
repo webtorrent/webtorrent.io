@@ -13,13 +13,6 @@ exports.isProd = isProd
 exports.desktopVersion = '0.18.0'
 
 /**
- * Server listening port
- */
-exports.port = isProd
-  ? 9000
-  : 4000
-
-/**
  * Path to store log files
  */
 exports.logPath = process.env.NODE_ENV === 'production'

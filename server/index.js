@@ -11,6 +11,7 @@ var url = require('url')
 var config = require('../config')
 var desktopApi = require('./desktop-api')
 
+var PORT = Number(process.argv[2]) || 4000
 
 var app = express()
 var server = http.createServer(app)
@@ -162,6 +163,6 @@ app.use(function (err, req, res, next) {
   })
 })
 
-server.listen(config.port, function () {
+server.listen(PORT, function () {
   console.log('Listening on port %s', server.address().port)
 })
