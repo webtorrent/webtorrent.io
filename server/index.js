@@ -1,3 +1,5 @@
+require('./opbeat')
+
 var compress = require('compression')
 var cors = require('cors')
 var express = require('express')
@@ -146,7 +148,7 @@ app.get('/500', (req, res, next) => {
   next(new Error('Manually visited /500'))
 })
 
-// Handle errors (404 for unrecognized URLs, 500 for uncaught errors)
+// Handle 404 for unrecognized URLs
 app.get('*', function (req, res) {
   res.status(404).render('error', {
     title: '404 Not Found',
@@ -154,6 +156,10 @@ app.get('*', function (req, res) {
   })
 })
 
+// Log errors to Opbeat
+if (global.opbeat) app.use(global.opbeat.middleware.express())
+
+// Handle 500 errors
 app.use(function (err, req, res, next) {
   console.error(err.stack)
   const code = typeof err.code === 'number' ? err.code : 500

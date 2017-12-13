@@ -1,5 +1,12 @@
-exports.gitterApiKey = ''
+exports.gitterApiKey = 'TODO'
+
 exports.credentials = {
-  user1: 'password1',
-  user2: 'password2'
+  user1: 'TODO',
+  user2: 'TODO'
+}
+
+exports.opbeat = {
+  appId: 'TODO',
+  organizationId: 'TODO',
+  secretToken: 'TODO'
 }
