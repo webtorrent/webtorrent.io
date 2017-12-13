@@ -1,11 +1,9 @@
 const path = require('path')
 
-const isProd = process.env.NODE_ENV === 'production'
-
 /**
  * Is site running in production?
  */
-exports.isProd = isProd
+exports.isProd = process.env.NODE_ENV === 'production'
 
 /**
  * WebTorrent Desktop version (used by auto-updater, landing page, etc.)
