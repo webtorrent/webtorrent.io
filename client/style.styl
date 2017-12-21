@@ -33,7 +33,7 @@ ellipsis()
   text-overflow: ellipsis
   white-space: nowrap
 
-vertical-align()
+vert-align()
   position: relative
   top: 50%
   transform: translateY(-50%)
@@ -245,7 +245,7 @@ nav
     display: none
 
   @media DESKTOP
-    vertical-align()
+    vert-align()
 
   a:link, a:visited
     color: DARK_GRAY
@@ -312,6 +312,23 @@ article
 
   h1.minimal
     margin: 0
+
+//
+// SPONSORS
+//
+.feature-block.sponsors
+  h3
+    text-align: center
+  article
+    padding-top: 1em !important
+    padding-bottom: 1em !important
+    padding: 0 120px
+
+.sponsor
+  width: 50%
+  padding: 10px 40px
+  display: inline-block
+  vertical-align: middle
 
 //
 // HERO
@@ -398,7 +415,7 @@ article
       border: 1px solid rgba(#FFF, 0.4)
       max-width: 60%
       overflow: hidden
-      vertical-align()
+      vert-align()
     opacity: 0
     &.playing
       opacity: 1
