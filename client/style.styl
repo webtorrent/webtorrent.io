@@ -273,11 +273,19 @@ footer
   padding: 1em 4em 4em 4em
   font-family: 'Asap', sans-serif
 
+  .gh-button
+    margin-top: 5px
+
   @media PHONE
     margin: 0 auto
 
+  h3
+    margin-bottom: 10px
+    color: white
+
   section
     width: 25%
+    padding: 0 10px
     float: left
     color: #FFF
 
@@ -287,9 +295,18 @@ footer
 
   a:link, a:visited, div
     display: block
-    color: white
-    font-size: 20px
+    font-size: 17px
     margin: 5px 0
+
+  div
+    color: #CCC
+
+  a:link, a:visited
+    color: white
+    text-decoration: rgba(255, 255, 255, 0.4) solid underline
+
+  a:hover, a:active
+    text-decoration: underline
 
 article
   width: ARTICLE_WIDTH
@@ -324,11 +341,15 @@ article
     padding-bottom: 1em !important
     padding: 0 150px
 
-.sponsor
-  width: 50%
-  padding: 10px 50px
-  display: inline-block
-  vertical-align: middle
+  .sponsor
+    width: 50%
+    padding: 10px 50px
+    display: inline-block
+    vertical-align: middle
+
+footer .sponsors .sponsor
+  padding: 5px 40px
+
 
 //
 // HERO

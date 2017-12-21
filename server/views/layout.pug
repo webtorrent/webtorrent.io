@@ -64,8 +64,9 @@ html(lang='en')
 
         section
           h3 Connect
-          a(href='https://github.com/webtorrent/webtorrent') GitHub
           a(href='https://twitter.com/WebTorrentApp') Twitter
+          a(href='https://github.com/webtorrent/webtorrent') GitHub
+          iframe.gh-button(src='https://ghbtns.com/github-btn.html?user=webtorrent&repo=webtorrent&type=star&count=true&size=large', frameborder='0', scrolling='0', width='160px', height='30px')
 
         section
           h3 Support
@@ -74,11 +75,14 @@ html(lang='en')
           else
             a(href='https://github.com/webtorrent/webtorrent/issues') Open an issue
           a(href='https://gitter.im/webtorrent/webtorrent') Chat in Gitter
-          div <strong>#webtorrent</strong> on freenode (IRC)
+          div <strong>#webtorrent</strong> on IRC (freenode)
 
-        section
-          h3 Star on GitHub
-          iframe(src='https://ghbtns.com/github-btn.html?user=webtorrent&repo=webtorrent&type=star&count=true&size=large', frameborder='0', scrolling='0', width='160px', height='30px')
+        section.sponsors
+          h3 Open Source Sponsors
+          a(href='https://brave.com', rel='nofollow', target='_blank', class='sponsor')
+            img(src='/img/supporters/brave.png', alt='Brave Software')
+          a(href='https://popchest.com', rel='nofollow', target='_blank', class='sponsor')
+            img(src='/img/supporters/popchest.png', alt='Popchest')
 
     script(src='/bundle.js')
 
