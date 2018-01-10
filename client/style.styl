@@ -333,6 +333,7 @@ article
 //
 // SPONSORS
 //
+
 .feature-block.sponsors
   h3
     text-align: center
@@ -341,14 +342,29 @@ article
     padding-bottom: 1em !important
     padding: 0 150px
 
-  .sponsor
-    width: 50%
-    padding: 10px 50px
+    @media PHONE
+      padding: 0 50px
+
+.sponsor
+  padding: 5px 50px 15px 0
+
+  @media DESKTOP
     display: inline-block
+    width: 50%
     vertical-align: middle
 
+  @media PHONE
+    display: block
+    width: 100%
+    margin: 0 auto
+    max-width: 350px
+    padding-right: 0
+
+
 footer .sponsors .sponsor
-  padding: 5px 40px
+  @media DESKTOP
+    display: block
+    width: 100%
 
 
 //
