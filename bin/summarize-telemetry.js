@@ -137,12 +137,12 @@ function summarizeDailyTelemetryLog (filename, records) {
       // Before 0.12, we didn't log the app version altogether, and also
       // didn't redact stacktraces.
       var errVersion = err.version
-         ? err.version
-         : err.stack.includes('app.asar')
-         ? 'pre-0.12'
-         : versionCompare(version, '0.12.0') < 0
-         ? version
-         : '0.12.0'
+        ? err.version
+        : err.stack.includes('app.asar')
+          ? 'pre-0.12'
+          : versionCompare(version, '0.12.0') < 0
+            ? version
+            : '0.12.0'
 
       // 1. Either update the stats for an existing error...
       var error = errors[key]
