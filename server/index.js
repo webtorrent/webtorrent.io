@@ -136,10 +136,6 @@ app.get('/faq', function (req, res) {
   res.render('faq', { rawTitle: 'WebTorrent FAQ' })
 })
 
-app.get('/create', function (req, res) {
-  res.render('create', { title: 'Create a .torrent file' })
-})
-
 app.get('/logs', function (req, res) {
   res.redirect(301, 'https://botbot.me/freenode/webtorrent/')
 })
