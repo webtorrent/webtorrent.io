@@ -73,13 +73,29 @@ module.exports = function () {
     var file = torrent.files.find(function (file) {
       return file.name.endsWith('.mp4')
     })
-    file.appendTo('#videoWrap .video', function (err, elem) {
+    var opts = {
+      autoplay: true,
+      muted: true
+    }
+    file.appendTo('#videoWrap .video', opts, function (err, elem) {
       if (err) return onError(err)
-      elem.addEventListener('progress', onVideoProgress)
+      elem.parentElement.classList.add('canplay')
+      elem.parentElement.classList.add('muted')
 
-      function onVideoProgress () {
-        elem.removeEventListener('progress', onVideoProgress)
-        elem.parentElement.classList.add('playing')
+      elem.addEventListener('click', onClick1)
+
+      // First click unmutes the video!
+      function onClick1 () {
+        elem.muted = false
+        elem.parentElement.classList.remove('muted')
+
+        elem.addEventListener('click', onClick2)
+      }
+
+      // All further clicks play/pause the video!
+      function onClick2 () {
+        if (elem.paused) elem.play()
+        else elem.pause()
       }
     })
 

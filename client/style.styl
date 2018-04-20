@@ -453,9 +453,21 @@ footer .sponsors .sponsor
       max-width: 60%
       overflow: hidden
       vert-align()
+
     opacity: 0
-    &.playing
+    &.canplay
       opacity: 1
+
+    &.muted:before
+      display: block
+      content: '🔇 TAP TO UNMUTE'
+      font-size: 20px
+      color: #000
+      background-color: rgba(255, 255, 255, 0.7)
+      border-radius: 3px
+      position: absolute
+      padding: 8px 16px
+      margin: 20px
 
   video
     min-height: 100px
