@@ -36,7 +36,7 @@
     "serve-index": "^1.8.0",
     "simple-get": "^2.3.0",
     "throttleit": "^1.0.0",
-    "webtorrent": "0.x"
+    "webtorrent": ">= 0.99.0"
   },
   "devDependencies": {
     "brfs": "^1.4.0",
