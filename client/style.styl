@@ -443,36 +443,48 @@ footer .sponsors .sponsor
   @media DESKTOP
     height: HERO_HEIGHT
 
-  .video
-    border-radius: 3px
-    min-height: 100px
-    @media DESKTOP
-      float: right
-      max-height: 295px
-      border: 1px solid rgba(#FFF, 0.4)
-      max-width: 60%
-      overflow: hidden
-      vert-align()
-
-    opacity: 0
-    &.canplay
-      opacity: 1
-
-    &.muted:before
-      display: block
-      content: '🔇 TAP TO UNMUTE'
-      font-size: 20px
-      color: #000
-      background-color: rgba(255, 255, 255, 0.7)
-      border-radius: 3px
-      position: absolute
-      padding: 8px 16px
-      margin: 20px
 
   video
     min-height: 100px
     border-radius: 2px
     width: 100%
+
+.videoOverlay
+  position: absolute
+  height: 100%
+  width: 100%
+  z-index: 9999
+  display: none
+
+  .video.muted &
+    display: block
+
+.video
+  position: relative
+  min-height: 100px
+  border-radius: 3px
+  @media DESKTOP
+    max-height: 295px
+    max-width: 60%
+    vert-align()
+    float: right
+    border: 1px solid rgba(#FFF, 0.4)
+    overflow: hidden
+
+  opacity: 0
+  &.canplay
+    opacity: 1
+
+  &.muted:before
+    display: block
+    content: '🔇 TAP TO UNMUTE'
+    font-size: 20px
+    color: #000
+    background-color: rgba(255, 255, 255, 0.7)
+    border-radius: 3px
+    position: absolute
+    padding: 8px 16px
+    margin: 20px
 
 #progressBar
   height: 5px

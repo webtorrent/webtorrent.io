@@ -73,29 +73,27 @@ module.exports = function () {
     var file = torrent.files.find(function (file) {
       return file.name.endsWith('.mp4')
     })
+
     var opts = {
       autoplay: true,
       muted: true
     }
+
+    var videoOverlay = document.querySelector('.videoOverlay')
+
     file.appendTo('#videoWrap .video', opts, function (err, elem) {
       if (err) return onError(err)
       elem.parentElement.classList.add('canplay')
       elem.parentElement.classList.add('muted')
 
-      elem.addEventListener('click', onClick1)
+      videoOverlay.addEventListener('click', onClick1)
 
       // First click unmutes the video!
       function onClick1 () {
+        videoOverlay.removeEventListener('click', onClick1)
+
         elem.muted = false
         elem.parentElement.classList.remove('muted')
-
-        elem.addEventListener('click', onClick2)
-      }
-
-      // All further clicks play/pause the video!
-      function onClick2 () {
-        if (elem.paused) elem.play()
-        else elem.pause()
       }
     })
 
