@@ -9,7 +9,7 @@
 
 ## Developer Notes
 
-- Requires Node.js v6.0.0 or newer
+- Requires Node.js v8.0.0 or newer
 - `secret/index.js` will need to be created locally (copy `secret/index-sample.js`).
 
 ### Log folders
