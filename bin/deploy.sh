@@ -13,7 +13,6 @@ cd /home/feross/www/webtorrent.io-build && git pull
 cd /home/feross/www/webtorrent.io-build && rm -rf node_modules
 cd /home/feross/www/webtorrent.io-build && npm install
 cd /home/feross/www/webtorrent.io-build && npm run build
-cd /home/feross/www/webtorrent.io-build && npm prune --production
 
 sudo supervisorctl stop webtorrent
 
