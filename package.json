@@ -39,7 +39,7 @@
     "webtorrent": "webtorrent/webtorrent"
   },
   "devDependencies": {
-    "brfs": "^1.4.0",
+    "brfs": "^2.0.0",
     "browserify": "^16.0.0",
     "nodemon": "^1.2.1",
     "run-parallel-limit": "^1.0.3",
