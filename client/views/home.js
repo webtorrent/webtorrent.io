@@ -155,7 +155,7 @@ module.exports = function () {
   function getRtcConfig (cb) {
     // WARNING: This is *NOT* a public endpoint. Do not depend on it in your app.
     get.concat({
-      url: 'https://instant.io/_rtcConfig',
+      url: 'https://instant.io/__rtcConfig__',
       timeout: 5000
     }, function (err, res, data) {
       if (err || res.statusCode !== 200) {
