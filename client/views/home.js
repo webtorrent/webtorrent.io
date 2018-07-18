@@ -35,31 +35,22 @@ module.exports = function () {
     init()
   }
 
+  var torrent
   function init () {
     // Display video and related information.
     hero.className = 'loading'
     hero = null
 
     graph = window.graph = new P2PGraph('.torrent-graph')
+    graph.add({ id: 'You', name: 'You', me: true })
 
-    getRtcConfig(function (err, rtcConfig) {
-      if (err) console.error(err)
-      createClient(rtcConfig)
-    })
-  }
-
-  var torrent
-  function createClient (rtcConfig) {
-    var client = window.client = new WebTorrent({
-      tracker: {
-        rtcConfig: rtcConfig
-      }
-    })
+    // Create client
+    var client = window.client = new WebTorrent()
     client.on('warning', onWarning)
     client.on('error', onError)
 
+    // Create torrent
     torrent = client.add(TORRENT, onTorrent)
-    graph.add({ id: 'You', name: 'You', me: true })
   }
 
   var $body = document.body
@@ -150,25 +141,5 @@ module.exports = function () {
     if (err) {
       console.error(err)
     }
-  }
-
-  function getRtcConfig (cb) {
-    // WARNING: This is *NOT* a public endpoint. Do not depend on it in your app.
-    get.concat({
-      url: 'https://instant.io/__rtcConfig__',
-      timeout: 5000
-    }, function (err, res, data) {
-      if (err || res.statusCode !== 200) {
-        cb(new Error('Could not get WebRTC config from server. Using default (without TURN).'))
-      } else {
-        var rtcConfig
-        try {
-          rtcConfig = JSON.parse(data)
-        } catch (err) {
-          return cb(new Error('Got invalid WebRTC config from server: ' + data))
-        }
-        cb(null, rtcConfig)
-      }
-    })
   }
 }
