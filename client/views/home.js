@@ -1,5 +1,4 @@
 var fs = require('fs')
-var get = require('simple-get')
 var moment = require('moment')
 var P2PGraph = require('p2p-graph')
 var path = require('path')
