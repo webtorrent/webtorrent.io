@@ -116,7 +116,7 @@ function summarizeDailyTelemetryLog (filename, records) {
     var version = (record.version || 'pre-0.12')
     var platform = record.system.osPlatform
     uniqueUsers[record.userID] = true
-    versionByUser[record.userID] = {version, platform}
+    versionByUser[record.userID] = { version, platform }
 
     // Approximate sessions by # of telemetry reports
     sessions.total++
@@ -357,9 +357,9 @@ function loadReleases (cb) {
         }
       })
       var total = win32 + darwin + linux
-      var installs = {win32, darwin, linux, total}
+      var installs = { win32, darwin, linux, total }
 
-      return {tag_name: d.tag_name, published_at: d.published_at, installs}
+      return { tag_name: d.tag_name, published_at: d.published_at, installs }
     })
     cb(null, releases)
   })

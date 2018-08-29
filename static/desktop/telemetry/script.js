@@ -18,7 +18,7 @@ function getValues (fn) {
 
 var dataActives = ['today', 'last7', 'last30'].map(function (key) {
   var values = getValues(function (day) { return day.actives[key] })
-  return {key, values}
+  return { key, values }
 })
 
 var dataInstalls = [{
@@ -28,12 +28,12 @@ var dataInstalls = [{
 
 var dataRetention = ['day1', 'day7', 'day28', 'day30to60'].map(function (key) {
   var values = getValues(function (day) { return day.retention[key] })
-  return {key, values}
+  return { key, values }
 })
 
 var dataErrors = ['last7', 'today', 'today-latest'].map(function (key) {
   var values = getValues(function (day) { return day.errorRates[key] })
-  return {key, values}
+  return { key, values }
 })
 
 var versionColors = [
@@ -51,7 +51,7 @@ var dataVersions = versions.map(function (key, i) {
     }
   })
   var color = versionColors[Math.min(versions.length - i - 1, 6)]
-  return {key, values, color}
+  return { key, values, color }
 })
 
 var dataVersionPlatform = []
@@ -88,7 +88,7 @@ platforms.forEach(function (platform) {
     var color = platformColors[platform][versionIndex]
     var key = version + '-' + platform
     var value = yesterday.usage.versionPlatform[key]
-    dataVersionPlatform.push({key, value, color})
+    dataVersionPlatform.push({ key, value, color })
   })
 })
 
