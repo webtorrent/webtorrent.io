@@ -5,8 +5,6 @@ exports.credentials = {
   user2: 'TODO'
 }
 
-exports.opbeat = {
-  appId: 'TODO',
-  organizationId: 'TODO',
-  secretToken: 'TODO'
+exports.rollbar = {
+  accessToken: 'TODO'
 }
