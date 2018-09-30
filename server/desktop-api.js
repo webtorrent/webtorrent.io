@@ -176,6 +176,8 @@ function serveCrashReportsAPI (app) {
   var upload = multer({ dest: CRASH_REPORTS_PATH }).single('upload_file_minidump')
 
   app.post('/desktop/crash-report', upload, function (req, res) {
+    if (!req.file) return res.status(500).end()
+
     req.body.filename = req.file.filename
     var crashLog = JSON.stringify(req.body, undefined, 2)
 
