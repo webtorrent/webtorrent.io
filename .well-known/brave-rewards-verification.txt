@@ -1,0 +1,4 @@
+This is a Brave Rewards publisher verification file.
+
+Domain: webtorrent.io
+Token: c4eb173394a96ffa75d3c8d2bd553fbbbe44881348087f93f6ed4328ad6c8905
