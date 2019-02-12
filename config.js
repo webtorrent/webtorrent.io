@@ -25,8 +25,12 @@ try { secret = require('./secret') } catch (err) {}
  */
 exports.gitterBot = {
   ircChannel: '#webtorrent',
-  ircNick: 'irc-gitter-bot',
+  ircNick: 'gitter-bot',
   ircServer: 'irc.freenode.net',
+  ircAdmin: 'feross',
+  ircOpts: {
+    password: secret && secret.gitterIrc && secret.gitterIrc.ircPassword
+  },
   gitterRoom: 'webtorrent/webtorrent',
-  gitterApiKey: secret && secret.gitterApiKey
+  gitterApiKey: secret && secret.gitterIrc && secret.gitterIrc.gitterApiKey
 }
