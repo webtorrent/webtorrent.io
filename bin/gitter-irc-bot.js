@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-var config = require('../config')
-var gitterBot = require('gitter-irc-bot')
+const config = require('../config')
+const gitterBot = require('gitter-irc-bot')
 
 gitterBot(config.gitterBot)
