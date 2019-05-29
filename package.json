@@ -23,7 +23,7 @@
     "domready": "^1.0.6",
     "express": "^4.8.8",
     "gitter-irc-bot": "^1.0.0",
-    "highlight.js": "^9.2.0",
+    "highlight.js": "^9.15.8",
     "mkdirp": "^0.5.1",
     "moment": "^2.10.6",
     "multer": "^1.1.0",
