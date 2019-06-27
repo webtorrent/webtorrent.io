@@ -26,6 +26,7 @@
     "highlight.js": "^9.2.0",
     "mkdirp": "^0.5.1",
     "moment": "^2.10.6",
+    "morgan": "^1.9.1",
     "multer": "^1.1.0",
     "p2p-graph": "^1.0.0",
     "prettier-bytes": "^1.0.3",

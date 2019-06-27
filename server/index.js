@@ -5,6 +5,7 @@ var cors = require('cors')
 var express = require('express')
 var highlight = require('highlight.js')
 var http = require('http')
+var morgan = require('morgan')
 var path = require('path')
 var pug = require('pug')
 var Remarkable = require('remarkable')
@@ -94,18 +95,20 @@ app.use(function (req, res, next) {
   next()
 })
 
-// Serve the Webtorrent Desktop REST API
-desktopApi.serve(app)
-
 // Serve the demo torrent (Sintel)
 // Enable CORS preflight, and cache it for 1 hour. This is necessary to support
 // requests from another domain with the "Range" HTTP header.
 app.options('/torrents/*', cors({ maxAge: 60 * 60 }))
-
 app.get('/torrents/*', cors(), express.static(path.join(__dirname, '../static')))
 
 // Serve static resources
 app.use(express.static(path.join(__dirname, '../static')))
+
+// Serve the Webtorrent Desktop REST API
+desktopApi.serve(app)
+
+// Log requests
+app.use(morgan(config.isProd ? 'combined' : 'dev', { immediate: !config.isProd }))
 
 // Serve all the pug pages
 app.get('/', function (req, res) {
