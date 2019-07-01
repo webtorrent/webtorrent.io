@@ -33,7 +33,7 @@
     "pug": "^2.0.0-beta4",
     "remarkable": "^1.6.2",
     "rollbar": "^2.4.5",
-    "semver": "^5.1.0",
+    "semver": "^6.2.0",
     "serve-index": "^1.8.0",
     "simple-get": "^3.0.0",
     "throttleit": "^1.0.0",
