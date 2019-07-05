@@ -12,7 +12,7 @@ var mkdirp = require('mkdirp')
 var multer = require('multer')
 var path = require('path')
 var semver = require('semver')
-var url = require('url')
+var URL = require('url').URL
 
 var auth = require('./auth')
 var config = require('../config')
@@ -231,7 +231,7 @@ function serveUpdateAPI (app) {
 
   // WebTorrent Desktop Windows auto-update endpoint
   app.get('/desktop/update/*', function (req, res) {
-    var pathname = url.parse(req.url).pathname
+    var pathname = new URL(req.url, 'http://example.com').pathname
     var filename = pathname.replace(/^\/desktop\/update\//i, '')
 
     var sysarch = req.query.sysarch || 'ia32' // if not specified, default to ia32

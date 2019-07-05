@@ -9,7 +9,6 @@ var morgan = require('morgan')
 var path = require('path')
 var pug = require('pug')
 var Remarkable = require('remarkable')
-var url = require('url')
 
 var config = require('../config')
 var desktopApi = require('./desktop-api')
@@ -72,7 +71,7 @@ app.use(function (req, res, next) {
   }
 
   // Add cross-domain header for fonts, required by spec, Firefox, and IE.
-  var extname = path.extname(url.parse(req.url).pathname)
+  var extname = path.extname(req.url)
   if (['.eot', '.ttf', '.otf', '.woff'].indexOf(extname) >= 0) {
     res.header('Access-Control-Allow-Origin', '*')
   }
