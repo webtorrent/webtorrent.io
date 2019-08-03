@@ -1,27 +1,27 @@
 require('./rollbar')
 
-var compress = require('compression')
-var cors = require('cors')
-var express = require('express')
-var highlight = require('highlight.js')
-var http = require('http')
-var morgan = require('morgan')
-var path = require('path')
-var pug = require('pug')
-var Remarkable = require('remarkable')
+const compress = require('compression')
+const cors = require('cors')
+const express = require('express')
+const highlight = require('highlight.js')
+const http = require('http')
+const morgan = require('morgan')
+const path = require('path')
+const pug = require('pug')
+const Remarkable = require('remarkable')
 
-var config = require('../config')
-var desktopApi = require('./desktop-api')
+const config = require('../config')
+const desktopApi = require('./desktop-api')
 
-var PORT = Number(process.argv[2]) || 4000
+const PORT = Number(process.argv[2]) || 4000
 
-var app = express()
-var server = http.createServer(app)
+const app = express()
+const server = http.createServer(app)
 
-var remark = new Remarkable({
+const remark = new Remarkable({
   html: true,
   highlight: function (code, lang) {
-    var h = lang
+    const h = lang
       ? highlight.highlight(lang, code)
       : highlight.highlightAuto(code)
     return '<div class="hljs">' + h.value + '</div>'
@@ -71,7 +71,7 @@ app.use(function (req, res, next) {
   }
 
   // Add cross-domain header for fonts, required by spec, Firefox, and IE.
-  var extname = path.extname(req.url)
+  const extname = path.extname(req.url)
   if (['.eot', '.ttf', '.otf', '.woff'].indexOf(extname) >= 0) {
     res.header('Access-Control-Allow-Origin', '*')
   }

@@ -1,4 +1,4 @@
-var arch = window.arch = require('arch')
+const arch = window.arch = require('arch')
 
 module.exports = function () {
   /**
@@ -18,13 +18,13 @@ module.exports = function () {
    */
   if (arch() === 'x64') {
     // Offer 64-bit Linux installer
-    var $linuxLinks = Array.from(document.querySelectorAll('.download-linux'))
+    const $linuxLinks = Array.from(document.querySelectorAll('.download-linux'))
     $linuxLinks.forEach(function ($link) {
       $link.href = $link.href.replace(/i386\.deb$/, 'amd64.deb')
     })
 
     // Offer 64-bit Windows installer
-    var $windowsLinks = Array.from(document.querySelectorAll('.download-windows'))
+    const $windowsLinks = Array.from(document.querySelectorAll('.download-windows'))
     $windowsLinks.forEach(function ($link) {
       $link.href = $link.href.replace(/-ia32.exe$/, '.exe')
     })
