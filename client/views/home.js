@@ -1,22 +1,23 @@
-var fs = require('fs')
-var moment = require('moment')
-var P2PGraph = require('p2p-graph')
-var path = require('path')
-var prettierBytes = require('prettier-bytes')
-var throttle = require('throttleit')
-var WebTorrent = require('webtorrent')
+const fs = require('fs')
+const moment = require('moment')
+const P2PGraph = require('p2p-graph')
+const path = require('path')
+const prettierBytes = require('prettier-bytes')
+const throttle = require('throttleit')
+const WebTorrent = require('webtorrent')
 
-var TORRENT = fs.readFileSync(
+const TORRENT = fs.readFileSync(
   path.join(__dirname, '../../static/torrents/sintel.torrent')
 )
 
 module.exports = function () {
-  var graph
-  var hero = document.querySelector('#hero')
+  let graph
+  let hero = document.querySelector('#hero')
+  let torrent
 
   // Don't start the demo automatically on mobile.
   if (window.innerWidth <= 899) {
-    var beginButton = document.createElement('a')
+    let beginButton = document.createElement('a')
     beginButton.href = '#'
     beginButton.id = 'begin'
     beginButton.className = 'btn large'
@@ -34,7 +35,6 @@ module.exports = function () {
     init()
   }
 
-  var torrent
   function init () {
     // Display video and related information.
     hero.className = 'loading'
@@ -44,7 +44,7 @@ module.exports = function () {
     graph.add({ id: 'You', name: 'You', me: true })
 
     // Create client
-    var client = window.client = new WebTorrent()
+    const client = window.client = new WebTorrent()
     client.on('warning', onWarning)
     client.on('error', onError)
 
@@ -52,24 +52,24 @@ module.exports = function () {
     torrent = client.add(TORRENT, onTorrent)
   }
 
-  var $body = document.body
-  var $progressBar = document.querySelector('#progressBar')
-  var $numPeers = document.querySelector('#numPeers')
-  var $downloaded = document.querySelector('#downloaded')
-  var $total = document.querySelector('#total')
-  var $remaining = document.querySelector('#remaining')
+  const $body = document.body
+  const $progressBar = document.querySelector('#progressBar')
+  const $numPeers = document.querySelector('#numPeers')
+  const $downloaded = document.querySelector('#downloaded')
+  const $total = document.querySelector('#total')
+  const $remaining = document.querySelector('#remaining')
 
   function onTorrent () {
-    var file = torrent.files.find(function (file) {
+    const file = torrent.files.find(function (file) {
       return file.name.endsWith('.mp4')
     })
 
-    var opts = {
+    const opts = {
       autoplay: true,
       muted: true
     }
 
-    var videoOverlay = document.querySelector('.videoOverlay')
+    const videoOverlay = document.querySelector('.videoOverlay')
 
     file.appendTo('#videoWrap .video', opts, function (err, elem) {
       if (err) return onError(err)
@@ -97,7 +97,7 @@ module.exports = function () {
   }
 
   function onWire (wire) {
-    var id = wire.peerId.toString()
+    const id = wire.peerId.toString()
     graph.add({ id: id, name: wire.remoteAddress || 'Unknown' })
     graph.connect('You', id)
     wire.once('close', function () {
@@ -107,14 +107,14 @@ module.exports = function () {
   }
 
   function onProgress () {
-    var percent = Math.round(torrent.progress * 100 * 100) / 100
+    const percent = Math.round(torrent.progress * 100 * 100) / 100
     $progressBar.style.width = percent + '%'
     $numPeers.innerHTML = torrent.numPeers + (torrent.numPeers === 1 ? ' peer' : ' peers')
 
     $downloaded.innerHTML = prettierBytes(torrent.downloaded)
     $total.innerHTML = prettierBytes(torrent.length)
 
-    var remaining
+    let remaining
     if (torrent.done) {
       remaining = 'Done.'
     } else {

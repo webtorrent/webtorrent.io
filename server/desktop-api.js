@@ -4,31 +4,31 @@
 // - Log telemetry
 module.exports = { serve }
 
-var bodyParser = require('body-parser')
-var cp = require('child_process')
-var express = require('express')
-var fs = require('fs')
-var mkdirp = require('mkdirp')
-var multer = require('multer')
-var path = require('path')
-var semver = require('semver')
-var URL = require('url').URL
+const bodyParser = require('body-parser')
+const cp = require('child_process')
+const express = require('express')
+const fs = require('fs')
+const mkdirp = require('mkdirp')
+const multer = require('multer')
+const path = require('path')
+const semver = require('semver')
+const URL = require('url').URL
 
-var auth = require('./auth')
-var config = require('../config')
-var secret = require('../secret')
+const auth = require('./auth')
+const config = require('../config')
+const secret = require('../secret')
 
-var DESKTOP_VERSION = config.desktopVersion
-var RELEASES_URL = 'https://github.com/webtorrent/webtorrent-desktop/releases/download'
+const DESKTOP_VERSION = config.desktopVersion
+const RELEASES_URL = 'https://github.com/webtorrent/webtorrent-desktop/releases/download'
 
-var TELEMETRY_PATH = path.join(config.logPath, 'telemetry')
-var CRASH_REPORTS_PATH = path.join(config.logPath, 'crash-reports')
+const TELEMETRY_PATH = path.join(config.logPath, 'telemetry')
+const CRASH_REPORTS_PATH = path.join(config.logPath, 'crash-reports')
 
-var SUMMARIZE_PATH = path.join(__dirname, '..', 'bin', 'summarize-telemetry.js')
+const SUMMARIZE_PATH = path.join(__dirname, '..', 'bin', 'summarize-telemetry.js')
 
 // Queue telemetry messages, log them to a file in order
-var telemetryLines = []
-var isWritingTelemetry = false
+let telemetryLines = []
+let isWritingTelemetry = false
 
 // Attempt to create the needed log folders
 try { mkdirp.sync(TELEMETRY_PATH) } catch (err) {}
@@ -49,10 +49,10 @@ function cronSummarizeTelemetry () {
   summarizeTelemetry()
 
   // Wait until tomorrow, 12:15AM UTC
-  var msPerDay = 24 * 3600 * 1000
-  var msOfDay = new Date().getTime() % msPerDay
-  var msWait = (msPerDay - msOfDay + (15 * 60 * 1000)) % msPerDay
-  var minsWait = msWait / 60 / 1000
+  const msPerDay = 24 * 3600 * 1000
+  const msOfDay = new Date().getTime() % msPerDay
+  const msWait = (msPerDay - msOfDay + (15 * 60 * 1000)) % msPerDay
+  const minsWait = msWait / 60 / 1000
   console.log('Running summarizeTelemetry next in ' + minsWait + ' minutes')
   setTimeout(cronSummarizeTelemetry, msWait)
 }
@@ -67,9 +67,9 @@ function serve (app) {
 // Log telemetry JSON summaries to a file, one per line
 function serveTelemetryAPI (app) {
   app.post('/desktop/telemetry', bodyParser.json(), function (req, res) {
-    var summary = req.body
+    const summary = req.body
     summary.ip = req.ip
-    var summaryJSON = JSON.stringify(summary)
+    const summaryJSON = JSON.stringify(summary)
     telemetryLines.push(summaryJSON)
     writeTelemetryLines()
     res.end()
@@ -86,9 +86,9 @@ function writeTelemetryLines () {
   if (isWritingTelemetry) return // Don't interleave writes
   if (telemetryLines.length === 0) return // Nothing to do
 
-  var today = new Date().toISOString().substring(0, 10) // YYYY-MM-DD
-  var telemetryPath = path.join(TELEMETRY_PATH, today + '.log')
-  var lines = telemetryLines.join('\n') + '\n'
+  const today = new Date().toISOString().substring(0, 10) // YYYY-MM-DD
+  const telemetryPath = path.join(TELEMETRY_PATH, today + '.log')
+  const lines = telemetryLines.join('\n') + '\n'
   telemetryLines = []
   isWritingTelemetry = true
   fs.appendFile(telemetryPath, lines, function (err) {
@@ -101,14 +101,14 @@ function writeTelemetryLines () {
 // Summarize telemetry information: active users, monthly growth, most common errors, etc
 function serveTelemetryDashboard (req, res, next) {
   if (req.url !== '/') return next()
-  var orig = req.originalUrl // eg '/desktop/telemetry'
+  const orig = req.originalUrl // eg '/desktop/telemetry'
   if (!orig.endsWith('/')) return res.redirect(orig + '/')
 
   // Once we get here, we're serving this exact path: /desktop/telemetry/
   fs.readdir(TELEMETRY_PATH, function (err, files) {
     if (err) return res.status(500).send(err.message)
 
-    var filesByMonth = []
+    const filesByMonth = []
     files.forEach(function (file, i) {
       if (i === 0 || file.substring(0, 7) !== files[i - 1].substring(0, 7)) {
         filesByMonth.push([])
@@ -117,14 +117,14 @@ function serveTelemetryDashboard (req, res, next) {
     })
 
     // Load summary.json from the telemetry log folder...
-    var summaryPath = path.join(TELEMETRY_PATH, 'summary.json')
+    const summaryPath = path.join(TELEMETRY_PATH, 'summary.json')
     fs.readFile(summaryPath, 'utf8', function (err, summaryJSON) {
-      var summary = err
+      const summary = err
         ? { telemetry: [] }
         : JSON.parse(summaryJSON)
 
       // Versions
-      var versions = summary.releases
+      const versions = summary.releases
         .map(function (release) {
           // Tag name is something like 'v0.12.0', version is '0.12.0'
           return release.tag_name.substring(1)
@@ -135,22 +135,22 @@ function serveTelemetryDashboard (req, res, next) {
         }).reverse()
 
       // Calculate week-on-week growth
-      var telem = summary.telemetry
-      var yesterday = telem && telem[telem.length - 2]
-      var t7 = telem && telem[telem.length - 9]
-      var percentWeeklyGrowth = (yesterday && t7)
+      const telem = summary.telemetry
+      const yesterday = telem && telem[telem.length - 2]
+      const t7 = telem && telem[telem.length - 9]
+      const percentWeeklyGrowth = (yesterday && t7)
         ? ((100 * yesterday.actives.last7 / t7.actives.last7) - 100).toFixed(1)
         : '-'
 
       // Most common errors
-      var latestVersion = versions[versions.length - 1]
-      var mostCommonErrorsDate = yesterday ? yesterday.date : '-'
-      var allErrors = (yesterday ? yesterday.errors : [])
+      const latestVersion = versions[versions.length - 1]
+      const mostCommonErrorsDate = yesterday ? yesterday.date : '-'
+      const allErrors = (yesterday ? yesterday.errors : [])
         .map(function (err) {
           err.stack = err.stack.replace(/\(.*app.asar/g, '(...')
           return err
         })
-      var mostCommonErrors = {
+      const mostCommonErrors = {
         all: allErrors.slice(0, 10),
         latest: allErrors.filter(function (err) {
           return err.versions.includes(latestVersion)
@@ -173,13 +173,13 @@ function serveTelemetryDashboard (req, res, next) {
 
 // Save electron process crash reports (from Crashpad), each in its own file
 function serveCrashReportsAPI (app) {
-  var upload = multer({ dest: CRASH_REPORTS_PATH }).single('upload_file_minidump')
+  const upload = multer({ dest: CRASH_REPORTS_PATH }).single('upload_file_minidump')
 
   app.post('/desktop/crash-report', upload, function (req, res) {
     if (!req.file) return res.status(500).end()
 
     req.body.filename = req.file.filename
-    var crashLog = JSON.stringify(req.body, undefined, 2)
+    const crashLog = JSON.stringify(req.body, undefined, 2)
 
     fs.writeFile(req.file.path + '.json', crashLog, function (err) {
       if (err) {
@@ -207,7 +207,7 @@ function serveUpdateAPI (app) {
 
   // WebTorrent Desktop Mac auto-update endpoint
   app.get('/desktop/update', function (req, res) {
-    var version = req.query.version
+    const version = req.query.version
     logUpdateCheck({
       date: (new Date()).toString(),
       platform: req.query.platform,
@@ -231,11 +231,11 @@ function serveUpdateAPI (app) {
 
   // WebTorrent Desktop Windows auto-update endpoint
   app.get('/desktop/update/*', function (req, res) {
-    var pathname = new URL(req.url, 'http://example.com').pathname
-    var filename = pathname.replace(/^\/desktop\/update\//i, '')
+    const pathname = new URL(req.url, 'http://example.com').pathname
+    let filename = pathname.replace(/^\/desktop\/update\//i, '')
 
-    var sysarch = req.query.sysarch || 'ia32' // if not specified, default to ia32
-    var fileVersion
+    const sysarch = req.query.sysarch || 'ia32' // if not specified, default to ia32
+    let fileVersion
     if (filename === 'RELEASES') {
       logUpdateCheck({
         date: (new Date()).toString(),
@@ -250,13 +250,13 @@ function serveUpdateAPI (app) {
         filename = 'RELEASES-ia32'
       }
     } else {
-      var match = /-(\d+\.\d+\.\d+)-/.exec(filename)
+      const match = /-(\d+\.\d+\.\d+)-/.exec(filename)
       fileVersion = match && match[1]
     }
     if (!fileVersion) {
       return res.status(404).end()
     }
-    var redirectURL = `${RELEASES_URL}/v${fileVersion}/${filename}`
+    const redirectURL = `${RELEASES_URL}/v${fileVersion}/${filename}`
     res.redirect(302, redirectURL)
   })
 }
@@ -266,7 +266,7 @@ function logUpdateCheck (log) {
 }
 
 function summarizeTelemetry () {
-  var child = cp.spawn(SUMMARIZE_PATH, [])
+  const child = cp.spawn(SUMMARIZE_PATH, [])
 
   // Log the progress, for easier debugging...
   child.stdout.pipe(process.stdout)

@@ -1,11 +1,11 @@
-var nv = window.nv
-var d3 = window.d3
-var summary = window.summary
-var versions = window.versions
+const nv = window.nv
+const d3 = window.d3
+const summary = window.summary
+const versions = window.versions
 
 // Don't include partial data from today
-var telemetry = summary.telemetry.slice(0, summary.telemetry.length - 1)
-var yesterday = telemetry[telemetry.length - 1]
+const telemetry = summary.telemetry.slice(0, summary.telemetry.length - 1)
+const yesterday = telemetry[telemetry.length - 1]
 
 function getValues (fn) {
   return telemetry.filter(fn).map(function (day) {
@@ -16,47 +16,47 @@ function getValues (fn) {
   })
 }
 
-var dataActives = ['today', 'last7', 'last30'].map(function (key) {
-  var values = getValues(function (day) { return day.actives[key] })
+const dataActives = ['today', 'last7', 'last30'].map(function (key) {
+  const values = getValues(function (day) { return day.actives[key] })
   return { key, values }
 })
 
-var dataInstalls = [{
+const dataInstalls = [{
   key: 'new users',
   values: getValues(function (day) { return day.installs })
 }]
 
-var dataRetention = ['day1', 'day7', 'day28', 'day30to60'].map(function (key) {
-  var values = getValues(function (day) { return day.retention[key] })
+const dataRetention = ['day1', 'day7', 'day28', 'day30to60'].map(function (key) {
+  const values = getValues(function (day) { return day.retention[key] })
   return { key, values }
 })
 
-var dataErrors = ['last7', 'today', 'today-latest'].map(function (key) {
-  var values = getValues(function (day) { return day.errorRates[key] })
+const dataErrors = ['last7', 'today', 'today-latest'].map(function (key) {
+  const values = getValues(function (day) { return day.errorRates[key] })
   return { key, values }
 })
 
-var versionColors = [
+const versionColors = [
   '#1f77b4',
   '#fdae61',
   '#f46d43',
   '#d73027',
   '#a50026'
 ]
-var dataVersions = versions.map(function (key, i) {
-  var values = telemetry.map(function (day) {
+const dataVersions = versions.map(function (key, i) {
+  const values = telemetry.map(function (day) {
     return {
       x: getEndOfDay(day.date),
       y: (day.usage.version[key] || 0) / day.actives.today
     }
   })
-  var color = versionColors[Math.min(versions.length - i - 1, 6)]
+  const color = versionColors[Math.min(versions.length - i - 1, 6)]
   return { key, values, color }
 })
 
-var dataVersionPlatform = []
-var platforms = ['win32', 'darwin', 'linux']
-var platformColors = {
+const dataVersionPlatform = []
+const platforms = ['win32', 'darwin', 'linux']
+const platformColors = {
   linux: [
     '#fee5d9',
     '#fcae91',
@@ -81,18 +81,18 @@ var platformColors = {
 }
 platforms.forEach(function (platform) {
   versions.forEach(function (version, i) {
-    var n = versions.length
-    var versionIndex = n - i < 2
+    const n = versions.length
+    const versionIndex = n - i < 2
       ? (5 + i - n) // latest two releases: darkest colors
       : (i + n + 2) % 3 // all previous releases: cycle lighter colors
-    var color = platformColors[platform][versionIndex]
-    var key = version + '-' + platform
-    var value = yesterday.usage.versionPlatform[key]
+    const color = platformColors[platform][versionIndex]
+    const key = version + '-' + platform
+    const value = yesterday.usage.versionPlatform[key]
     dataVersionPlatform.push({ key, value, color })
   })
 })
 
-var chartInfos = [{
+const chartInfos = [{
   selector: '#chart-actives',
   data: dataActives,
   yFormat: d3.format(',.0f')
@@ -114,8 +114,8 @@ var chartInfos = [{
   yFormat: d3.format(',.2f')
 }]
 
-var dateScale = d3.time.scale.utc()
-var dateFormat = function (t) {
+const dateScale = d3.time.scale.utc()
+const dateFormat = function (t) {
   return d3.time.format.utc('%Y-%m-%d')(new Date(t))
 }
 
@@ -123,7 +123,7 @@ window.addEventListener('DOMContentLoaded', function () {
   console.log('Graphing...')
 
   window.charts = chartInfos.map(function (info, i) {
-    var chart = nv.models.lineWithFocusChart()
+    const chart = nv.models.lineWithFocusChart()
 
     chart.xAxis
       .scale(dateScale)
@@ -166,9 +166,9 @@ function getEndOfDay (date) {
 // Draw a red line at each event (eg, new release of the app)
 function updateEvents (chart, i) {
   // First, update the date range
-  var xDomain = chart.xAxis.domain()
-  var yDomain = chart.yAxis.domain()
-  var events = summary.releases.map(function (release) {
+  const xDomain = chart.xAxis.domain()
+  const yDomain = chart.yAxis.domain()
+  const events = summary.releases.map(function (release) {
     return {
       t: new Date(release.published_at).getTime(),
       name: release.tag_name
@@ -178,18 +178,18 @@ function updateEvents (chart, i) {
   })
 
   // Then, draw the ticks, at most one per day
-  var numDays = (xDomain[1] - xDomain[0]) / 24 / 3600 / 1000
+  const numDays = (xDomain[1] - xDomain[0]) / 24 / 3600 / 1000
   chart.xAxis.ticks(Math.min(10, numDays))
 
   // First, draw the lines
-  var yPixels = yDomain.map(chart.yAxis.scale())
-  var xScale = function (event) {
+  const yPixels = yDomain.map(chart.yAxis.scale())
+  const xScale = function (event) {
     return chart.xAxis.scale()(event.t)
   }
 
-  var container = d3.select(chartInfos[i].selector + ' .nv-interactive')
+  const container = d3.select(chartInfos[i].selector + ' .nv-interactive')
 
-  var sel = container
+  let sel = container
     .selectAll('line.event')
     .data(events)
 
@@ -206,7 +206,7 @@ function updateEvents (chart, i) {
     .remove()
 
   // Then, draw labels
-  var textXScale = function (event) {
+  const textXScale = function (event) {
     return xScale(event) - 2
   }
 
@@ -219,10 +219,10 @@ function updateEvents (chart, i) {
     .attr('class', 'event')
     .attr('text-anchor', 'end')
 
-  var ys = []
-  var yoffset = 15
+  const ys = []
+  const yoffset = 15
   ys[events.length - 1] = yoffset
-  for (var j = events.length - 2; j >= 0; j--) {
+  for (let j = events.length - 2; j >= 0; j--) {
     ys[j] = textXScale(events[j]) - textXScale(events[j + 1]) < 40
       ? ys[j + 1] + yoffset
       : yoffset
@@ -236,24 +236,24 @@ function updateEvents (chart, i) {
 }
 
 // Add event handlers to the errors tables
-var checkbox = document.querySelector('#latest-only')
+const checkbox = document.querySelector('#latest-only')
 checkbox.addEventListener('change', onCheck)
 onCheck()
 function onCheck (e) {
-  var $stacktraces = Array.from(document.querySelectorAll('.error-stacktrace'))
+  const $stacktraces = Array.from(document.querySelectorAll('.error-stacktrace'))
   $stacktraces.forEach(function ($elem) {
     $elem.classList.remove('visible')
   })
-  var showId = checkbox.checked ? 'errors-latest' : 'errors-all'
-  var hideId = checkbox.checked ? 'errors-all' : 'errors-latest'
+  const showId = checkbox.checked ? 'errors-latest' : 'errors-all'
+  const hideId = checkbox.checked ? 'errors-all' : 'errors-latest'
   document.querySelector('#' + showId).classList.add('visible')
   document.querySelector('#' + hideId).classList.remove('visible')
 }
 
-var rows = document.querySelectorAll('.error-row')
+const rows = document.querySelectorAll('.error-row')
 Array.prototype.forEach.call(rows, function (row) {
-  var stackElem = row.querySelector('.error-stacktrace')
-  var summaryElem = row.querySelector('.error-summary')
+  const stackElem = row.querySelector('.error-stacktrace')
+  const summaryElem = row.querySelector('.error-summary')
   summaryElem.addEventListener('click', function (e) {
     stackElem.classList.toggle('visible')
   })

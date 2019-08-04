@@ -50,8 +50,8 @@ function main () {
         }, { win32: 0, linux: 0, darwin: 0, total: 0 })
 
       // Finally, write summary.json
-      var summaryPath = path.join(TELEMETRY_PATH, 'summary.json')
-      var summaryJSON = JSON.stringify(summary, null, 2) // pretty print
+      const summaryPath = path.join(TELEMETRY_PATH, 'summary.json')
+      const summaryJSON = JSON.stringify(summary, null, 2) // pretty print
       fs.writeFile(summaryPath, summaryJSON, function (err) {
         if (err) throw err
         console.log('Done!')
@@ -103,40 +103,40 @@ function loadTelemetrySummary (logFiles, cb) {
 
 // Summarize a potentially huge (GB+) log file down to a few KB...
 function summarizeDailyTelemetryLog (filename, records) {
-  var uniqueUsers = {}
-  var sessions = { total: 0, errored: 0, byVersion: {} }
-  var errors = {}
-  var versionByUser = {}
+  const uniqueUsers = {}
+  const sessions = { total: 0, errored: 0, byVersion: {} }
+  const errors = {}
+  const versionByUser = {}
 
   records.forEach(function (record) {
     // Filter out *very* rare empty records that only have {ip}
     if (!record.system) return
 
     // Count unique users
-    var version = (record.version || 'pre-0.12')
-    var platform = record.system.osPlatform
+    const version = (record.version || 'pre-0.12')
+    const platform = record.system.osPlatform
     uniqueUsers[record.userID] = true
     versionByUser[record.userID] = { version, platform }
 
     // Approximate sessions by # of telemetry reports
     sessions.total++
-    var byV = sessions.byVersion[version]
+    let byV = sessions.byVersion[version]
     if (!byV) byV = sessions.byVersion[version] = { total: 0, errored: 0 }
     byV.total++
 
     // Summarize uncaught errors
-    var errs = record.uncaughtErrors
+    const errs = record.uncaughtErrors
     if (!errs || errs.length === 0) return
     sessions.errored++
     byV.errored++
 
     errs.forEach(function (err) {
-      var key = err.message ? err.message.substring(0, 30) : '<missing error message>'
+      const key = err.message ? err.message.substring(0, 30) : '<missing error message>'
 
       // Before 0.13, we didn't log the app version for each uncaught error
       // Before 0.12, we didn't log the app version altogether, and also
       // didn't redact stacktraces.
-      var errVersion = err.version
+      const errVersion = err.version
         ? err.version
         : err.stack.includes('app.asar')
           ? 'pre-0.12'
@@ -145,7 +145,7 @@ function summarizeDailyTelemetryLog (filename, records) {
             : '0.12.0'
 
       // 1. Either update the stats for an existing error...
-      var error = errors[key]
+      const error = errors[key]
       if (error) {
         error.count++
         addToSet(platform, error.platforms)
@@ -175,14 +175,14 @@ function summarizeDailyTelemetryLog (filename, records) {
   })
 
   // Summarize usage by app version and OS
-  var usage = {
+  const usage = {
     version: {},
     platform: {},
     versionPlatform: {}
   }
-  for (var uid in versionByUser) {
-    var v = versionByUser[uid]
-    var vp = v.version + '-' + v.platform
+  for (const uid in versionByUser) {
+    const v = versionByUser[uid]
+    const vp = v.version + '-' + v.platform
     usage.version[v.version] = (usage.version[v.version] || 0) + 1
     usage.platform[v.platform] = (usage.platform[v.platform] || 0) + 1
     usage.versionPlatform[vp] = (usage.versionPlatform[vp] || 0) + 1
@@ -214,31 +214,31 @@ function addToSet (elem, arr, sortFn) {
 function combineDailyTelemetrySummaries (days) {
   console.log('Combining daily telemetry summaries...')
 
-  var uniqueUsers = {} // Running set, all unique users so far
-  var newUsersByDay = [] // First-time users each day
+  const uniqueUsers = {} // Running set, all unique users so far
+  const newUsersByDay = [] // First-time users each day
 
   // Loop thru all days since we started collecting telemetry...
   return days.map(function (day, i) {
     console.log('Processing ' + day.date + '...')
     // Sanity check: we should have consecutive days, correctly sorted
     if (i > 0) {
-      var delta = new Date(day.date).getTime() -
+      const delta = new Date(day.date).getTime() -
                   new Date(days[i - 1].date).getTime()
-      var deltaDays = delta / 24 / 3600 / 1000
+      const deltaDays = delta / 24 / 3600 / 1000
       if (deltaDays !== 1) throw new Error('Missing telemetry before ' + day.date)
     }
 
     // Find out who installed the app that day
-    var newUsers = {}
+    const newUsers = {}
     Object.keys(day.uniqueUsers).forEach(function (user) {
       if (uniqueUsers[user]) return
       uniqueUsers[user] = true
       newUsers[user] = true
     })
-    var numInstalls = Object.keys(newUsers).length
+    const numInstalls = Object.keys(newUsers).length
     newUsersByDay[i] = newUsers
 
-    var errors = Object.keys(day.errors)
+    const errors = Object.keys(day.errors)
       .map((key) => day.errors[key])
       .sort((a, b) => b.count - a.count)
 
@@ -271,16 +271,16 @@ function combineDailyTelemetrySummaries (days) {
 // Finds the fraction of telemetry reports that contain an error
 function computeErrorRate (days, index, n, latestVersionOnly) {
   if (index < n - 1) return null
-  var total = 0
-  var errored = 0
-  for (var i = index - n + 1; i <= index; i++) {
-    var day = days[i]
+  let total = 0
+  let errored = 0
+  for (let i = index - n + 1; i <= index; i++) {
+    const day = days[i]
 
     // Use either *all* sessions from that UTC day, or only those sessions
     // which were at the latest released version as of the end of the day
-    var sessions
+    let sessions
     if (latestVersionOnly) {
-      var latest = '0.12.0'
+      let latest = '0.12.0'
       Object.keys(day.usage.version).forEach(function (version) {
         if (version === 'pre-0.12') return
         if (semver.gt(version, latest)) latest = version
@@ -301,8 +301,8 @@ function computeErrorRate (days, index, n, latestVersionOnly) {
 // ending with days[index]. Returns null if index < n - 1
 function computeActives (days, index, n) {
   if (index < n - 1) return null
-  var combined = {}
-  for (var i = index - n + 1; i <= index; i++) {
+  const combined = {}
+  for (let i = index - n + 1; i <= index; i++) {
     Object.assign(combined, days[i].uniqueUsers)
   }
   return Object.keys(combined).length
@@ -311,23 +311,23 @@ function computeActives (days, index, n) {
 // Computes retention: the # of new users from some past day that used the
 // app on this day.
 function computeRetention (days, index, n, prevNewUsers) {
-  var uniques = {}
-  for (var i = index - n + 1; i <= index; i++) {
+  const uniques = {}
+  for (let i = index - n + 1; i <= index; i++) {
     Object.assign(uniques, days[i].uniqueUsers)
   }
 
-  var numToday = Object.keys(uniques).length
+  const numToday = Object.keys(uniques).length
   Object.assign(uniques, prevNewUsers)
-  var numCombined = Object.keys(uniques).length
-  var numPrev = Object.keys(prevNewUsers).length
-  var numLost = numCombined - numToday
+  const numCombined = Object.keys(uniques).length
+  const numPrev = Object.keys(prevNewUsers).length
+  const numLost = numCombined - numToday
   return (numPrev - numLost) / numPrev
 }
 
 // Loads all WebTorrent Desktop releases
 // Callback: (err, [{tag_name, published_at}, ...])
 function loadReleases (cb) {
-  var opts = {
+  const opts = {
     url: 'https://api.github.com/repos/webtorrent/webtorrent-desktop/releases',
     json: true,
     timeout: 30 * 1000,
@@ -340,11 +340,11 @@ function loadReleases (cb) {
   get.concat(opts, function (err, res, data) {
     if (err) return cb(err)
     console.log('Got ' + data.length + ' WebTorrent Desktop releases')
-    var releases = data.map(function (d) {
+    const releases = data.map(function (d) {
       // Count total downloads
-      var win32 = 0
-      var darwin = 0
-      var linux = 0
+      let win32 = 0
+      let darwin = 0
+      let linux = 0
       d.assets.map(function (a) {
         if (a.name.endsWith('.dmg')) {
           darwin += a.download_count
@@ -356,8 +356,8 @@ function loadReleases (cb) {
           linux += a.download_count
         }
       })
-      var total = win32 + darwin + linux
-      var installs = { win32, darwin, linux, total }
+      const total = win32 + darwin + linux
+      const installs = { win32, darwin, linux, total }
 
       return { tag_name: d.tag_name, published_at: d.published_at, installs }
     })
