@@ -8,7 +8,7 @@ const http = require('http')
 const morgan = require('morgan')
 const path = require('path')
 const pug = require('pug')
-const Remarkable = require('remarkable')
+const { Remarkable } = require('remarkable')
 
 const config = require('../config')
 const desktopApi = require('./desktop-api')
