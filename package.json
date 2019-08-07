@@ -31,7 +31,7 @@
     "p2p-graph": "^1.0.0",
     "prettier-bytes": "^1.0.3",
     "pug": "^2.0.0-beta4",
-    "remarkable": "^1.6.2",
+    "remarkable": "^2.0.0",
     "rollbar": "^2.4.5",
     "semver": "^6.2.0",
     "serve-index": "^1.8.0",
