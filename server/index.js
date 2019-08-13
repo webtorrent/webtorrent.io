@@ -53,12 +53,12 @@ app.use(compress())
 app.use(function (req, res, next) {
   // Force SSL
   if (config.isProd && req.protocol !== 'https') {
-    return res.redirect('https://' + (req.hostname || 'webtorrent.io') + req.url)
+    return res.redirect('https://' + (req.hostname || 'webtorrent.io') + req.url) // lgtm [js/server-side-unvalidated-url-redirection]
   }
 
   // Redirect www to non-www
   if (config.isProd && req.hostname === 'www.webtorrent.io') {
-    return res.redirect('https://webtorrent.io' + req.url)
+    return res.redirect('https://webtorrent.io' + req.url) // lgtm [js/server-side-unvalidated-url-redirection]
   }
 
   // Use HTTP Strict Transport Security

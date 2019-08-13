@@ -208,7 +208,7 @@ function serveAnnouncementsAPI (app) {
 function serveUpdateAPI (app) {
   // Deprecated: WebTorrent Desktop v0.0.0 - 0.2.0 use this update URL
   app.get('/app/update/?*', function (req, res) {
-    res.redirect(301, req.url.replace('/app/', '/desktop/'))
+    res.redirect(301, req.url.replace('/app/', '/desktop/')) // lgtm [js/server-side-unvalidated-url-redirection]
   })
 
   // WebTorrent Desktop Mac auto-update endpoint
