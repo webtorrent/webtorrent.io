@@ -22,6 +22,7 @@
     "cors": "^2.7.1",
     "domready": "^1.0.6",
     "express": "^4.8.8",
+    "express-rate-limit": "^5.0.0",
     "gitter-irc-bot": "^1.0.0",
     "highlight.js": "^9.15.8",
     "mkdirp": "^0.5.1",
