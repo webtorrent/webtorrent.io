@@ -21,6 +21,23 @@ let secret
 try { secret = require('./secret') } catch (err) {}
 
 /**
+ * Discord IRC bot credentials
+ */
+exports.discordIrc = {
+  nickname: 'irc-discord-bot',
+  server: 'irc.freenode.net',
+  discordToken: secret && secret.discordIrc && secret.discordIrc.botToken,
+  channelMapping: {
+    '612697220470276119': '#webtorrent',
+    '612704110008991786': '#standard'
+  },
+  ircOptions: {
+    username: 'irc-discord-bot',
+    password: secret && secret.discordIrc && secret.discordIrc.ircPassword
+  }
+}
+
+/**
  * Gitter IRC bot credentials
  */
 exports.gitterBot = {
