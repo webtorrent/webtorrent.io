@@ -77,7 +77,7 @@
     "build": "npm run build-css && npm run build-js",
     "build-css": "stylus --include-css client/style.styl -o static/ -c",
     "build-js": "browserify client > static/bundle.js",
-    "deploy": "git push",
+    "deploy": "./tools/trigger-deploy.sh",
     "secret-download": "rsync -a -O -v --delete -e \"ssh\" feross@webtorrent:\"/home/feross/www/webtorrent.io/secret/\" secret/",
     "secret-upload": "rsync -a -O -v --delete -e \"ssh\" secret/ feross@webtorrent:/home/feross/www/webtorrent.io/secret/",
     "start": "node server",
