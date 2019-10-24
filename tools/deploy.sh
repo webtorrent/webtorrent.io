@@ -1,24 +1,29 @@
 #!/bin/bash
-# Update code and restart server (run from app server)
+# Update code and restart server (run on server)
 set -e
 
-if [ -d "/home/feross/www/webtorrent.io-build" ]; then
+if [ -d "/home/feross/www/build-webtorrent.io" ]; then
   echo "ERROR: Build folder already exists. Is another build in progress?"
   exit 1
 fi
 
-cp -R /home/feross/www/webtorrent.io /home/feross/www/webtorrent.io-build
+if [ -d "/home/feross/www/old-webtorrent.io" ]; then
+  echo "ERROR: Old folder exists. Did a previous build crash?"
+  exit 1
+fi
 
-cd /home/feross/www/webtorrent.io-build && git pull
-cd /home/feross/www/webtorrent.io-build && rm -rf node_modules
-cd /home/feross/www/webtorrent.io-build && npm install
-cd /home/feross/www/webtorrent.io-build && npm run build
+cp -R /home/feross/www/webtorrent.io /home/feross/www/build-webtorrent.io
+
+cd /home/feross/www/build-webtorrent.io && git pull
+cd /home/feross/www/build-webtorrent.io && npm install --no-progress
+cd /home/feross/www/build-webtorrent.io && npm run build
+cd /home/feross/www/build-webtorrent.io && npm prune --production --no-progress
 
 sudo supervisorctl stop webtorrent
 
-cd /home/feross/www && mv webtorrent.io webtorrent.io-old
-cd /home/feross/www && mv webtorrent.io-build webtorrent.io
+cd /home/feross/www && mv webtorrent.io old-webtorrent.io
+cd /home/feross/www && mv build-webtorrent.io webtorrent.io
 
 sudo supervisorctl start webtorrent
 
-cd /home/feross/www && rm -rf webtorrent.io-old
+cd /home/feross/www && rm -rf old-webtorrent.io

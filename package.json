@@ -34,6 +34,7 @@
     "pug": "^2.0.0-beta4",
     "remarkable": "^2.0.0",
     "rollbar": "^2.4.5",
+    "run-parallel-limit": "^1.0.3",
     "semver": "^6.2.0",
     "serve-index": "^1.8.0",
     "simple-get": "^3.0.0",
@@ -45,7 +46,6 @@
     "browserify": "^16.0.0",
     "husky": "^3.0.0",
     "nodemon": "^1.18.7",
-    "run-parallel-limit": "^1.0.3",
     "standard": "*",
     "stylus": "^0.54.0",
     "watchify": "^3.1.2"
