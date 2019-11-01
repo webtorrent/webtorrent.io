@@ -44,7 +44,6 @@ exports.gitterBot = {
   ircChannel: '#webtorrent',
   ircNick: 'gitter-bot',
   ircServer: 'irc.freenode.net',
-  ircAdmin: 'feross',
   ircOpts: {
     password: secret && secret.gitterIrc && secret.gitterIrc.ircPassword
   },
