@@ -48,6 +48,7 @@
     "nodemon": "^1.18.7",
     "standard": "*",
     "stylus": "^0.54.0",
+    "tinyify": "^2.5.2",
     "watchify": "^3.1.2"
   },
   "homepage": "https://webtorrent.io",
@@ -76,10 +77,13 @@
   "scripts": {
     "build": "npm run build-css && npm run build-js",
     "build-css": "stylus --include-css client/style.styl -o static/ -c",
-    "build-js": "browserify client > static/bundle.js",
+    "build-js": "browserify --plugin tinyify client > static/bundle.js",
     "deploy": "./tools/trigger-deploy.sh",
     "secret-download": "rsync -a -O -v --delete -e \"ssh\" feross@webtorrent:\"/home/feross/www/webtorrent.io/secret/\" secret/",
     "secret-upload": "rsync -a -O -v --delete -e \"ssh\" secret/ feross@webtorrent:/home/feross/www/webtorrent.io/secret/",
+    "size": "npm run size-js && npm run size-css",
+    "size-css": "npm run build-css && cat static/style.css | gzip | wc -c",
+    "size-js": "npm run build-js && cat static/bundle.js | gzip | wc -c",
     "start": "node server",
     "static-download": "rsync -a -O -v --delete -e \"ssh\" feross@webtorrent:\"/home/feross/www/webtorrent.io/static/torrents/\" static/torrents/",
     "static-upload": "rsync -a -O -v --delete -e \"ssh\" static/torrents/ feross@webtorrent:/home/feross/www/webtorrent.io/static/torrents/",
