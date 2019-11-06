@@ -8,7 +8,7 @@ const runParallelLimit = require('run-parallel-limit')
 const semver = require('semver')
 
 const TELEMETRY_PATH = path.join(config.logPath, 'telemetry')
-const PARALLEL_LIMIT = 5
+const PARALLEL_LIMIT = 1
 
 main()
 
