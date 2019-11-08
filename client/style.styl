@@ -368,6 +368,7 @@ article
   text-align: center
   min-height: 460px
   overflow: hidden
+  width: 100%
 
   @media PHONE
     min-height: 155px
@@ -392,16 +393,15 @@ article
   #begin
     margin: 20px auto
 
-#hero.loading
-  @media DESKTOP
-    height: HERO_HEIGHT
-    margin: 0 auto
+  &.loading
+    @media DESKTOP
+      height: HERO_HEIGHT
 
-  #progressBar, #status, #svgWrap, #videoWrap
-    display: block
+    #progressBar, #status, #svgWrap, #videoWrap
+      display: block
 
-  h1
-    margin-bottom: -60px
+    h1
+      margin-bottom: -60px
 
 #svgWrap
   width: 100%
