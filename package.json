@@ -29,7 +29,7 @@
     "moment": "^2.10.6",
     "morgan": "^1.9.1",
     "multer": "^1.1.0",
-    "p2p-graph": "^1.0.0",
+    "p2p-graph": "^2.0.0",
     "prettier-bytes": "^1.0.3",
     "pug": "^2.0.0-beta4",
     "remarkable": "^2.0.0",
