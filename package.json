@@ -45,7 +45,7 @@
     "brfs": "^2.0.0",
     "browserify": "^16.0.0",
     "husky": "^3.0.0",
-    "nodemon": "^1.18.7",
+    "nodemon": "^2.0.0",
     "standard": "*",
     "stylus": "^0.54.0",
     "tinyify": "^2.5.2",
