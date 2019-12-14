@@ -35,7 +35,7 @@
     "remarkable": "^2.0.0",
     "rollbar": "^2.4.5",
     "run-parallel-limit": "^1.0.3",
-    "semver": "^6.2.0",
+    "semver": "^7.0.0",
     "serve-index": "^1.8.0",
     "simple-get": "^3.0.0",
     "throttleit": "^1.0.0",
