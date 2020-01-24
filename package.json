@@ -25,7 +25,7 @@
     "express-rate-limit": "^5.0.0",
     "gitter-irc-bot": "^1.0.0",
     "highlight.js": "^9.15.8",
-    "mkdirp": "^0.5.1",
+    "mkdirp": "^1.0.0",
     "moment": "^2.10.6",
     "morgan": "^1.9.1",
     "multer": "^1.1.0",
