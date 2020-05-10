@@ -9,7 +9,6 @@ const cp = require('child_process')
 const express = require('express')
 const expressRateLimit = require('express-rate-limit')
 const fs = require('fs')
-const mkdirp = require('mkdirp')
 const multer = require('multer')
 const path = require('path')
 const semver = require('semver')
@@ -32,8 +31,8 @@ let telemetryLines = []
 let isWritingTelemetry = false
 
 // Attempt to create the needed log folders
-try { mkdirp.sync(TELEMETRY_PATH) } catch (err) {}
-try { mkdirp.sync(CRASH_REPORTS_PATH) } catch (err) {}
+try { fs.mkdirSync(TELEMETRY_PATH, { recursive: true }) } catch (err) {}
+try { fs.mkdirSync(CRASH_REPORTS_PATH, { recursive: true }) } catch (err) {}
 
 /**
  * Summarize the telemetry into summary.json, every day at UTC 12:15AM. Takes
