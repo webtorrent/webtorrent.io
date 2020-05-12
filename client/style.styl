@@ -341,22 +341,23 @@ article
     padding-top: 1em !important
     padding-bottom: 1em !important
     padding: 0 20px
+    max-width: fit-content
+    min-width: 330px
 
 .flex-center
   display: flex
+  flex-wrap: wrap
   justify-content: center
-  @media PHONE
-    display: block
 
 .sponsor, .sponsors #carbonads
   margin: 5px 25px 15px 25px
   align-self: center
-  @media PHONE
-    margin: 30px auto
-    display: block
+
+.sponsors #carbonads
+  min-width: 330px
 
 .sponsor, .sponsor img
-  max-width: 230px
+  max-width: 210px
 
 
 //
