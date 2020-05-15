@@ -36,7 +36,7 @@
     "run-parallel-limit": "^1.0.3",
     "semver": "^7.3.2",
     "serve-index": "^1.8.0",
-    "simple-get": "^3.0.0",
+    "simple-get": "^4.0.0",
     "throttleit": "^1.0.0",
     "webtorrent": "webtorrent/webtorrent"
   },
