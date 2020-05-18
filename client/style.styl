@@ -652,13 +652,13 @@ body.is-seed .show-leech
     max-width: 1000px
     margin: 0 auto
     font-size: 22px
-    padding-top: 3em
-    padding-bottom: 3em
+    padding-top: 2em
+    padding-bottom: 2em
     line-height: 33px
     overflow: auto
 
     &:first-child
-      padding-top: 2em
+      padding-top: 1.5em
 
       @media PHONE
         padding-top: 1em
@@ -865,4 +865,21 @@ body.is-seed .show-leech
   font-weight: 600;
   font-size: 9px;
   line-height: 1;
+}
+
+.grow {
+  -moz-osx-font-smoothing:grayscale
+  backface-visibility:hidden
+  transform:translateZ(0)
+  transition:transform 0.25s ease-out
+}
+
+.grow:hover,
+.grow:focus, {
+  opacity: 0.9;
+  transform:scale(1.05);
+}
+
+.grow:active {
+  transform:scale(.90);
 }

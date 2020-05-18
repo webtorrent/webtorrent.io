@@ -1,0 +1,49 @@
+extends layout
+
+block body
+  .webtorrent-desktop
+    .feature-block.center
+      article
+        h1 WebTorrent Desktop is Downloading
+        p
+          | If the download does not start within 5 seconds, click
+          = ' '
+          a(href=downloadUrl) here
+          | .
+        p You're getting WebTorrent — the 100% free, non-commercial, ad-free, and open source torrent app!
+    .feature-block.sponsors
+      article
+        p If you enjoy WebTorrent, please donate to support its continued development.
+        .flex-center
+          a(href='https://github.com/sponsors/feross', class='sponsor grow')
+            img(src='/img/supporters/githubsponsors.png')
+          a(href='https://www.patreon.com/feross', class='sponsor grow')
+            img(src='/img/supporters/patreon.png')
+
+
+    .feature-block.center
+      article
+        a(href='https://www.get-express-vpn.com/offer/torrent-vpn-1?a_fid=wt&offer=3monthsfree', rel='nofollow', target='_blank')
+          img(src='/img/supporters/express-vpn-banner.png')
+        p This offer from our partner supports the development of WebTorrent.
+    .feature-block
+      article
+        p
+          h2 Useful links
+          ul
+            li
+              a(href='https://github.com/webtorrent/webtorrent-desktop/blob/master/CHANGELOG.md#webtorrent-desktop-version-history')
+                | What's new in v#{version}?
+            li
+              a(href='https://github.com/webtorrent/webtorrent-desktop/releases')
+                | Other Downloads
+            li
+              a(href='https://github.com/webtorrent/webtorrent-desktop')
+                | Source Code
+  script.
+    setTimeout(() => {
+      const a = document.createElement('a')
+      a.href = '!{downloadUrl}'
+      a.download = true
+      a.click()
+    }, 1000)

@@ -122,6 +122,29 @@ app.get('/desktop', function (req, res) {
   })
 })
 
+app.get('/desktop-download/:platform', function (req, res, next) {
+  const platform = req.params.platform
+  const version = config.desktopVersion
+  if (!['mac', 'windows', 'linux'].includes(platform)) {
+    return next()
+  }
+
+  let downloadUrl
+  if (platform === 'mac') {
+    downloadUrl = `https://github.com/webtorrent/webtorrent-desktop/releases/download/v${version}/WebTorrent-v${version}.dmg`
+  } else if (platform === 'windows') {
+    downloadUrl = `https://github.com/webtorrent/webtorrent-desktop/releases/download/v${version}/WebTorrentSetup-v${version}.exe`
+  } else if (platform === 'linux') {
+    downloadUrl = `https://github.com/webtorrent/webtorrent-desktop/releases/download/v${version}/webtorrent-desktop_${version}_amd64.deb`
+  }
+
+  res.render('desktop-download', {
+    rawTitle: 'Thank you for downloading WebTorrent',
+    downloadUrl,
+    version
+  })
+})
+
 app.get('/intro', function (req, res) {
   res.render('intro', { rawTitle: 'WebTorrent Tutorial - Get Started' })
 })
