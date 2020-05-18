@@ -16,7 +16,7 @@ cp -R /home/feross/www/webtorrent.io /home/feross/www/build-webtorrent.io
 
 cd /home/feross/www/build-webtorrent.io && git pull
 cd /home/feross/www/build-webtorrent.io && rm -rf node_modules
-cd /home/feross/www/build-webtorrent.io && npm install --no-progress
+cd /home/feross/www/build-webtorrent.io && npm ci --no-progress
 cd /home/feross/www/build-webtorrent.io && npm run build
 cd /home/feross/www/build-webtorrent.io && npm prune --production --no-progress
 
