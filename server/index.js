@@ -161,8 +161,12 @@ app.get('/faq', function (req, res) {
   res.render('faq', { rawTitle: 'WebTorrent FAQ' })
 })
 
-app.get('/logs', function (req, res) {
-  res.redirect(301, 'https://botbot.me/freenode/webtorrent/')
+app.get('/expressvpn', function (req, res) {
+  res.redirect(301, 'https://www.get-express-vpn.com/offer/torrent-vpn-1?a_fid=wt&offer=3monthsfree')
+})
+
+app.get('/expressvpn2', function (req, res) {
+  res.redirect(301, 'https://www.xvbelink.com/?a_fid=wt&offer=3monthsfree')
 })
 
 app.get('/500', (req, res, next) => {
