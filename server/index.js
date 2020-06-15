@@ -169,9 +169,9 @@ app.get('/expressvpn2', function (req, res) {
   res.redirect(301, 'https://www.xvbelink.com/?a_fid=wt&offer=3monthsfree')
 })
 
-app.get('/500', (req, res, next) => {
-  next(new Error('Manually visited /500'))
-})
+// app.get('/500', (req, res, next) => {
+//   next(new Error('Manually visited /500'))
+// })
 
 // Handle 404 for unrecognized URLs
 app.get('*', function (req, res) {
