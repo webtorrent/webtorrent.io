@@ -30,7 +30,7 @@
     "multer": "^1.1.0",
     "p2p-graph": "^2.0.0",
     "prettier-bytes": "^1.0.3",
-    "pug": "^2.0.0-beta4",
+    "pug": "^3.0.0",
     "remarkable": "^2.0.0",
     "rollbar": "^2.4.5",
     "run-parallel-limit": "^1.0.3",
