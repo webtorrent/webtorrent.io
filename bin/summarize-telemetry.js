@@ -345,7 +345,7 @@ function loadReleases (cb) {
       let win32 = 0
       let darwin = 0
       let linux = 0
-      d.assets.map(function (a) {
+      d.assets.forEach(function (a) {
         if (a.name.endsWith('.dmg')) {
           darwin += a.download_count
         } else if (a.name.endsWith('.exe')) {
