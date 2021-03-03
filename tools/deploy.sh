@@ -3,7 +3,7 @@
 set -e
 
 if [ -d "/home/feross/www/build-webtorrent.io" ]; then
-  echo "ERROR: Build folder already exists. Is another build in progress?"
+  echo "ERROR: Build folder exists. Is another build in progress?"
   exit 1
 fi
 
@@ -17,7 +17,7 @@ cp -R /home/feross/www/webtorrent.io /home/feross/www/build-webtorrent.io
 cd /home/feross/www/build-webtorrent.io && git pull
 cd /home/feross/www/build-webtorrent.io && rm -rf node_modules
 cd /home/feross/www/build-webtorrent.io && npm ci --no-progress
-cd /home/feross/www/build-webtorrent.io && npm run build
+cd /home/feross/www/build-webtorrent.io && npm run build --if-present
 cd /home/feross/www/build-webtorrent.io && npm prune --production --no-progress
 
 sudo supervisorctl stop webtorrent
