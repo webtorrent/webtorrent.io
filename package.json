@@ -38,7 +38,7 @@
     "serve-index": "^1.9.1",
     "simple-get": "^4.0.0",
     "throttleit": "^1.0.0",
-    "webtorrent": "webtorrent/webtorrent"
+    "webtorrent": "github:webtorrent/webtorrent"
   },
   "devDependencies": {
     "brfs": "^2.0.2",
