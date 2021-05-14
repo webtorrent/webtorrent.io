@@ -61,6 +61,7 @@ html(lang='en')
           a(href='/intro') Get Started
           a(href='/docs') Docs
           a(href='/faq') FAQ
+          a(href='/desktop') WebTorrent Desktop
 
         section
           h3 Connect
@@ -70,15 +71,19 @@ html(lang='en')
 
         section
           h3 Support
+          a(href='https://discord.gg/cnXkm4Z', target='_blank') Join our Discord
           if (cls === 'desktop')
-            a(href='https://github.com/webtorrent/webtorrent-desktop/issues') Open an issue
+            a(href='https://github.com/webtorrent/webtorrent-desktop/discussions', target='_blank') Start a GitHub discussion
           else
-            a(href='https://github.com/webtorrent/webtorrent/issues') Open an issue
-          a(href='https://gitter.im/webtorrent/webtorrent') Chat in Gitter
-          div #webtorrent on IRC (freenode)
+            a(href='https://github.com/webtorrent/webtorrent/discussions', target='_blank') Start a GitHub discussion
+          if (cls === 'desktop')
+            a(href='https://github.com/webtorrent/webtorrent-desktop/issues', target='_blank') Open an issue
+          else
+            a(href='https://github.com/webtorrent/webtorrent/issues', target='_blank') Open an issue
 
         section.sponsors
-          h3 Open Source Sponsors
+          h3 Sponsors
+          a(href='https://www.wormhole.app', target='_blank') Wormhole
           a(href='https://brave.com', rel='nofollow', target='_blank') Brave
 
     script(src='/bundle.js')
