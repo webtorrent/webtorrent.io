@@ -72,6 +72,11 @@
     "type": "git",
     "url": "git://github.com/webtorrent/webtorrent.io.git"
   },
+  "standard": {
+    "ignore": [
+      "tmp"
+    ]
+  },
   "scripts": {
     "build": "npm run build-css && npm run build-js && npm run build-webtorrent",
     "build-css": "stylus --include-css client/style.styl -o static/ -c",
