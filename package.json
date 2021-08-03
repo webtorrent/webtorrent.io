@@ -96,5 +96,10 @@
     "watch-css": "stylus --include-css client/style.styl -o static/ -w",
     "watch-js": "watchify client -o static/bundle.js -dv",
     "watch-server": "DEBUG=webtorrent*,bittorrent* nodemon server -e js,json,pug -i client/ -i static/ -i logs/"
+  },
+  "renovate": {
+    "extends": [
+      "github>webtorrent/renovate-config"
+    ]
   }
 }
