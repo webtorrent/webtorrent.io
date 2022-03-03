@@ -27,7 +27,7 @@
     "highlight.js": "10.7.3",
     "moment": "2.29.1",
     "morgan": "1.10.0",
-    "multer": "1.4.2",
+    "multer": "1.4.4",
     "p2p-graph": "2.0.0",
     "prettier-bytes": "1.0.4",
     "pug": "3.0.2",
