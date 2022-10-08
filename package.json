@@ -43,18 +43,13 @@
   "devDependencies": {
     "brfs": "2.0.2",
     "browserify": "17.0.0",
-    "husky": "4.3.8",
+    "husky": "8.0.1",
     "nodemon": "2.0.20",
     "standard": "*",
     "stylus": "0.59.0",
     "watchify": "4.0.0"
   },
   "homepage": "https://webtorrent.io",
-  "husky": {
-    "hooks": {
-      "pre-push": "npm test"
-    }
-  },
   "keywords": [
     "bittorrent",
     "bittorrent client",
@@ -83,6 +78,7 @@
     "build-js": "browserify client > static/bundle.js",
     "build-webtorrent": "rm -rf tmp && mkdir tmp && git clone https://github.com/webtorrent/webtorrent.git tmp/webtorrent",
     "deploy": "./tools/trigger-deploy.sh",
+    "prepare": "husky install",
     "secret-download": "rsync -a -O -v --delete -e \"ssh\" feross@webtorrent:\"/home/feross/www/webtorrent.io/secret/\" secret/",
     "secret-upload": "rsync -a -O -v --delete -e \"ssh\" secret/ feross@webtorrent:/home/feross/www/webtorrent.io/secret/",
     "size": "npm run size-js && npm run size-css",
