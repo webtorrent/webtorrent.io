@@ -22,7 +22,7 @@ const remark = new Remarkable({
   html: true,
   highlight: function (code, lang) {
     const h = lang
-      ? highlight.highlight(lang, code)
+      ? highlight.highlight(code, { language: lang })
       : highlight.highlightAuto(code)
     return '<div class="hljs">' + h.value + '</div>'
   }
