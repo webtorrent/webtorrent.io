@@ -1,6 +1,6 @@
 # webtorrent.io [![github][github-image]][github-url] [![javascript style guide][standard-image]][standard-url]
 
-[github-image]: https://img.shields.io/github/workflow/status/webtorrent/webtorrent.io/ci/master
+[github-image]: https://img.shields.io/github/actions/workflow/status/webtorrent/webtorrent.io/ci.yml
 [github-url]: https://github.com/webtorrent/webtorrent.io/actions
 [standard-image]: https://img.shields.io/badge/code_style-standard-brightgreen.svg
 [standard-url]: https://standardjs.com
