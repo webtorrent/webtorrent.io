@@ -37,7 +37,7 @@
     "semver": "7.8.1",
     "serve-index": "1.9.2",
     "simple-get": "4.0.1",
-    "throttleit": "1.0.1",
+    "throttleit": "2.1.0",
     "webtorrent": "1.9.7"
   },
   "devDependencies": {
