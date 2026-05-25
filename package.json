@@ -21,7 +21,7 @@
     "cors": "2.8.6",
     "discord-irc": "2.9.0",
     "domready": "1.0.8",
-    "express": "4.20.0",
+    "express": "4.22.2",
     "express-rate-limit": "6.11.2",
     "gitter-irc-bot": "1.6.0",
     "highlight.js": "11.11.1",
