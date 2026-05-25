@@ -17,7 +17,7 @@
   "dependencies": {
     "basic-auth": "2.0.1",
     "body-parser": "1.20.5",
-    "compression": "1.7.4",
+    "compression": "1.8.1",
     "cors": "2.8.6",
     "discord-irc": "2.9.0",
     "domready": "1.0.8",
