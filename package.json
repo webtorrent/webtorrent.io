@@ -46,7 +46,7 @@
     "husky": "8.0.3",
     "nodemon": "3.1.14",
     "standard": "*",
-    "stylus": "0.60.0",
+    "stylus": "0.64.0",
     "watchify": "4.0.0"
   },
   "homepage": "https://webtorrent.io",
