@@ -43,7 +43,7 @@
   "devDependencies": {
     "brfs": "2.0.2",
     "browserify": "17.0.1",
-    "husky": "8.0.3",
+    "husky": "9.1.7",
     "nodemon": "3.1.14",
     "standard": "*",
     "stylus": "0.64.0",
