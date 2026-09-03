@@ -15,7 +15,7 @@
     "url": "https://github.com/webtorrent/webtorrent.io/issues"
   },
   "dependencies": {
-    "basic-auth": "2.0.1",
+    "basic-auth": "3.0.0",
     "body-parser": "2.2.2",
     "compression": "1.8.1",
     "cors": "2.8.6",
